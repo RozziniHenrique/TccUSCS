@@ -10,6 +10,7 @@ public record FuncionarioAtualizacao(
         String nome,
         String telefone,
         dadoEndereco endereco,
-        List<Long> especialidadesIds // Adicione este campo
+        List<Long> especialidadesIds
 ) {
 }
+
