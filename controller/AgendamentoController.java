@@ -22,7 +22,7 @@ public class AgendamentoController {
     private AgendamentoService service;
 
     @Autowired
-    private AgendamentoRepository repository; // 1. Adicione a injeção do repository
+    private AgendamentoRepository repository;
 
     @PostMapping
     @Transactional
@@ -40,3 +40,4 @@ public class AgendamentoController {
         return ResponseEntity.ok(page);
     }
 }
+
