@@ -42,56 +42,6 @@ Clientes e Funcionários: Cadastro completo com endereço e suporte a Exclusão 
 
 Especialidades: Vinculação obrigatória para garantir que o serviço correto seja prestado.
 
-🚦 Como rodar o projeto
-1. Requisitos
-MySQL rodando localmente.
-
-Java 25 instalado.
-
-2. Configuração do Banco
-Crie o banco de dados no MySQL:
-
-SQL
-
-CREATE DATABASE stefer;
-3. Ajuste o application.properties
-Certifique-se de que o fuso horário está configurado para Brasília:
-
-Properties
-
-spring.datasource.url=jdbc:mysql://localhost:3306/stefer?serverTimezone=America/Sao_Paulo
-spring.jackson.time-zone=America/Sao_Paulo
-📡 Principais Endpoints
-Agendamentos
-POST /agendamentos - Realiza um novo agendamento.
-
-GET /agendamentos - Lista todos os agendamentos de forma paginada e ordenada por data.
-
-Exemplo de JSON para Agendamento:
-
-JSON
-
-{
-    "idFuncionario": null, 
-    "idCliente": 1,
-    "idEspecialidade": 1,
-    "data": "2026-05-20T14:00:00"
-}
-(Se idFuncionario for null, o sistema escolherá um profissional disponível automaticamente).
-
-🏗️ Estrutura de Pastas
-controller: Endpoints da API.
-
-model: Entidades JPA e Repositories.
-
-service: Lógica de negócio e validações (Service Layer).
-
-dto: Records para transferência de dados e proteção da API.
-
-infra: Configurações de segurança e tratador de erros.
-
-Desenvolvido por Henrique R. - Projeto STEFER
-
 🛠️ Próximos Passos (Roadmap)
 O projeto continua em evolução. As próximas implementações previstas são:
 
