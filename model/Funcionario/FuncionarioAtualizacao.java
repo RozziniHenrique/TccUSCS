@@ -13,4 +13,3 @@ public record FuncionarioAtualizacao(
         List<Long> especialidadesIds
 ) {
 }
-

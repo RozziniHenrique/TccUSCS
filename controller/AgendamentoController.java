@@ -40,4 +40,3 @@ public class AgendamentoController {
         return ResponseEntity.ok(page);
     }
 }
-

@@ -2,6 +2,7 @@ package uscs.STEFER.model.Agendamento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uscs.STEFER.infra.ValidacaoException;
 import uscs.STEFER.model.Cliente.ClienteRepository;
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
 import uscs.STEFER.model.Funcionario.FuncionarioRepository;
@@ -31,7 +32,7 @@ public class AgendamentoService {
                 .orElseThrow(() -> new RuntimeException("Especialidade não encontrada!"));
 
         if (agendamentoRepository.existsByClienteIdAndData(dados.idCliente(), dados.data())) {
-            throw new RuntimeException("Cliente já possui um agendamento nesse horário!");
+            throw new ValidacaoException("Cliente já possui um agendamento nesse horário!");
         }
 
         var funcionario = escolherFuncionario(dados);
@@ -40,7 +41,7 @@ public class AgendamentoService {
         validarAntecedenciaMinima(dados.data());
 
         if (agendamentoRepository.existsByFuncionarioIdAndData(funcionario.getId(), dados.data())) {
-            throw new RuntimeException("Este funcionário já possui um agendamento neste horário!");
+            throw new ValidacaoException("Este funcionário já possui um agendamento neste horário!");
         }
 
         var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data());
@@ -56,7 +57,7 @@ public class AgendamentoService {
 
         var funcionarioAleatorio = funcionarioRepository.escolherFuncionarioAleatorioLivreNaData(dados.data());
         if (funcionarioAleatorio == null) {
-            throw new RuntimeException("Não há funcionários disponíveis para este horário!");
+            throw new ValidacaoException("Não há funcionários disponíveis para este horário!");
         }
         return funcionarioAleatorio;
     }
@@ -67,7 +68,7 @@ public class AgendamentoService {
         var depoisDoEncerramento = data.getHour() > 18;
 
         if (domingo || antesDaAbertura || depoisDoEncerramento) {
-            throw new RuntimeException("Fora do horário de funcionamento (Segunda a Sábado, 07:00 às 19:00)");
+            throw new ValidacaoException("Fora do horário de funcionamento (Segunda a Sábado, 07:00 às 19:00)");
         }
     }
 
@@ -76,7 +77,7 @@ public class AgendamentoService {
         var diferencaEmMinutos = Duration.between(agora, data).toMinutes();
 
         if (diferencaEmMinutos < 30) {
-            throw new RuntimeException("O agendamento deve ser feito com no mínimo 30 minutos de antecedência!");
+            throw new ValidacaoException("O agendamento deve ser feito com no mínimo 30 minutos de antecedência!");
         }
     }
 }

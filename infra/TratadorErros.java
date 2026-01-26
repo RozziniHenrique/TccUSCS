@@ -1,0 +1,23 @@
+package uscs.STEFER.infra;
+
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class TratadorErros {
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity tratarErroDeNegocio(ValidacaoException ex) {
+        return ResponseEntity.badRequest().body(new DadosErroMensagem(ex.getMessage()));
+    }
+
+    private record DadosErroMensagem(String mensagem) {
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity tratarErro404(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest().body(new DadosErroMensagem("Formato de data inválido. Use o padrão: yyyy-MM-ddTHH:mm:ss"));
+    }
+}
