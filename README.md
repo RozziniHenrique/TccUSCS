@@ -1,5 +1,3 @@
-Aqui está o seu README.md totalmente atualizado, refletindo o estado atual do projeto com as novas funcionalidades e a maturidade técnica que você alcançou.
-
 💇‍♀️ STEFER - Gestão de Agendamentos Estéticos
 O STEFER é uma API REST desenvolvida com Spring Boot 3 para gestão de agendamentos em estabelecimentos de estética e beleza. O sistema destaca-se pela sua inteligência na alocação de profissionais, rigorosas validações de regras de negócio e persistência de dados com foco em auditoria.
 
