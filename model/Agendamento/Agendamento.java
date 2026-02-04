@@ -1,10 +1,7 @@
 package uscs.STEFER.model.Agendamento;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import uscs.STEFER.model.Cliente.Cliente;
 import uscs.STEFER.model.Especialidade.Especialidade;
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
@@ -14,8 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "agendamentos")
-@Entity(name = "agendamentos")
+@Entity(name = "Agendamento")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -39,5 +37,6 @@ public class Agendamento {
 
     private LocalDateTime data;
 
+    private String motivoCancelamento;
 
 }

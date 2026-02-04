@@ -1,5 +1,7 @@
 package uscs.STEFER.model.Agendamento;
 
+import jakarta.transaction.Transactional;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uscs.STEFER.infra.ValidacaoException;
@@ -23,7 +25,7 @@ public class AgendamentoService {
     @Autowired private ClienteRepository clienteRepository;
     @Autowired private EspecialidadeRepository especialidadeRepository;
 
-    public void agendar(DadosAgendamento dados) {
+    public AgendamentoDetalhamento agendar(DadosAgendamento dados) {
         var cliente = clienteRepository.findById(dados.idCliente())
                 .filter(c -> c.getAtivo())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado ou inativo!"));
@@ -31,7 +33,7 @@ public class AgendamentoService {
         var especialidade = especialidadeRepository.findById(dados.idEspecialidade())
                 .orElseThrow(() -> new RuntimeException("Especialidade não encontrada!"));
 
-        if (agendamentoRepository.existsByClienteIdAndData(dados.idCliente(), dados.data())) {
+        if (agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(dados.idCliente(), dados.data())) {
             throw new ValidacaoException("Cliente já possui um agendamento nesse horário!");
         }
 
@@ -40,12 +42,14 @@ public class AgendamentoService {
         validarHorarioFuncionamento(dados.data());
         validarAntecedenciaMinima(dados.data());
 
-        if (agendamentoRepository.existsByFuncionarioIdAndData(funcionario.getId(), dados.data())) {
+        if (agendamentoRepository.existsByFuncionarioIdAndDataAndMotivoCancelamentoIsNull(funcionario.getId(), dados.data())) {
             throw new ValidacaoException("Este funcionário já possui um agendamento neste horário!");
         }
 
-        var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data());
+        var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data(), null);
         agendamentoRepository.save(agendamento);
+
+        return new AgendamentoDetalhamento(agendamento);
     }
 
     private Funcionario escolherFuncionario(DadosAgendamento dados) {
@@ -79,5 +83,21 @@ public class AgendamentoService {
         if (diferencaEmMinutos < 30) {
             throw new ValidacaoException("O agendamento deve ser feito com no mínimo 30 minutos de antecedência!");
         }
+    }
+
+    @Transactional
+    public void cancelar(DadosCancelamentoAgendamento dados){
+        var agendamento = agendamentoRepository.findById(dados.idAgendamento())
+                .orElseThrow(() -> new ValidationException("Id do agendamento informado não existe"));
+
+        var agora = LocalDateTime.now();
+        var dataAgendamento = agendamento.getData();
+
+        var diferencaHoras = java.time.Duration.between(agora, dataAgendamento).toHours();
+
+        if(diferencaHoras < 2 ){
+            throw new ValidacaoException("Agendamento somente pode ser cancelado com antecedência mínima de 2h!");
+        }
+        agendamento.setMotivoCancelamento(dados.motivo());
     }
 }
