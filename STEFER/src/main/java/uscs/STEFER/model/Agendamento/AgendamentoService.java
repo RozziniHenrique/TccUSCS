@@ -1,5 +1,6 @@
 package uscs.STEFER.model.Agendamento;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +26,26 @@ public class AgendamentoService {
     @Autowired private ClienteRepository clienteRepository;
     @Autowired private EspecialidadeRepository especialidadeRepository;
 
+    @Transactional
     public AgendamentoDetalhamento agendar(DadosAgendamento dados) {
         var cliente = clienteRepository.findById(dados.idCliente())
                 .filter(c -> c.getAtivo())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado ou inativo!"));
+                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado ou inativo!"));
 
         var especialidade = especialidadeRepository.findById(dados.idEspecialidade())
-                .orElseThrow(() -> new RuntimeException("Especialidade não encontrada!"));
-
-        if (agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(dados.idCliente(), dados.data())) {
-            throw new ValidacaoException("Cliente já possui um agendamento nesse horário!");
-        }
+                .orElseThrow(() -> new EntityNotFoundException("Especialidade não encontrada!"));
 
         var funcionario = escolherFuncionario(dados);
+
+        if (agendamentoRepository.existsByFuncionarioIdAndDataAndMotivoCancelamentoIsNull(funcionario.getId(), dados.data())) {
+            throw new ValidacaoException("Este funcionário já possui um agendamento neste horário!");
+        }
 
         validarHorarioFuncionamento(dados.data());
         validarAntecedenciaMinima(dados.data());
 
-        if (agendamentoRepository.existsByFuncionarioIdAndDataAndMotivoCancelamentoIsNull(funcionario.getId(), dados.data())) {
-            throw new ValidacaoException("Este funcionário já possui um agendamento neste horário!");
+        if (agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(dados.idCliente(), dados.data())) {
+            throw new ValidacaoException("Cliente já possui um agendamento nesse horário!");
         }
 
         var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data(), null);
@@ -54,14 +56,20 @@ public class AgendamentoService {
 
     private Funcionario escolherFuncionario(DadosAgendamento dados) {
         if (dados.idFuncionario() != null) {
-            return funcionarioRepository.findById(dados.idFuncionario())
+            var funcionario = funcionarioRepository.findById(dados.idFuncionario())
                     .filter(f -> f.getAtivo())
-                    .orElseThrow(() -> new RuntimeException("Funcionário não encontrado ou inativo!"));
+                    .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado ou inativo!"));
+
+            if (funcionario.getEspecialidades().stream()
+                    .noneMatch(e -> e.getId().equals(dados.idEspecialidade()))) {
+                throw new ValidacaoException("O funcionário escolhido não realiza este tipo de serviço!");
+            }
+            return funcionario;
         }
 
-        var funcionarioAleatorio = funcionarioRepository.escolherFuncionarioAleatorioLivreNaData(dados.data());
+        var funcionarioAleatorio = funcionarioRepository.escolherFuncionarioAleatorioLivreNaData(dados.idEspecialidade(), dados.data());
         if (funcionarioAleatorio == null) {
-            throw new ValidacaoException("Não há funcionários disponíveis para este horário!");
+            throw new ValidacaoException("Não há funcionários disponíveis para esta especialidade neste horário!");
         }
         return funcionarioAleatorio;
     }

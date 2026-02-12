@@ -1,4 +1,11 @@
 package uscs.STEFER.model.Usuario;
 
-public record DadosCadastroUsuario(String login, String senha) {
-}
+import jakarta.validation.constraints.NotBlank;
+
+public record DadosCadastroUsuario(
+        @NotBlank(message = "O login é obrigatório")
+        String login,
+
+        @NotBlank(message = "A senha é obrigatória")
+        String senha
+) {}
