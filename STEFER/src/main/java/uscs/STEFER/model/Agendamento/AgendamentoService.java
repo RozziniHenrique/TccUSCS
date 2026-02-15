@@ -2,51 +2,44 @@ package uscs.STEFER.model.Agendamento;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uscs.STEFER.infra.ValidacaoException;
+import uscs.STEFER.model.Agendamento.validacao.ValidadorAgendamento;
+import uscs.STEFER.model.Agendamento.validacao.cancelamento.ValidadorCancelamentoAgendamento;
 import uscs.STEFER.model.Cliente.ClienteRepository;
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
 import uscs.STEFER.model.Funcionario.FuncionarioRepository;
 import uscs.STEFER.model.Funcionario.Funcionario;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.DayOfWeek;
+import java.util.List;
 
 @Service
 public class AgendamentoService {
 
-    @Autowired
-    private AgendamentoRepository agendamentoRepository;
-
-    @Autowired
-    private FuncionarioRepository funcionarioRepository;
-
+    @Autowired private AgendamentoRepository agendamentoRepository;
+    @Autowired private FuncionarioRepository funcionarioRepository;
     @Autowired private ClienteRepository clienteRepository;
     @Autowired private EspecialidadeRepository especialidadeRepository;
+    @Autowired private List<ValidadorAgendamento> validadoresAgendamento;
+    @Autowired private List<ValidadorCancelamentoAgendamento> validadoresCancelamento;
 
     @Transactional
     public AgendamentoDetalhamento agendar(DadosAgendamento dados) {
-        var cliente = clienteRepository.findById(dados.idCliente())
-                .filter(c -> c.getAtivo())
-                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado ou inativo!"));
+        if (!clienteRepository.existsById(dados.idCliente())) {
+            throw new EntityNotFoundException("Id do cliente informado não existe!");
+        }
 
-        var especialidade = especialidadeRepository.findById(dados.idEspecialidade())
-                .orElseThrow(() -> new EntityNotFoundException("Especialidade não encontrada!"));
+        if (dados.idFuncionario() != null && !funcionarioRepository.existsById(dados.idFuncionario())) {
+            throw new EntityNotFoundException("Id do funcionário informado não existe!");
+        }
 
+        validadoresAgendamento.forEach(v -> v.validar(dados));
+
+        var cliente = clienteRepository.getReferenceById(dados.idCliente());
+        var especialidade = especialidadeRepository.getReferenceById(dados.idEspecialidade());
         var funcionario = escolherFuncionario(dados);
-
-        if (agendamentoRepository.existsByFuncionarioIdAndDataAndMotivoCancelamentoIsNull(funcionario.getId(), dados.data())) {
-            throw new ValidacaoException("Este funcionário já possui um agendamento neste horário!");
-        }
-
-        validarHorarioFuncionamento(dados.data());
-        validarAntecedenciaMinima(dados.data());
-
-        if (agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(dados.idCliente(), dados.data())) {
-            throw new ValidacaoException("Cliente já possui um agendamento nesse horário!");
-        }
 
         var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data(), null);
         agendamentoRepository.save(agendamento);
@@ -54,58 +47,27 @@ public class AgendamentoService {
         return new AgendamentoDetalhamento(agendamento);
     }
 
+    @Transactional
+    public void cancelar(DadosCancelamentoAgendamento dados) {
+        if (!agendamentoRepository.existsById(dados.idAgendamento())) {
+            throw new EntityNotFoundException("Id do agendamento informado não existe!");
+        }
+
+        validadoresCancelamento.forEach(v -> v.validar(dados));
+
+        var agendamento = agendamentoRepository.getReferenceById(dados.idAgendamento());
+        agendamento.setMotivoCancelamento(dados.motivo());
+    }
+
     private Funcionario escolherFuncionario(DadosAgendamento dados) {
         if (dados.idFuncionario() != null) {
-            var funcionario = funcionarioRepository.findById(dados.idFuncionario())
-                    .filter(f -> f.getAtivo())
-                    .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado ou inativo!"));
-
-            if (funcionario.getEspecialidades().stream()
-                    .noneMatch(e -> e.getId().equals(dados.idEspecialidade()))) {
-                throw new ValidacaoException("O funcionário escolhido não realiza este tipo de serviço!");
-            }
-            return funcionario;
+            return funcionarioRepository.getReferenceById(dados.idFuncionario());
         }
 
-        var funcionarioAleatorio = funcionarioRepository.escolherFuncionarioAleatorioLivreNaData(dados.idEspecialidade(), dados.data());
-        if (funcionarioAleatorio == null) {
-            throw new ValidacaoException("Não há funcionários disponíveis para esta especialidade neste horário!");
+        if (dados.idEspecialidade() == null) {
+            throw new ValidacaoException("Especialidade é obrigatória quando funcionário não for escolhido!");
         }
-        return funcionarioAleatorio;
-    }
 
-    private void validarHorarioFuncionamento(LocalDateTime data) {
-        var domingo = data.getDayOfWeek().equals(DayOfWeek.SUNDAY);
-        var antesDaAbertura = data.getHour() < 7;
-        var depoisDoEncerramento = data.getHour() > 18;
-
-        if (domingo || antesDaAbertura || depoisDoEncerramento) {
-            throw new ValidacaoException("Fora do horário de funcionamento (Segunda a Sábado, 07:00 às 19:00)");
-        }
-    }
-
-    private void validarAntecedenciaMinima(LocalDateTime data) {
-        var agora = LocalDateTime.now();
-        var diferencaEmMinutos = Duration.between(agora, data).toMinutes();
-
-        if (diferencaEmMinutos < 30) {
-            throw new ValidacaoException("O agendamento deve ser feito com no mínimo 30 minutos de antecedência!");
-        }
-    }
-
-    @Transactional
-    public void cancelar(DadosCancelamentoAgendamento dados){
-        var agendamento = agendamentoRepository.findById(dados.idAgendamento())
-                .orElseThrow(() -> new ValidationException("Id do agendamento informado não existe"));
-
-        var agora = LocalDateTime.now();
-        var dataAgendamento = agendamento.getData();
-
-        var diferencaHoras = java.time.Duration.between(agora, dataAgendamento).toHours();
-
-        if(diferencaHoras < 2 ){
-            throw new ValidacaoException("Agendamento somente pode ser cancelado com antecedência mínima de 2h!");
-        }
-        agendamento.setMotivoCancelamento(dados.motivo());
+        return funcionarioRepository.escolherFuncionarioAleatorioLivreNaData(dados.idEspecialidade(), dados.data());
     }
 }
