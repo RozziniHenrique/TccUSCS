@@ -1,1 +1,0 @@
-alter table agendamentos add column motivo_cancelamento varchar(255);
