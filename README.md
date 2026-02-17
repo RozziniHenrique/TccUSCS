@@ -1,22 +1,36 @@
-# 💇‍♀️ STEFER API
+# 🏥 Projeto STEFER
 
-API para gestão de agendamentos desenvolvida com **Java 21** e **Spring Boot 3**. Este projeto foca em boas práticas de segurança e arquitetura REST.
+API de alto desempenho para gestão de agendamentos clínicos, focada em segurança de dados e automação de regras de negócio.
 
-## 🛠️ Tecnologias
-- **Java 21** & **Spring Boot 3**
-- **Spring Security 6** & **JWT** (Autenticação Stateless)
-- **BCrypt** (Criptografia de senhas)
-- **MySQL** (Banco de dados)
-- **Hibernate/JPA** (Persistência)
-- **Maven** (Gerenciador de dependências)
+---
 
-## 🔐 Segurança Implementada
-A API utiliza autenticação via Token JWT. Para acessar as rotas protegidas (como Agendamentos), é necessário:
-1. Realizar o cadastro em `/usuarios`.
-2. Realizar o login em `/login` para obter o Token.
-3. Enviar o Token no Header da requisição: `Authorization: Bearer <seu_token>`.
+### 🛠️ Stack Tecnológica
+* **Backend:** Java 21 + Spring Boot 3
+* **Persistência:** MySQL (Produção) | H2 (Testes)
+* **Qualidade:** JUnit 5 + Mockito
 
-## 🚀 Como Executar
-1. Clone o repositório.
-2. Configure o banco MySQL no `application.properties`.
-3. Execute o comando: `./mvnw spring-boot:run`
+---
+
+### 🛡️ Escudo de Testes
+Implementamos uma suíte de testes rigorosa para garantir que a clínica nunca pare por erros de lógica.
+
+| Tipo de Teste | O que protegemos? | Qtd |
+| :--- | :--- | :---: |
+| **Unitários** | Regras de Horário, Antecedência e Conflitos | 15 |
+| **Integração** | Endpoints da API e Persistência de Dados | 4 |
+
+---
+
+### 📏 Regras de Negócio (Hardcoded)
+Para garantir o funcionamento perfeito, o sistema valida automaticamente:
+
+* **Relógio Clínico:** Agendamentos apenas de Seg a Sáb (07h - 19h).
+* **Reserva:** Mínimo de 30 minutos de antecedência para marcar.
+* **Rescisão:** Mínimo de 2 horas de antecedência para cancelar.
+* **Fidelidade:** Verificação de duplicidade para Funcionário e Cliente.
+
+---
+
+### 🚀 Comando para validar o projeto:
+```bash
+mvn test
