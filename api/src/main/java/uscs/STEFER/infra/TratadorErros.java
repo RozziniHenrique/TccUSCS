@@ -19,7 +19,6 @@ public class TratadorErros {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity tratarErro400Leitura(HttpMessageNotReadableException ex) {
-        // Agora a mensagem é genérica e ajuda a descobrir o erro real
         return ResponseEntity.badRequest().body(new DadosErroMensagem("Erro na leitura do JSON: " + ex.getMostSpecificCause().getMessage()));
     }
 

@@ -8,11 +8,11 @@
         <version>3.5.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>med.voll</groupId>
+    <groupId>Stefer.uscs</groupId>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api</name>
-    <description>API Rest aplicação VOLL.Med</description>
+    <description>API Rest Stefer-uscs</description>
     <url/>
     <licenses>
         <license/>

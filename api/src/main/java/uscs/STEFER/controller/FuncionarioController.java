@@ -1,5 +1,6 @@
 package uscs.STEFER.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("funcionarios")
+@Tag(name ="Funcionários", description = "Gerenciamento de especialistas e prestadores de serviço")
 
 public class FuncionarioController {
 
@@ -57,7 +59,7 @@ public class FuncionarioController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizarFuncionario(@RequestBody @Valid FuncionarioAtualizacao dados){
+        public ResponseEntity atualizarFuncionario(@RequestBody @Valid FuncionarioAtualizacao dados){
         var funcionario = repository.getReferenceById(dados.id());
         funcionario.atualizarFuncionario(dados);
         if (dados.especialidadesIds() != null) {
