@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uscs.STEFER.infra.EmailService;
 import uscs.STEFER.infra.ValidacaoException;
 import uscs.STEFER.model.Agendamento.validacao.ValidadorAgendamento;
 import uscs.STEFER.model.Agendamento.validacao.cancelamento.ValidadorCancelamentoAgendamento;
@@ -24,6 +25,7 @@ public class AgendamentoService {
     @Autowired private EspecialidadeRepository especialidadeRepository;
     @Autowired private List<ValidadorAgendamento> validadoresAgendamento;
     @Autowired private List<ValidadorCancelamentoAgendamento> validadoresCancelamento;
+    @Autowired private EmailService emailService;
 
     @Transactional
     public AgendamentoDetalhamento agendar(DadosAgendamento dados) {
@@ -43,6 +45,8 @@ public class AgendamentoService {
 
         var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data(), null);
         agendamentoRepository.save(agendamento);
+
+        emailService.enviarConfirmacao(agendamento);
 
         return new AgendamentoDetalhamento(agendamento);
     }

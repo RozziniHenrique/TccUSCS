@@ -3,6 +3,7 @@ package uscs.STEFER.controller;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +40,19 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<FuncionarioLista>> listarFuncionario(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        var page = repository.findAllByAtivoTrue(paginacao).map(FuncionarioLista::new);
-        return ResponseEntity.ok(page);
+    public ResponseEntity<Page<FuncionarioLista>> listarFuncionario(
+            @RequestParam(required = false) Long idEspecialidade,
+            @PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+
+        Page<Funcionario> page;
+
+        if (idEspecialidade != null) {
+            page = repository.findAllByAtivoTrueAndEspecialidadesId(idEspecialidade, paginacao);
+        } else {
+            page = repository.findAllByAtivoTrue(paginacao);
+        }
+
+        return ResponseEntity.ok(page.map(FuncionarioLista::new));
     }
 
     @PutMapping
