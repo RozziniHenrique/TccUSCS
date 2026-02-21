@@ -33,18 +33,17 @@ Para garantir o funcionamento perfeito, o sistema valida automaticamente:
 
 ### ✍️ Como rodar o projeto
 * **Pré-requisitos**
-    Ter o Java JDK 17+ instalado.
+    
+* Ter o Java JDK 17+ instalado.
 
-    Ter o Node.js e o npm instalados.
-
-    Ter o MySQL rodando.
+* Ter o MySQL rodando.
 
 * **Configuração do Banco de Dados**
-    Clone o repositório.
+* Clone o repositório.
 
-    Crie o banco chamado stefer no seu MySQL.
+* Crie o banco chamado stefer no seu MySQL.
 
-    Altere as credenciais (seu usuário e senha do MySQL) em:
+* Altere as credenciais (seu usuário e senha do MySQL) em:
 api -> src -> main -> resources -> application.properties
 
 spring.datasource.url=jdbc:mysql://localhost:3306/stefer?useSSL=false&serverTimezone=America/Sao_Paulo
@@ -59,5 +58,3 @@ spring.datasource.password=sua_senha
     Execute o comando: ./mvnw spring-boot:run (ou dê Play na classe SteferApplication.java).
 
     O servidor subirá em http://localhost:8080.
-
-    Dica: Acesse http://localhost:8080/swagger-ui.html para testar os endpoints.
