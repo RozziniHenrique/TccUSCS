@@ -19,13 +19,15 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ValidadorDuplicidadeAgendamentoClienteTest {
 
-    @Mock private AgendamentoRepository agendamentoRepository;
+    @Mock
+    private AgendamentoRepository agendamentoRepository;
 
-    @InjectMocks private ValidadorDuplicidadeAgendamentoCliente validador;
+    @InjectMocks
+    private ValidadorDuplicidadeAgendamentoCliente validador;
 
     @Test
     @DisplayName("Cenário 1: Cliente já possui agendamento no mesmo horário -> Deve lançar exceção")
-    void validar_cenario01(){
+    void validar_cenario01() {
         var idCliente = 1L;
         var data = LocalDateTime.now().plusDays(1);
         var dados = new DadosAgendamento(1L, idCliente, 1L, data);

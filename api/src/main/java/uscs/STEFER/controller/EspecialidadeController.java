@@ -22,7 +22,7 @@ public class EspecialidadeController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastro(@RequestBody @Valid EspecialidadeCadastro dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastro(@RequestBody @Valid EspecialidadeCadastro dados, UriComponentsBuilder uriBuilder) {
         var especialidade = new Especialidade(dados);
         repository.save(especialidade);
         var uri = uriBuilder.path("/especialidade/{id}").buildAndExpand(especialidade.getId()).toUri();
@@ -30,14 +30,14 @@ public class EspecialidadeController {
     }
 
     @GetMapping
-    public ResponseEntity <Page<EspecialidadeLista>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
+    public ResponseEntity<Page<EspecialidadeLista>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(EspecialidadeLista::new);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid EspecialidadeAtualizacao dados){
+    public ResponseEntity atualizar(@RequestBody @Valid EspecialidadeAtualizacao dados) {
         var especialidade = repository.getReferenceById(dados.id());
         especialidade.atualizar(dados);
         return ResponseEntity.ok(new EspecialidadeDetalhamento(especialidade));
@@ -45,7 +45,7 @@ public class EspecialidadeController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluir(@PathVariable Long id){
+    public ResponseEntity excluir(@PathVariable Long id) {
         var especialidade = repository.getReferenceById(id);
         especialidade.excluir();
 
@@ -54,7 +54,7 @@ public class EspecialidadeController {
 
     @PutMapping("/{id}/reativar")
     @Transactional
-    public ResponseEntity reativar(@PathVariable Long id){
+    public ResponseEntity reativar(@PathVariable Long id) {
         var especialidade = repository.getReferenceById(id);
         especialidade.reativar();
 
@@ -62,7 +62,7 @@ public class EspecialidadeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity EspecialidadeDetalhamento(@PathVariable Long id){
+    public ResponseEntity EspecialidadeDetalhamento(@PathVariable Long id) {
         var especialidade = repository.getReferenceById(id);
         return ResponseEntity.ok(new EspecialidadeDetalhamento(especialidade));
     }

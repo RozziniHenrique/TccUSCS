@@ -29,6 +29,10 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/usuarios").permitAll();
+                    req.requestMatchers("/funcionarios/**").hasAuthority("FUNCIONARIO");
+                    req.requestMatchers("/especialidades/**").hasAuthority("FUNCIONARIO");
+                    req.requestMatchers(HttpMethod.POST, "/agendamentos").hasAuthority("FUNCIONARIO");
+                    req.requestMatchers(HttpMethod.POST, "/agendamentos").hasAuthority("CLIENTE");
                     req.requestMatchers(
                             "/v3/api-docs/**",
                             "/swagger-ui/**",
@@ -40,7 +44,6 @@ public class SecurityConfigurations {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
 
     @Bean

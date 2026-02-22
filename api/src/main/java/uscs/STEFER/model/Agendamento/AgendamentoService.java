@@ -12,6 +12,7 @@ import uscs.STEFER.model.Cliente.ClienteRepository;
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
 import uscs.STEFER.model.Funcionario.FuncionarioRepository;
 import uscs.STEFER.model.Funcionario.Funcionario;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,13 +20,20 @@ import java.util.List;
 @Service
 public class AgendamentoService {
 
-    @Autowired private AgendamentoRepository agendamentoRepository;
-    @Autowired private FuncionarioRepository funcionarioRepository;
-    @Autowired private ClienteRepository clienteRepository;
-    @Autowired private EspecialidadeRepository especialidadeRepository;
-    @Autowired private List<ValidadorAgendamento> validadoresAgendamento;
-    @Autowired private List<ValidadorCancelamentoAgendamento> validadoresCancelamento;
-    @Autowired private EmailService emailService;
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private EspecialidadeRepository especialidadeRepository;
+    @Autowired
+    private List<ValidadorAgendamento> validadoresAgendamento;
+    @Autowired
+    private List<ValidadorCancelamentoAgendamento> validadoresCancelamento;
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     public AgendamentoDetalhamento agendar(DadosAgendamento dados) {

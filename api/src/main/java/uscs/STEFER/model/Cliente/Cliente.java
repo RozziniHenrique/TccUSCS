@@ -2,21 +2,21 @@ package uscs.STEFER.model.Cliente;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import uscs.STEFER.model.Usuario.Usuario;
 import uscs.STEFER.model.endereco.Endereco;
 
 @Table(name = "clientes")
 @Entity(name = "clientes")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 
 public class Cliente {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;
@@ -28,6 +28,10 @@ public class Cliente {
 
     private Boolean ativo;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     public Cliente(ClienteCadastro dados) {
         this.ativo = true;
         this.nome = dados.nome();
@@ -37,23 +41,23 @@ public class Cliente {
         this.endereco = new Endereco(dados.endereco());
     }
 
-    public void atualizarCliente(@Valid ClienteAtualizacao dados){
-        if(dados.nome() != null){
+    public void atualizarCliente(@Valid ClienteAtualizacao dados) {
+        if (dados.nome() != null) {
             this.nome = dados.nome();
         }
-        if(dados.telefone() != null){
+        if (dados.telefone() != null) {
             this.telefone = dados.telefone();
         }
-        if(dados.endereco() != null){
+        if (dados.endereco() != null) {
             this.endereco.atualizarEndereco(dados.endereco());
         }
     }
 
-    public void excluirCliente(){
+    public void excluirCliente() {
         this.ativo = false;
     }
 
-    public void reativarCliente(){
+    public void reativarCliente() {
         this.ativo = true;
     }
 }

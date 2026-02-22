@@ -20,8 +20,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ValidadorHorarioAntecedenciaCancelamentoTest {
-    @Mock private AgendamentoRepository agendamentoRepository;
-    @InjectMocks private ValidadorHorarioAntecedenciaCancelamento validador;
+    @Mock
+    private AgendamentoRepository agendamentoRepository;
+    @InjectMocks
+    private ValidadorHorarioAntecedenciaCancelamento validador;
 
     @Test
     @DisplayName("Cenário 1: Cancelamento com menos de 2 horas de antecedência -> Erro")

@@ -2,6 +2,7 @@ package uscs.STEFER.model.Funcionario;
 
 import uscs.STEFER.model.Especialidade.EspecialidadeDetalhamento;
 import uscs.STEFER.model.endereco.Endereco;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 

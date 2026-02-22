@@ -6,7 +6,7 @@ import uscs.STEFER.model.Agendamento.Agendamento;
 @Service
 public class EmailService {
 
-    public void enviarConfirmacao(Agendamento agendamento){
+    public void enviarConfirmacao(Agendamento agendamento) {
         System.out.println("\n--- [STEFER - NOTIFICAÇÃO DE SISTEMA] ---");
         System.out.println("Destinatário: " + agendamento.getCliente().getEmail());
         System.out.println("Assunto: Sua consulta foi agendada!");

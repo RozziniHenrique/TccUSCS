@@ -26,9 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 class FuncionarioRepositoryTest {
 
-    @Autowired private FuncionarioRepository funcionarioRepository;
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
 
-    @Autowired private TestEntityManager em;
+    @Autowired
+    private TestEntityManager em;
 
     @Test
     @DisplayName("Cenário 1: Especialista indisponível -> Deve retornar null")
@@ -59,14 +61,14 @@ class FuncionarioRepositoryTest {
 
     @Test
     @DisplayName("Cenário 3: Especialista ocupado na data -> Deve retornar null")
-    void deveriaRetornarNull_cenario03(){
+    void deveriaRetornarNull_cenario03() {
         var proximaSegunda10am = LocalDateTime.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(10).withMinute(0).withSecond(0).withNano(0);
 
         var especialidade = cadastrarEspecialidade("Manicure", "Descricao");
         var funcionario = cadastrarFuncionario("Henrique Ocupado", "henrique@email.com", "12345678901", especialidade);
-        var cliente = cadastrarCliente("Cliente Teste", "cliente@email.com", "98765432100","00000000000");
+        var cliente = cadastrarCliente("Cliente Teste", "cliente@email.com", "98765432100", "00000000000");
 
         agendar(funcionario, cliente, especialidade, proximaSegunda10am);
         em.flush();

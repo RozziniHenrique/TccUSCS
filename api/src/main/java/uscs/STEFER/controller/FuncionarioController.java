@@ -10,17 +10,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
 import uscs.STEFER.model.Funcionario.*;
+import uscs.STEFER.model.Usuario.Usuario;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("funcionarios")
-@Tag(name ="Funcionários", description = "Gerenciamento de especialistas e prestadores de serviço")
+@Tag(name = "Funcionários", description = "Gerenciamento de especialistas e prestadores de serviço")
 
 public class FuncionarioController {
 
@@ -30,15 +32,23 @@ public class FuncionarioController {
     @Autowired
     private EspecialidadeRepository especialidadeRepository;
 
+    @Autowired
+    private FuncionarioService service;
+
     @PostMapping
     @Transactional
     public ResponseEntity cadastroFuncionario(@RequestBody @Valid FuncionarioCadastro dados, UriComponentsBuilder uriBuilder) {
-        var funcionario = new Funcionario(dados);
-        var especialidades = especialidadeRepository.findAllById(dados.especialidadesIds());
-        funcionario.getEspecialidades().addAll(especialidades);
-        repository.save(funcionario);
+        var funcionario = service.cadastrar(dados);
+
         var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
         return ResponseEntity.created(uri).body(new FuncionarioDetalhamento(funcionario));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizarFuncionario(@RequestBody @Valid FuncionarioAtualizacao dados) {
+        var funcionario = service.atualizar(dados);
+        return ResponseEntity.ok(new FuncionarioDetalhamento(funcionario));
     }
 
     @GetMapping
@@ -55,18 +65,6 @@ public class FuncionarioController {
         }
 
         return ResponseEntity.ok(page.map(FuncionarioLista::new));
-    }
-
-    @PutMapping
-    @Transactional
-        public ResponseEntity atualizarFuncionario(@RequestBody @Valid FuncionarioAtualizacao dados){
-        var funcionario = repository.getReferenceById(dados.id());
-        funcionario.atualizarFuncionario(dados);
-        if (dados.especialidadesIds() != null) {
-            var especialidades = especialidadeRepository.findAllById(dados.especialidadesIds());
-            funcionario.atualizarEspecialidades(especialidades);
-        }
-        return ResponseEntity.ok(new FuncionarioDetalhamento(funcionario));
     }
 
     @DeleteMapping("/{id}")

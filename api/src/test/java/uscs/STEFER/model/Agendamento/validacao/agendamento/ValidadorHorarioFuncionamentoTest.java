@@ -18,20 +18,20 @@ class ValidadorHorarioFuncionamentoTest {
 
     @Test
     @DisplayName("Cenário 1: Agendamento em um domingo -> Deve lançar exceção")
-    void validar_cenario01(){
+    void validar_cenario01() {
         var domingo = LocalDateTime.now()
                 .with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
                 .withHour(10).withMinute(0);
 
-        var dados = new DadosAgendamento(1l,1l,1l,domingo);
+        var dados = new DadosAgendamento(1l, 1l, 1l, domingo);
 
-        var exception = assertThrows(ValidacaoException.class,() -> validador.validar(dados));
+        var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
         assertThat(exception.getMessage().contains("Fora do horário de funcionamento"));
     }
 
     @Test
     @DisplayName("Cenário 2: Agendamento antes da abertura(6h) -> Deve lançar exceção")
-    void validar_cenario02(){
+    void validar_cenario02() {
         var segundaMuitoCedo = LocalDateTime.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(6).withMinute(0);

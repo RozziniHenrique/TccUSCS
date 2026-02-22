@@ -11,4 +11,5 @@ public record EspecialidadeAtualizacao(
 
         String descricao
 
-) {}
+) {
+}

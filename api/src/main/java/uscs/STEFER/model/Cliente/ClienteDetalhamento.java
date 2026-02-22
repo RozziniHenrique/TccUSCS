@@ -10,7 +10,7 @@ public record ClienteDetalhamento(
         String cpf,
         Endereco endereco) {
 
-    public ClienteDetalhamento(Cliente cliente){
+    public ClienteDetalhamento(Cliente cliente) {
         this(
                 cliente.getId(),
                 cliente.getNome(),

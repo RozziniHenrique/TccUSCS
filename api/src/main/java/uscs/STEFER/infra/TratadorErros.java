@@ -31,12 +31,13 @@ public class TratadorErros {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-        public ResponseEntity tratarErro404(EntityNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new DadosErroMensagem(ex.getMessage() != null ? ex.getMessage() : "Recurso não encontrado"));
-        }
+    public ResponseEntity tratarErro404(EntityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new DadosErroMensagem(ex.getMessage() != null ? ex.getMessage() : "Recurso não encontrado"));
+    }
 
-    private record DadosErroMensagem(String mensagem) { }
+    private record DadosErroMensagem(String mensagem) {
+    }
 
     private record DadosErroValidacao(String campo, String mensagem) {
         public DadosErroValidacao(FieldError erro) {

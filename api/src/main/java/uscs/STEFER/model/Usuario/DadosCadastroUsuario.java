@@ -8,4 +8,5 @@ public record DadosCadastroUsuario(
 
         @NotBlank(message = "A senha é obrigatória")
         String senha
-) {}
+) {
+}

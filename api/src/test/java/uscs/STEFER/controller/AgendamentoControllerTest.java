@@ -32,11 +32,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @Sql(scripts = "/data.sql")
 class AgendamentoControllerTest {
 
-    @Autowired private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-    @Autowired AgendamentoService agendamentoService;
+    @Autowired
+    AgendamentoService agendamentoService;
 
-    @Autowired ObjectMapper objectMapper;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockitoBean
     private JacksonTester<DadosAgendamento> dadosAgendamentoJson;

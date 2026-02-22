@@ -9,7 +9,8 @@ import uscs.STEFER.model.Agendamento.validacao.ValidadorAgendamento;
 
 @Component
 public class ValidadorDuplicidadeAgendamentoCliente implements ValidadorAgendamento {
-    @Autowired private AgendamentoRepository repository;
+    @Autowired
+    private AgendamentoRepository repository;
 
     public void validar(DadosAgendamento dados) {
         var possuiAgendamento = repository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(dados.idCliente(), dados.data());

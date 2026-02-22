@@ -33,7 +33,7 @@ public class AgendamentoController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos ou violação de regra de negócio (ex: antecedência de 30min)")
     })
     @Transactional
-    public ResponseEntity agendar (@RequestBody @Valid DadosAgendamento dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity agendar(@RequestBody @Valid DadosAgendamento dados, UriComponentsBuilder uriBuilder) {
         var dto = service.agendar(dados);
         var uri = uriBuilder.path("/agendamentos/{id}").buildAndExpand(dto.id()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -41,7 +41,7 @@ public class AgendamentoController {
 
     @GetMapping
     public ResponseEntity<Page<AgendamentoDetalhamento>> listar(
-            @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao){
+            @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao) {
         var page = repository.findAllByMotivoCancelamentoIsNull(paginacao)
                 .map(AgendamentoDetalhamento::new);
 
@@ -49,7 +49,7 @@ public class AgendamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity detalhar(@PathVariable Long id){
+    public ResponseEntity detalhar(@PathVariable Long id) {
         var agendamento = repository.findByIdAndMotivoCancelamentoIsNull(id)
                 .orElseThrow(() -> new ValidacaoException("Agendamento não encontrado ou já cancelado!"));
 
@@ -58,7 +58,7 @@ public class AgendamentoController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoAgendamento dados){
+    public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoAgendamento dados) {
         service.cancelar(dados);
         return ResponseEntity.noContent().build();
     }

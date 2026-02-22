@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uscs.STEFER.model.Usuario.DadosCadastroUsuario;
 import uscs.STEFER.model.Usuario.Usuario;
 import uscs.STEFER.model.Usuario.UsuarioRepository;
+import uscs.STEFER.model.Usuario.UsuarioRole;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -25,9 +26,9 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dados) {
         var senhaSegura = passwordEncoder.encode(dados.senha());
-        var usuario = new Usuario(null, dados.login(), senhaSegura);
+        var usuario = new Usuario(null, dados.login(), senhaSegura, UsuarioRole.CLIENTE);
         repository.save(usuario);
 
         return ResponseEntity.ok().build();

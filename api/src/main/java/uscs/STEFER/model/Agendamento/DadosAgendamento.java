@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record DadosAgendamento (
+public record DadosAgendamento(
         Long idFuncionario,
 
         @NotNull
@@ -19,5 +19,6 @@ public record DadosAgendamento (
         @Future
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         LocalDateTime data
-){}
+) {
+}
 

@@ -9,4 +9,5 @@ public record DadosCancelamentoAgendamento(
 
         @NotBlank
         String motivo
-) {}
+) {
+}
