@@ -10,10 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.security.test.context.support.WithMockUser;
 import uscs.STEFER.model.Agendamento.AgendamentoService;
 import uscs.STEFER.model.Agendamento.DadosAgendamento;
 import uscs.STEFER.model.Agendamento.DadosCancelamentoAgendamento;
@@ -23,6 +24,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -46,16 +49,21 @@ class AgendamentoControllerTest {
 
     @Test
     @DisplayName("Cenário 1: Informações inválidas -> Deve retornar http 400")
-    @WithMockUser
+    @WithMockUser("CLIENTE")
     void agendar_cenario01() throws Exception {
-        var response = mvc.perform(post("/agendamentos"))
+        var response = mvc.perform(
+                        post("/agendamentos")
+                                .with(user("usuario-teste").authorities(new SimpleGrantedAuthority("CLIENTE"))) // Força o usuário aqui
+                                .with(csrf())
+                )
                 .andReturn().getResponse();
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
     @DisplayName("Cenário 2: Informações válidas -> Deve retornar http 200")
-    @WithMockUser
+    @WithMockUser(authorities = "CLIENTE")
     void agendar_cenario02() throws Exception {
         var proximaSegunda10am = LocalDateTime.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))

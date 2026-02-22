@@ -12,6 +12,7 @@ import uscs.STEFER.model.Cliente.Cliente;
 import uscs.STEFER.model.Cliente.ClienteCadastro;
 import uscs.STEFER.model.Especialidade.Especialidade;
 import uscs.STEFER.model.Especialidade.EspecialidadeCadastro;
+import uscs.STEFER.model.Usuario.UsuarioRole;
 import uscs.STEFER.model.endereco.dadoEndereco;
 
 import java.time.DayOfWeek;
@@ -133,7 +134,8 @@ class FuncionarioRepositoryTest {
                 "11999999999",
                 cpf,
                 dadosEndereco(),
-                List.of(especialidade.getId())
+                List.of(especialidade.getId()),
+                UsuarioRole.FUNCIONARIO
         );
         var funcionario = new Funcionario(dados);
         funcionario.getEspecialidades().add(especialidade);
