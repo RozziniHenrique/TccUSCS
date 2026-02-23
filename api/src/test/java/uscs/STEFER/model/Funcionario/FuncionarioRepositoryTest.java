@@ -115,14 +115,18 @@ class FuncionarioRepositoryTest {
     }
 
     private Cliente cadastrarCliente(String nome, String email, String telefone, String cpf) {
-        var dados = new ClienteCadastro(
+        var endereco = dadosEndereco();
+
+        var dadosCliente = new ClienteCadastro(
                 nome,
                 email,
-                "11111111111",
+                telefone,
                 cpf,
-                dadosEndereco()
+                endereco,
+                UsuarioRole.CLIENTE
         );
-        var cliente = new Cliente(dados);
+
+        var cliente = new Cliente(dadosCliente);
         em.persist(cliente);
         return cliente;
     }

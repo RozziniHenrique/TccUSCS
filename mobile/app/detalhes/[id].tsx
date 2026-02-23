@@ -2,13 +2,22 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function DetalhesFuncionario() {
-    const { id } = useLocalSearchParams(); // Pega o ID da URL
+    const { id } = useLocalSearchParams();
     const router = useRouter();
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                <Text style={styles.backText}>← Voltar</Text>
+            <TouchableOpacity
+                onPress={() => router.back()}
+                style={{
+                    backgroundColor: '#3498db',
+                    padding: 10,
+                    borderRadius: 5,
+                    alignSelf: 'flex-start',
+                    marginBottom: 20
+                }}
+            >
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>← VOLTAR AGORA</Text>
             </TouchableOpacity>
 
             <View style={styles.header}>
