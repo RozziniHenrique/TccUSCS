@@ -4,21 +4,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
 import uscs.STEFER.model.Funcionario.*;
-import uscs.STEFER.model.Usuario.Usuario;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("funcionarios")
@@ -37,11 +30,9 @@ public class FuncionarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastroFuncionario(@RequestBody @Valid FuncionarioCadastro dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid FuncionarioCadastro dados) {
         var funcionario = service.cadastrar(dados);
-
-        var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
-        return ResponseEntity.created(uri).body(new FuncionarioDetalhamento(funcionario));
+        return ResponseEntity.ok(new FuncionarioDetalhamento(funcionario));
     }
 
     @PutMapping

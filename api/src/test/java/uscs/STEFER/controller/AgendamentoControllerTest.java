@@ -53,7 +53,7 @@ class AgendamentoControllerTest {
     void agendar_cenario01() throws Exception {
         var response = mvc.perform(
                         post("/agendamentos")
-                                .with(user("usuario-teste").authorities(new SimpleGrantedAuthority("CLIENTE"))) // Força o usuário aqui
+                                .with(user("usuario-teste").authorities(new SimpleGrantedAuthority("CLIENTE")))
                                 .with(csrf())
                 )
                 .andReturn().getResponse();

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import uscs.STEFER.model.Funcionario.Funcionario;
 
 import java.util.HashSet;

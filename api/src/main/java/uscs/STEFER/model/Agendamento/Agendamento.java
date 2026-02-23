@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import uscs.STEFER.model.Cliente.Cliente;
 import uscs.STEFER.model.Especialidade.Especialidade;
-import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
 import uscs.STEFER.model.Funcionario.Funcionario;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "agendamentos")

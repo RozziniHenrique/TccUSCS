@@ -26,11 +26,12 @@ public class FuncionarioService {
         var funcionario = new Funcionario(dados);
         funcionario.setUsuario(usuario);
 
-        var especialidades = especialidadeRepository.findAllById(dados.especialidadesIds());
-        funcionario.getEspecialidades().addAll(especialidades);
+        if (dados.especialidadesIds() != null && !dados.especialidadesIds().isEmpty()) {
+            var especialidades = especialidadeRepository.findAllById(dados.especialidadesIds());
+            funcionario.getEspecialidades().addAll(especialidades);
+        }
 
         System.out.println(">>> Senha gerada para " + dados.nome() + ": " + senhaLimpa);
-
         return repository.save(funcionario);
     }
 

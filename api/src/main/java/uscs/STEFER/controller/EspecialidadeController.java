@@ -9,7 +9,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import uscs.STEFER.model.Cliente.*;
 import uscs.STEFER.model.Especialidade.*;
 
 @RestController

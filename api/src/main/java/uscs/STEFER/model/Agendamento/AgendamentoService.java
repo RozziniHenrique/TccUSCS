@@ -10,11 +10,9 @@ import uscs.STEFER.model.Agendamento.validacao.ValidadorAgendamento;
 import uscs.STEFER.model.Agendamento.validacao.cancelamento.ValidadorCancelamentoAgendamento;
 import uscs.STEFER.model.Cliente.ClienteRepository;
 import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
-import uscs.STEFER.model.Funcionario.FuncionarioRepository;
 import uscs.STEFER.model.Funcionario.Funcionario;
+import uscs.STEFER.model.Funcionario.FuncionarioRepository;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

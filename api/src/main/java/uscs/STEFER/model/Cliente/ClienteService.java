@@ -24,6 +24,7 @@ public class ClienteService {
 
         var senhaSegura = passwordEncoder.encode("mudar123");
         var usuario = new Usuario(null, dados.email(), senhaSegura, UsuarioRole.CLIENTE);
+        usuarioRepository.save(usuario);
 
         var cliente = new Cliente(dados);
         cliente.setUsuario(usuario);

@@ -28,7 +28,7 @@ public class Funcionario {
     private String telefone;
     private String cpf;
 
-    @OneToOne(cascade = CascadeType.ALL) // Se deletar o func, deleta o login
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 

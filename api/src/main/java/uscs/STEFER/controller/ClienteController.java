@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import uscs.STEFER.model.Cliente.*;
 
 @RestController
@@ -24,10 +23,9 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastroCliente(@RequestBody @Valid ClienteCadastro dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid ClienteCadastro dados) {
         var cliente = service.cadastrar(dados);
-        var uri = uriBuilder.path("/clientes/{id}").buildAndExpand(cliente.getId()).toUri();
-        return ResponseEntity.created(uri).body(new ClienteDetalhamento(cliente));
+        return ResponseEntity.ok(new ClienteDetalhamento(cliente));
     }
 
     @PutMapping
