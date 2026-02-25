@@ -15,6 +15,8 @@ public record ClienteCadastro(
         @Email
         String email,
         @NotBlank
+        String senha,
+        @NotBlank
         String telefone,
         @NotBlank
         @Pattern(regexp = "\\d{11,14}")

@@ -22,7 +22,7 @@ public class ClienteService {
     @Transactional
     public Cliente cadastrar(ClienteCadastro dados) {
 
-        var senhaSegura = passwordEncoder.encode("mudar123");
+        var senhaSegura = passwordEncoder.encode(dados.senha());
         var usuario = new Usuario(null, dados.email(), senhaSegura, UsuarioRole.CLIENTE);
         usuarioRepository.save(usuario);
 

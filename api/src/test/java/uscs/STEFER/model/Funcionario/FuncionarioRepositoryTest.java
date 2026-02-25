@@ -69,7 +69,7 @@ class FuncionarioRepositoryTest {
 
         var especialidade = cadastrarEspecialidade("Manicure", "Descricao");
         var funcionario = cadastrarFuncionario("Henrique Ocupado", "henrique@email.com", "12345678901", especialidade);
-        var cliente = cadastrarCliente("Cliente Teste", "cliente@email.com", "98765432100", "00000000000");
+        var cliente = cadastrarCliente("Cliente Teste", "cliente@email.com", "SenhaTeste", "98765432100", "00000000000");
 
         agendar(funcionario, cliente, especialidade, proximaSegunda10am);
         em.flush();
@@ -114,12 +114,13 @@ class FuncionarioRepositoryTest {
         return especialidade;
     }
 
-    private Cliente cadastrarCliente(String nome, String email, String telefone, String cpf) {
+    private Cliente cadastrarCliente(String nome, String email, String senha, String telefone, String cpf) {
         var endereco = dadosEndereco();
 
         var dadosCliente = new ClienteCadastro(
                 nome,
                 email,
+                senha,
                 telefone,
                 cpf,
                 endereco,

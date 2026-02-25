@@ -46,6 +46,7 @@ JSON
 {
   "nome": "Mafe Silva",
   "email": "mafe@email.com",
+  "senha": "Senha",
   "telefone": "1111111111",
   "cpf": "11111112341",
   "role": "FUNCIONARIO",
