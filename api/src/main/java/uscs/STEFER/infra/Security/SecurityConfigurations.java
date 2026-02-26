@@ -30,8 +30,8 @@ public class SecurityConfigurations {
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
 
                     // Restrito: Só quem tem a ROLE_ADMIN pode cadastrar funcionários
-                    req.requestMatchers(HttpMethod.POST, "/funcionarios").hasRole("ADMIN");
-                    
+                    req.requestMatchers(HttpMethod.POST, "/funcionarios").hasAuthority("ADMIN");
+
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
