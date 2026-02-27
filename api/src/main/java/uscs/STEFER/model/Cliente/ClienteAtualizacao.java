@@ -1,7 +1,7 @@
 package uscs.STEFER.model.Cliente;
 
 import jakarta.validation.constraints.NotNull;
-import uscs.STEFER.model.endereco.dadoEndereco;
+import uscs.STEFER.model.Endereco.dadoEndereco;
 
 public record ClienteAtualizacao(
 

@@ -9,11 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import uscs.STEFER.infra.ValidacaoException;
 import uscs.STEFER.model.Agendamento.*;
+import uscs.STEFER.model.Agendamento.relatorio.DadosRelatorioEspecialidade;
+import uscs.STEFER.model.Avaliacao.Avaliacao;
+import uscs.STEFER.model.Avaliacao.AvaliacaoRepository;
+import uscs.STEFER.model.Avaliacao.DadosCadastroAvaliacao;
+import uscs.STEFER.model.Avaliacao.DadosDetalhamentoAvaliacao;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
@@ -25,6 +34,9 @@ public class AgendamentoController {
 
     @Autowired
     private AgendamentoRepository repository;
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
 
     @PostMapping
     @Operation(summary = "Agenda uma nova consulta")
@@ -39,10 +51,47 @@ public class AgendamentoController {
         return ResponseEntity.created(uri).body(dto);
     }
 
+
+    @GetMapping("/relatorio/estatisticas")
+    public ResponseEntity<List<DadosRelatorioEspecialidade>> relatorioEspecialidades() {
+        var dados = repository.contagemPorEspecialidade();
+        return ResponseEntity.ok(dados);
+    }
+
+    @PostMapping("/{id}/avaliar")
+    @Transactional
+    public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid DadosCadastroAvaliacao dados) {
+
+        var agendamento = repository.getReferenceById(id);
+
+        if (avaliacaoRepository.existsByAgendamentoId(id)) {
+            return ResponseEntity.badRequest().body("Este agendamento já foi avaliado!");
+        }
+
+        var avaliacao = new Avaliacao(dados, agendamento);
+        avaliacaoRepository.save(avaliacao);
+
+        return ResponseEntity.ok(new DadosDetalhamentoAvaliacao(avaliacao));
+    }
+
+    @PutMapping("/{id}/finalizar")
+    @Transactional
+    public ResponseEntity finalizar(@PathVariable Long id) {
+        var agendamento = repository.getReferenceById(id);
+        agendamento.setConcluido(true);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<Page<AgendamentoDetalhamento>> listar(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
+            @RequestParam(required = false) Long idFuncionario,
+            @RequestParam(required = false) Long idCliente,
+            @RequestParam(required = false) Long idEspecialidade,
             @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao) {
-        var page = repository.findAllByMotivoCancelamentoIsNull(paginacao)
+
+        var page = repository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
                 .map(AgendamentoDetalhamento::new);
 
         return ResponseEntity.ok(page);

@@ -37,4 +37,14 @@ public class Agendamento {
 
     private String motivoCancelamento;
 
+    private Boolean concluido = false;
+
+    public Agendamento(Funcionario funcionario, Cliente cliente, Especialidade especialidade, LocalDateTime data) {
+        this.funcionario = funcionario;
+        this.cliente = cliente;
+        this.especialidade = especialidade;
+        this.data = data;
+        this.concluido = false;
+        this.motivoCancelamento = null;
+    }
 }

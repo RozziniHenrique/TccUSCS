@@ -10,10 +10,10 @@ import org.springframework.test.context.ActiveProfiles;
 import uscs.STEFER.model.Agendamento.Agendamento;
 import uscs.STEFER.model.Cliente.Cliente;
 import uscs.STEFER.model.Cliente.ClienteCadastro;
+import uscs.STEFER.model.Endereco.dadoEndereco;
 import uscs.STEFER.model.Especialidade.Especialidade;
 import uscs.STEFER.model.Especialidade.EspecialidadeCadastro;
 import uscs.STEFER.model.Usuario.UsuarioRole;
-import uscs.STEFER.model.endereco.dadoEndereco;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

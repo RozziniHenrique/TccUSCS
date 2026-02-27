@@ -1,4 +1,4 @@
-package uscs.STEFER.model.endereco;
+package uscs.STEFER.model.Endereco;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

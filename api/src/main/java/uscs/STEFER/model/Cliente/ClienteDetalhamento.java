@@ -1,6 +1,6 @@
 package uscs.STEFER.model.Cliente;
 
-import uscs.STEFER.model.endereco.Endereco;
+import uscs.STEFER.model.Endereco.Endereco;
 
 public record ClienteDetalhamento(
         Long id,

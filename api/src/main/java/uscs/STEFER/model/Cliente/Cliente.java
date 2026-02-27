@@ -3,8 +3,8 @@ package uscs.STEFER.model.Cliente;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
+import uscs.STEFER.model.Endereco.Endereco;
 import uscs.STEFER.model.Usuario.Usuario;
-import uscs.STEFER.model.endereco.Endereco;
 
 @Table(name = "clientes")
 @Entity(name = "clientes")

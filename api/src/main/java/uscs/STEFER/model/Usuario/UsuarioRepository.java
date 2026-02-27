@@ -1,8 +1,15 @@
 package uscs.STEFER.model.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     UserDetails findByLogin(String login);
+
+    @Query("SELECT u.role, COUNT(u) FROM Usuario u GROUP BY u.role")
+    List<Object[]> contarUsuariosPorRole();
+
 }

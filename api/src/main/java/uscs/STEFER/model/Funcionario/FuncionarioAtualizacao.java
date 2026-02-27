@@ -1,7 +1,7 @@
 package uscs.STEFER.model.Funcionario;
 
 import jakarta.validation.constraints.NotNull;
-import uscs.STEFER.model.endereco.dadoEndereco;
+import uscs.STEFER.model.Endereco.dadoEndereco;
 
 import java.util.List;
 

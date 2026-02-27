@@ -1,4 +1,4 @@
-package uscs.STEFER.model.endereco;
+package uscs.STEFER.model.Endereco;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

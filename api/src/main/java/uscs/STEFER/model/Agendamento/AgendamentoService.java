@@ -49,7 +49,7 @@ public class AgendamentoService {
         var especialidade = especialidadeRepository.getReferenceById(dados.idEspecialidade());
         var funcionario = escolherFuncionario(dados);
 
-        var agendamento = new Agendamento(null, funcionario, cliente, especialidade, dados.data(), null);
+        var agendamento = new Agendamento(funcionario, cliente, especialidade, dados.data());
         agendamentoRepository.save(agendamento);
 
         emailService.enviarConfirmacao(agendamento);

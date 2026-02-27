@@ -26,11 +26,13 @@ public class SecurityConfigurations {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
+
+                    //RESTRITO: Só ADMIN
+                    req.requestMatchers("/agendamentos/relatorio/**").hasAuthority("ADMIN");
+                    req.requestMatchers(HttpMethod.POST, "/funcionarios").hasAuthority("ADMIN");
+
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
-
-                    // Restrito: Só quem tem a ROLE_ADMIN pode cadastrar funcionários
-                    req.requestMatchers(HttpMethod.POST, "/funcionarios").hasAuthority("ADMIN");
 
                     req.anyRequest().authenticated();
                 })
