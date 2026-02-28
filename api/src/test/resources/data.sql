@@ -1,4 +1,5 @@
 -- 1. LIMPEZA
+DELETE FROM avaliacoes;
 DELETE FROM agendamentos;
 DELETE FROM funcionario_especialidade;
 DELETE FROM clientes;

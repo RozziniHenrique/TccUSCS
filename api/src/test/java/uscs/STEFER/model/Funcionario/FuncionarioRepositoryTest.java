@@ -96,14 +96,7 @@ class FuncionarioRepositoryTest {
     }
 
     private void agendar(Funcionario funcionario, Cliente cliente, Especialidade especialidade, LocalDateTime data) {
-        var agendamento = new Agendamento(
-                null,
-                funcionario,
-                cliente,
-                especialidade,
-                data,
-                null
-        );
+        var agendamento = new Agendamento(funcionario, cliente, especialidade, data);
         em.persist(agendamento);
     }
 
