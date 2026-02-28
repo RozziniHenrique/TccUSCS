@@ -1,6 +1,5 @@
 package uscs.STEFER.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -21,7 +20,6 @@ import uscs.STEFER.service.FuncionarioService;
 
 @RestController
 @RequestMapping("funcionarios")
-@Tag(name = "Funcionários", description = "Gerenciamento de especialistas e prestadores de serviço")
 
 public class FuncionarioController {
 

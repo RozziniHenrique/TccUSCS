@@ -12,20 +12,20 @@ API de alto desempenho para gestão de barbearias, focada em inteligência de ne
 ---
 
 ### 🛠️ Stack Tecnológica
-* **Backend:** Java 21 + Spring Boot 3
-* **Segurança:** Spring Security + JWT (JSON Web Token)
-* **Persistência:** MySQL + Flyway (Migrations)
-* **Documentação:** Swagger (SpringDoc)
+* **Backend:** Java 21 + Spring Boot 3 (Spring Security + JWT)
+* **Frontend Web:** React + Vite + Tailwind CSS (Gestão)
+* **Mobile:** React Native (App Cliente)
+* **Persistência:** MySQL + Flyway
 * **Qualidade:** JUnit 5 + Mockito
 
 ---
 
-### 📂 Arquitetura do Projeto
-O projeto utiliza uma estrutura organizada por contextos de domínio para garantir baixa manutenção:
+### 📂 Estrutura do Ecossistema
+O projeto está dividido em frentes específicas para atender diferentes perfis de usuário:
 
-* `domain`: Contém as **Entities**, **Repositories**, **DTOs** e **Validadores** (ex: `agendamento`, `funcionario`, `cliente`).
-* `controller`: Camada REST para exposição dos endpoints.
-* `infra`: Configurações globais, como segurança JWT e tratamento de exceções customizadas.
+* **`/api`**: Core do sistema, regras de negócio e inteligência de dados.
+* **`/web`**: Painel administrativo para donos de barbearia e barbeiros (Faturamento, Relatórios).
+* **`/mobile`**: Interface do cliente para agendamentos e acompanhamento de serviços.
 
 ---
 

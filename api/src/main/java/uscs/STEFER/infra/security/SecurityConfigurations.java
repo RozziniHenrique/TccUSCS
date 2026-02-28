@@ -23,14 +23,22 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(request -> {
+                    var config = new org.springframework.web.cors.CorsConfiguration();
+                    config.setAllowedOrigins(java.util.List.of("http://localhost:5173", "http://localhost:3000"));
+                    config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(java.util.List.of("*"));
+                    return config;
+                }))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-
-                    //RESTRITO: Só ADMIN
+                    // RESTRITO: Só ADMIN
                     req.requestMatchers("/agendamentos/relatorio/**").hasAuthority("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/funcionarios").hasAuthority("ADMIN");
 
+                    // PUBLICO
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
                     req.requestMatchers("/dashboard").permitAll();

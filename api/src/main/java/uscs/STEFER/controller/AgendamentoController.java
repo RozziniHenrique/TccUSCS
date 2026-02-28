@@ -1,8 +1,5 @@
 package uscs.STEFER.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +37,6 @@ public class AgendamentoController {
     private AvaliacaoRepository avaliacaoRepository;
 
     @PostMapping
-    @Operation(summary = "Agenda uma nova consulta")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Consulta agendada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos ou violação de regra de negócio (ex: antecedência de 30min)")
-    })
     @Transactional
     public ResponseEntity agendar(@RequestBody @Valid dtoAgendamentoCadastrar dados, UriComponentsBuilder uriBuilder) {
         var dto = service.agendar(dados);
