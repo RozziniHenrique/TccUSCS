@@ -27,7 +27,7 @@ public class ClienteService {
     public Cliente cadastrar(dtoClienteCadastrar dados) {
 
         var senhaSegura = passwordEncoder.encode(dados.senha());
-        var usuario = new Usuario(null, dados.email(), senhaSegura, UsuarioRole.CLIENTE);
+        var usuario = new Usuario(null, dados.email(), senhaSegura, true, UsuarioRole.CLIENTE);
         usuarioRepository.save(usuario);
 
         var cliente = new Cliente(dados);

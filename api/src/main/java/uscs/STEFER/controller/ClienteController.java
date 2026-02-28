@@ -52,6 +52,9 @@ public class ClienteController {
         var cliente = repository.getReferenceById(id);
         cliente.excluirCliente();
 
+        if (cliente.getUsuario() != null) {
+            cliente.getUsuario().setAtivo(false);
+        }
         return ResponseEntity.noContent().build();
     }
 

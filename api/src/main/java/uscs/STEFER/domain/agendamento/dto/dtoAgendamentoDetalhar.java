@@ -9,6 +9,7 @@ public record dtoAgendamentoDetalhar(
         Long idFuncionario,
         String nomeFuncionario,
         Long idCliente,
+        String nomeCliente,
         Long idEspecialidade,
         String nomeEspecialista,
         LocalDateTime data) {
@@ -18,6 +19,7 @@ public record dtoAgendamentoDetalhar(
                 agendamento.getFuncionario().getId(),
                 agendamento.getFuncionario().getNome(),
                 agendamento.getCliente().getId(),
+                agendamento.getCliente().getNome(),
                 agendamento.getEspecialidade().getId(),
                 agendamento.getEspecialidade().getNome(),
                 agendamento.getData());

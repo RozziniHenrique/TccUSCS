@@ -67,6 +67,9 @@ public class FuncionarioController {
     public ResponseEntity excluirFuncionario(@PathVariable Long id) {
         var funcionario = repository.getReferenceById(id);
         funcionario.excluirFuncionario();
+        if (funcionario.getUsuario() != null) {
+            funcionario.getUsuario().setAtivo(false);
+        }
 
         return ResponseEntity.noContent().build();
     }

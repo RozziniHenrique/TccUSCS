@@ -25,7 +25,7 @@ public class FuncionarioService {
         String senhaLimpa = dados.nome().substring(0, 3).toLowerCase() + dados.cpf().substring(0, 3);
         String senhaCriptografada = passwordEncoder.encode(senhaLimpa);
 
-        var usuario = new Usuario(null, dados.email(), senhaCriptografada, dados.role());
+        var usuario = new Usuario(null, dados.email(), senhaCriptografada, true, dados.role());
 
         var funcionario = new Funcionario(dados);
         funcionario.setUsuario(usuario);

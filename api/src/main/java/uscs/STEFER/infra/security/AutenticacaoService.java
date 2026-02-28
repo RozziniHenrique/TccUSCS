@@ -1,10 +1,12 @@
 package uscs.STEFER.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import uscs.STEFER.domain.usuario.Usuario;
 import uscs.STEFER.domain.usuario.UsuarioRepository;
 
 @Service
@@ -15,9 +17,16 @@ public class AutenticacaoService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var usuario = repository.findByLogin(username);
-        System.out.println("Usuário encontrado: " + usuario.getUsername());
-        System.out.println("Senha no banco: " + usuario.getPassword());
-        return repository.findByLogin(username);
+        var usuario = (Usuario) repository.findByLogin(username);
+
+        if (usuario == null) {
+            throw new UsernameNotFoundException("Usuário não encontrado");
+        }
+        if (!usuario.getAtivo()) {
+            throw new DisabledException("Este usuário está desativado.");
+        }
+
+        return usuario;
     }
 }
+

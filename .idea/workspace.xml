@@ -4,94 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="677fa170-772f-4485-a25f-057920107b4a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoRelatorioEspecialidade.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorAgendamento.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorCancelamentoAgendamento.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/cliente/dto/dtoClienteAtualizar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/cliente/dto/dtoClienteListar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/especialidade/dto/dtoEspecialidadeDetalhar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/especialidade/dto/dtoEspecialidadeListar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/funcionario/dto/dtoFuncionarioListar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/exception/dtoErroValidacao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/dtoTokenJWT.java" afterDir="false" />
+    <list default="true" id="677fa170-772f-4485-a25f-057920107b4a" name="Changes" comment="refactor: reorganização para padrão DDD e implementação de Dashboard&#10;- Refatorada estrutura de pacotes de model para domain&#10;- Atualizado AgendamentoRepository com faturamento e ranking&#10;- Corrigidos testes e data.sql (campo preco)">
+      <change afterPath="$PROJECT_DIR$/api/src/main/resources/db/migration/V10__alter-table-usuario-add-column-ativo.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/components/ListaAgendamentos.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/AgendamentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/AgendamentoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/AutenticacaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/AutenticacaoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/ClienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/ClienteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/EspecialidadeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/EspecialidadeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/FuncionarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/FuncionarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/DadosErroValidacao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoDetalhar.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoDetalhar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/UsuarioRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/DatabaseSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/DatabaseSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/Security/AutenticacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/AutenticacaoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/Security/DadosTokenJWT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/Security/SecurityConfigurations.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/SecurityConfigurations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/Security/SecurityFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/SecurityFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/Security/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/TokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/TratadorErros.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/exception/TratadorErros.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/ValidacaoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/exception/ValidacaoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/Agendamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/Agendamento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/AgendamentoDetalhamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoDetalhar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/AgendamentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/AgendamentoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/AgendamentoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/AgendamentoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/DadosAgendamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoCadastrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/DadosCancelamentoAgendamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoCancelar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/DadosFiltroAgendamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoFiltro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/relatorio/DadosFinalizarAgendamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoFinalizar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/relatorio/DadosRelatorioEspecialidade.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/ValidadorAgendamento.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorAntecedenciaMinima.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorAntecedenciaMinima.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorDuplicidadeAgendamentoCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorDuplicidadeAgendamentoCliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorDuplicidadeAgendamentoFuncionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorDuplicidadeAgendamentoFuncionario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorHorarioFuncionamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorHorarioFuncionamento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/cancelamento/ValidadorCancelamentoAgendamento.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Agendamento/validacao/cancelamento/ValidadorHorarioAntecedenciaCancelamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/validacoes/ValidadorHorarioAntecedenciaCancelamento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Avaliacao/Avaliacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/avaliacao/Avaliacao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Avaliacao/AvaliacaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/avaliacao/AvaliacaoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Avaliacao/AvaliacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/AvaliacaoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Avaliacao/DadosCadastroAvaliacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/avaliacao/dto/dtoAvaliacaoCadastrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Avaliacao/DadosDetalhamentoAvaliacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/avaliacao/dto/dtoAvaliacaoDetalhar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/cliente/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/ClienteAtualizacao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/ClienteCadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/cliente/dto/dtoClienteCadastrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/ClienteDetalhamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/cliente/dto/dtoClienteDetalhar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/ClienteLista.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/cliente/ClienteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Cliente/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/ClienteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Dashboard/AlertaQualidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/dashboard/dto/AlertaQualidade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Dashboard/DadosDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/dashboard/dto/dtoDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Dashboard/RankingFuncionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/dashboard/dto/RankingFuncionario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Endereco/Endereco.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/endereco/Endereco.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Endereco/dadoEndereco.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/endereco/dtoEndereco.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Especialidade/Especialidade.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/especialidade/Especialidade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Especialidade/EspecialidadeAtualizacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/especialidade/dto/dtoEspecialidadeAtualizar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Especialidade/EspecialidadeCadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/especialidade/dto/dtoEspecialidadeCadastrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Especialidade/EspecialidadeDetalhamento.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Especialidade/EspecialidadeLista.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Especialidade/EspecialidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/especialidade/EspecialidadeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/Funcionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/funcionario/Funcionario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/FuncionarioAtualizacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/funcionario/dto/dtoFuncionarioAtualizar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/FuncionarioCadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/funcionario/dto/dtoFuncionarioCadastrar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/FuncionarioDetalhamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/funcionario/dto/dtoFuncionarioDetalhar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/FuncionarioLista.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/FuncionarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/funcionario/FuncionarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Funcionario/FuncionarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/FuncionarioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Usuario/DadosAutenticacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/DadosAutenticacao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Usuario/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/UsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/model/Usuario/UsuarioRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/UsuarioRole.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/controller/AgendamentoControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/controller/AgendamentoControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorAntecedenciaMinimaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorAntecedenciaMinimaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorDuplicidadeAgendamentoClienteTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorDuplicidadeAgendamentoClienteTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorDuplicidadeAgendamentoFuncionarioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorDuplicidadeAgendamentoFuncionarioTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorHorarioFuncionamentoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/agendamento/ValidadorHorarioFuncionamentoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/cancelamento/ValidadorHorarioAntecedenciaCancelamentoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Agendamento/validacao/cancelamento/ValidadorHorarioAntecedenciaCancelamentoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Funcionario/FuncionarioRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/java/uscs/STEFER/model/Funcionario/FuncionarioRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/resources/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/AutenticacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/AutenticacaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/ClienteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/FuncionarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/FuncionarioService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +44,7 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -160,7 +85,7 @@
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -172,6 +97,9 @@
       <recent name="C:\Users\Henri\Desktop\STEFER\STEFER\src\main\java\uscs\STEFER\model\Especialidade" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Henri\Desktop\STEFER\web\src\components" />
+      <recent name="C:\Users\Henri\Desktop\STEFER\web\src\services" />
+      <recent name="C:\Users\Henri\Desktop\STEFER\web\src" />
       <recent name="C:\Users\Henri\Desktop\STEFER\STEFER\src\main\java\uscs\STEFER" />
       <recent name="C:\Users\Henri\Desktop\STEFER\STEFER\src\main\resources\db" />
     </key>
@@ -284,6 +212,15 @@
       <option name="presentableId" value="Default" />
       <updated>1764371548341</updated>
     </task>
+    <task id="LOCAL-00001" summary="refactor: reorganização para padrão DDD e implementação de Dashboard&#10;- Refatorada estrutura de pacotes de model para domain&#10;- Atualizado AgendamentoRepository com faturamento e ranking&#10;- Corrigidos testes e data.sql (campo preco)">
+      <option name="closed" value="true" />
+      <created>1772253145128</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1772253145128</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -300,7 +237,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Backend: implementado paginação, filtros por especialidade e simulação de envio de e-mail" />
-    <option name="LAST_COMMIT_MESSAGE" value="Backend: implementado paginação, filtros por especialidade e simulação de envio de e-mail" />
+    <MESSAGE value="refactor: reorganização para padrão DDD e implementação de Dashboard&#10;- Refatorada estrutura de pacotes de model para domain&#10;- Atualizado AgendamentoRepository com faturamento e ranking&#10;- Corrigidos testes e data.sql (campo preco)" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: reorganização para padrão DDD e implementação de Dashboard&#10;- Refatorada estrutura de pacotes de model para domain&#10;- Atualizado AgendamentoRepository com faturamento e ranking&#10;- Corrigidos testes e data.sql (campo preco)" />
     <option name="LAST_CHUNK_COMMIT_MESSAGE" value="Backend: implementado paginação, filtros por especialidade e simulação de envio de e-mail" />
   </component>
 </project>

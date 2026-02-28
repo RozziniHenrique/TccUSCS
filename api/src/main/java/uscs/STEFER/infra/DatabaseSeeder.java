@@ -46,6 +46,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                     null,
                     emailAdmin,
                     passwordEncoder.encode("admin123"),
+                    true,
                     UsuarioRole.ADMIN
             );
 
