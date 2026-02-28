@@ -24,8 +24,8 @@ API de alto desempenho para gestão de barbearias, focada em inteligência de ne
 O projeto está dividido em frentes específicas para atender diferentes perfis de usuário:
 
 * **`/api`**: Core do sistema, regras de negócio e inteligência de dados.
-* **`/web`**: Painel administrativo para donos de barbearia e barbeiros (Faturamento, Relatórios).
-* **`/mobile`**: Interface do cliente para agendamentos e acompanhamento de serviços.
+* **`/web`**: Painel administrativo para donos de barbearia e barbeiros (Faturamento, Relatórios). -> Proximo a ser desenvolvido
+* **`/mobile`**: Interface do cliente para agendamentos e acompanhamento de serviços. -> Desenvolvimento em espera
 
 ---
 
