@@ -34,15 +34,25 @@ public class SecurityConfigurations {
                 }))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    // RESTRITO: Só ADMIN
-                    req.requestMatchers("/agendamentos/relatorio/**").hasAuthority("ADMIN");
-                    req.requestMatchers(HttpMethod.POST, "/funcionarios").hasAuthority("ADMIN");
-
-                    // PUBLICO
+                    // 1. PÚBLICO
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-                    req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
-                    req.requestMatchers("/dashboard").permitAll();
 
+                    // 2. EXCLUSIVO ADMIN
+                    req.requestMatchers("/admin/**").hasAuthority("ADMIN");
+
+                    // 3. ADMIN E GESTOR
+                    req.requestMatchers("/relatorios/**", "/usuarios/**").hasAnyAuthority("ADMIN", "GESTOR");
+                    req.requestMatchers(HttpMethod.POST, "/funcionarios/**").hasAnyAuthority("ADMIN", "GESTOR");
+
+                    // 4. OPERACIONAL
+                    req.requestMatchers("/agendamentos/geral").hasAnyAuthority("ADMIN", "GESTOR", "FUNCIONARIO");
+                    req.requestMatchers(HttpMethod.POST, "/servicos/finalizar").hasAnyAuthority("ADMIN", "GESTOR", "FUNCIONARIO");
+
+                    // 5. CLIENTE
+                    req.requestMatchers(HttpMethod.GET, "/servicos").authenticated();
+                    req.requestMatchers("/meus-agendamentos/**").hasAuthority("CLIENTE");
+
+                    // 6. PADRÃO
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
