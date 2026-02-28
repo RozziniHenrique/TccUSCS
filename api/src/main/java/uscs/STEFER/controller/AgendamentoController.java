@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import uscs.STEFER.infra.ValidacaoException;
 import uscs.STEFER.model.Agendamento.*;
+import uscs.STEFER.model.Agendamento.relatorio.DadosFinalizarAgendamento;
 import uscs.STEFER.model.Agendamento.relatorio.DadosRelatorioEspecialidade;
 import uscs.STEFER.model.Avaliacao.Avaliacao;
 import uscs.STEFER.model.Avaliacao.AvaliacaoRepository;
@@ -74,13 +75,13 @@ public class AgendamentoController {
         return ResponseEntity.ok(new DadosDetalhamentoAvaliacao(avaliacao));
     }
 
-    @PutMapping("/{id}/finalizar")
+    @PutMapping("/finalizar")
     @Transactional
-    public ResponseEntity finalizar(@PathVariable Long id) {
-        var agendamento = repository.getReferenceById(id);
-        agendamento.setConcluido(true);
+    public ResponseEntity finalizar(@RequestBody @Valid DadosFinalizarAgendamento dados) {
+        var agendamento = repository.getReferenceById(dados.id());
+        agendamento.finalizar(dados.nota());
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Atendimento finalizado com sucesso! Faturamento atualizado.");
     }
 
     @GetMapping

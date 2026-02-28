@@ -33,6 +33,7 @@ public class SecurityConfigurations {
 
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
+                    req.requestMatchers("/dashboard").permitAll();
 
                     req.anyRequest().authenticated();
                 })

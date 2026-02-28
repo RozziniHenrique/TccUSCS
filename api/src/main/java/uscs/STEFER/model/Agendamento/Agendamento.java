@@ -37,6 +37,8 @@ public class Agendamento {
 
     private String motivoCancelamento;
 
+    private Integer nota;
+
     private Boolean concluido = false;
 
     public Agendamento(Funcionario funcionario, Cliente cliente, Especialidade especialidade, LocalDateTime data) {
@@ -46,5 +48,10 @@ public class Agendamento {
         this.data = data;
         this.concluido = false;
         this.motivoCancelamento = null;
+    }
+
+    public void finalizar(Integer nota) {
+        this.concluido = true;
+        this.nota = nota;
     }
 }
