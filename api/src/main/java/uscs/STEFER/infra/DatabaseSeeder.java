@@ -24,18 +24,15 @@ public class DatabaseSeeder implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional // Garante que ou cria os dois, ou não cria nenhum
+    @Transactional
     public void run(String... args) throws Exception {
 
         String emailAdmin = "admin@stefer.com";
 
-        // 1. Verifica se o Admin já existe para não criar duplicado toda vez que rodar
         if (usuarioRepository.findByLogin(emailAdmin) == null) {
 
             System.out.println(">>> Seed: Criando usuário administrador padrão...");
 
-            // 2. Criar o Perfil do Funcionário Admin
-            // (Ajuste os campos de acordo com o seu construtor de Funcionario)
             var funcionarioAdmin = new Funcionario();
             funcionarioAdmin.setNome("Administrador Sistema");
             funcionarioAdmin.setEmail(emailAdmin);
@@ -45,7 +42,6 @@ public class DatabaseSeeder implements CommandLineRunner {
 
             funcionarioRepository.save(funcionarioAdmin);
 
-            // 3. Criar o Usuário de Login vinculado a esse funcionário
             var usuarioAdmin = new Usuario(
                     null,
                     emailAdmin,
