@@ -7,7 +7,8 @@ DELETE FROM funcionarios;
 DELETE FROM especialidades;
 
 -- 2. INSERTS DE ESPECIALIDADES
-INSERT INTO especialidades (id, nome, descricao, ativo) VALUES (1, 'Manicure', 'Unhas', 1), (3, 'Cabelo', 'Corte', 1);
+INSERT INTO especialidades (id, nome, descricao, ativo, preco)
+VALUES (1, 'Manicure', 'Unhas', 1, 40.00), (3, 'Cabelo', 'Corte', 1, 37.50);
 
 -- 3. INSERTS DE CLIENTES
 INSERT INTO clientes (id, nome, email, cpf, telefone, logradouro, numero, bairro, cep, cidade, uf, ativo)

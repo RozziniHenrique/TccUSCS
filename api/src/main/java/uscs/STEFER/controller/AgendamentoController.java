@@ -13,14 +13,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import uscs.STEFER.infra.ValidacaoException;
-import uscs.STEFER.model.Agendamento.*;
-import uscs.STEFER.model.Agendamento.relatorio.DadosFinalizarAgendamento;
-import uscs.STEFER.model.Agendamento.relatorio.DadosRelatorioEspecialidade;
-import uscs.STEFER.model.Avaliacao.Avaliacao;
-import uscs.STEFER.model.Avaliacao.AvaliacaoRepository;
-import uscs.STEFER.model.Avaliacao.DadosCadastroAvaliacao;
-import uscs.STEFER.model.Avaliacao.DadosDetalhamentoAvaliacao;
+import uscs.STEFER.domain.agendamento.AgendamentoRepository;
+import uscs.STEFER.domain.agendamento.dto.*;
+import uscs.STEFER.domain.avaliacao.Avaliacao;
+import uscs.STEFER.domain.avaliacao.AvaliacaoRepository;
+import uscs.STEFER.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
+import uscs.STEFER.domain.avaliacao.dto.dtoAvaliacaoDetalhar;
+import uscs.STEFER.infra.exception.ValidacaoException;
+import uscs.STEFER.service.AgendamentoService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,7 +46,7 @@ public class AgendamentoController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos ou violação de regra de negócio (ex: antecedência de 30min)")
     })
     @Transactional
-    public ResponseEntity agendar(@RequestBody @Valid DadosAgendamento dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity agendar(@RequestBody @Valid dtoAgendamentoCadastrar dados, UriComponentsBuilder uriBuilder) {
         var dto = service.agendar(dados);
         var uri = uriBuilder.path("/agendamentos/{id}").buildAndExpand(dto.id()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -54,14 +54,14 @@ public class AgendamentoController {
 
 
     @GetMapping("/relatorio/estatisticas")
-    public ResponseEntity<List<DadosRelatorioEspecialidade>> relatorioEspecialidades() {
+    public ResponseEntity<List<dtoAgendamentoRelatorioEspecialidade>> relatorioEspecialidades() {
         var dados = repository.contagemPorEspecialidade();
         return ResponseEntity.ok(dados);
     }
 
     @PostMapping("/{id}/avaliar")
     @Transactional
-    public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid DadosCadastroAvaliacao dados) {
+    public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid dtoAvaliacaoCadastrar dados) {
 
         var agendamento = repository.getReferenceById(id);
 
@@ -72,12 +72,12 @@ public class AgendamentoController {
         var avaliacao = new Avaliacao(dados, agendamento);
         avaliacaoRepository.save(avaliacao);
 
-        return ResponseEntity.ok(new DadosDetalhamentoAvaliacao(avaliacao));
+        return ResponseEntity.ok(new dtoAvaliacaoDetalhar(avaliacao));
     }
 
     @PutMapping("/finalizar")
     @Transactional
-    public ResponseEntity finalizar(@RequestBody @Valid DadosFinalizarAgendamento dados) {
+    public ResponseEntity finalizar(@RequestBody @Valid dtoAgendamentoFinalizar dados) {
         var agendamento = repository.getReferenceById(dados.id());
         agendamento.finalizar(dados.nota());
 
@@ -85,7 +85,7 @@ public class AgendamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<AgendamentoDetalhamento>> listar(
+    public ResponseEntity<Page<dtoAgendamentoDetalhar>> listar(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
             @RequestParam(required = false) Long idFuncionario,
             @RequestParam(required = false) Long idCliente,
@@ -93,7 +93,7 @@ public class AgendamentoController {
             @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao) {
 
         var page = repository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
-                .map(AgendamentoDetalhamento::new);
+                .map(dtoAgendamentoDetalhar::new);
 
         return ResponseEntity.ok(page);
     }
@@ -103,12 +103,12 @@ public class AgendamentoController {
         var agendamento = repository.findByIdAndMotivoCancelamentoIsNull(id)
                 .orElseThrow(() -> new ValidacaoException("Agendamento não encontrado ou já cancelado!"));
 
-        return ResponseEntity.ok(new AgendamentoDetalhamento(agendamento));
+        return ResponseEntity.ok(new dtoAgendamentoDetalhar(agendamento));
     }
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoAgendamento dados) {
+    public ResponseEntity cancelar(@RequestBody @Valid dtoAgendamentoCancelar dados) {
         service.cancelar(dados);
         return ResponseEntity.noContent().build();
     }

@@ -6,14 +6,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uscs.STEFER.infra.ValidacaoException;
-import uscs.STEFER.model.Agendamento.AgendamentoRepository;
-import uscs.STEFER.model.Agendamento.DadosAgendamento;
+import uscs.STEFER.domain.agendamento.AgendamentoRepository;
+import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import uscs.STEFER.domain.agendamento.validacoes.ValidadorDuplicidadeAgendamentoCliente;
+import uscs.STEFER.infra.exception.ValidacaoException;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +32,7 @@ class ValidadorDuplicidadeAgendamentoClienteTest {
     void validar_cenario01() {
         var idCliente = 1L;
         var data = LocalDateTime.now().plusDays(1);
-        var dados = new DadosAgendamento(1L, idCliente, 1L, data);
+        var dados = new dtoAgendamentoCadastrar(1L, idCliente, 1L, data);
 
         when(agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(idCliente, data))
                 .thenReturn(true);
@@ -44,7 +46,7 @@ class ValidadorDuplicidadeAgendamentoClienteTest {
     void validar_cenario02() {
         var idCliente = 1L;
         var data = LocalDateTime.now().plusDays(1);
-        var dados = new DadosAgendamento(1L, idCliente, 1L, data);
+        var dados = new dtoAgendamentoCadastrar(1L, idCliente, 1L, data);
         when(agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(idCliente, data))
                 .thenReturn(false);
 

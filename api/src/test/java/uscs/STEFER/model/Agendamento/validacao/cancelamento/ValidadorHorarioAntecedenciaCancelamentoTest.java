@@ -6,16 +6,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uscs.STEFER.infra.ValidacaoException;
-import uscs.STEFER.model.Agendamento.Agendamento;
-import uscs.STEFER.model.Agendamento.AgendamentoRepository;
-import uscs.STEFER.model.Agendamento.DadosCancelamentoAgendamento;
+import uscs.STEFER.domain.agendamento.Agendamento;
+import uscs.STEFER.domain.agendamento.AgendamentoRepository;
+import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCancelar;
+import uscs.STEFER.domain.agendamento.validacoes.ValidadorHorarioAntecedenciaCancelamento;
+import uscs.STEFER.infra.exception.ValidacaoException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,7 +39,7 @@ class ValidadorHorarioAntecedenciaCancelamentoTest {
 
         when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
 
-        var dados = new DadosCancelamentoAgendamento(idAgendamento, "Desistência");
+        var dados = new dtoAgendamentoCancelar(idAgendamento, "Desistência");
 
         var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
 
@@ -55,7 +57,7 @@ class ValidadorHorarioAntecedenciaCancelamentoTest {
 
         when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
 
-        var dados = new DadosCancelamentoAgendamento(idAgendamento, "Mudança de planos");
+        var dados = new dtoAgendamentoCancelar(idAgendamento, "Mudança de planos");
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }
@@ -70,7 +72,7 @@ class ValidadorHorarioAntecedenciaCancelamentoTest {
 
         when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
 
-        var dados = new DadosCancelamentoAgendamento(idAgendamento, "O cliente desistiu");
+        var dados = new dtoAgendamentoCancelar(idAgendamento, "O cliente desistiu");
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }

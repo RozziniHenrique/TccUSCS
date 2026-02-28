@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uscs.STEFER.model.Funcionario.Funcionario;
-import uscs.STEFER.model.Funcionario.FuncionarioRepository;
-import uscs.STEFER.model.Usuario.Usuario;
-import uscs.STEFER.model.Usuario.UsuarioRepository;
-import uscs.STEFER.model.Usuario.UsuarioRole;
+import uscs.STEFER.domain.funcionario.Funcionario;
+import uscs.STEFER.domain.funcionario.FuncionarioRepository;
+import uscs.STEFER.domain.usuario.Usuario;
+import uscs.STEFER.domain.usuario.UsuarioRepository;
+import uscs.STEFER.domain.usuario.UsuarioRole;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {

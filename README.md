@@ -1,60 +1,55 @@
-# 🏥 Projeto STEFER
+# 💈 Projeto STEFER - Barber Management System
 
-API de alto desempenho para gestão de agendamentos clínicos, focada em segurança de dados e automação de regras de negócio.
+API de alto desempenho para gestão de barbearias, focada em inteligência de negócios, segurança de dados e automação de regras de agendamento.
+
+---
+
+### 🚀 Novidades da Versão 2.0
+* **Business Intelligence:** Dashboard integrado com faturamento em tempo real, ranking de performance e alertas de qualidade (notas < 4.0).
+* **Arquitetura Clean (DDD):** Refatoração completa para o padrão de domínios, isolando regras de negócio de infraestrutura para maior escalabilidade.
+* **Relatórios Dinâmicos:** Estatísticas de serviços mais procurados por especialidade e performance de funcionários.
 
 ---
 
 ### 🛠️ Stack Tecnológica
 * **Backend:** Java 21 + Spring Boot 3
-* **Persistência:** MySQL (Produção) | H2 (Testes)
+* **Segurança:** Spring Security + JWT (JSON Web Token)
+* **Persistência:** MySQL + Flyway (Migrations)
+* **Documentação:** Swagger (SpringDoc)
 * **Qualidade:** JUnit 5 + Mockito
 
 ---
 
-### 🛡️ Escudo de Testes
-Implementamos uma suíte de testes rigorosa para garantir que a clínica nunca pare por erros de lógica.
+### 📂 Arquitetura do Projeto
+O projeto utiliza uma estrutura organizada por contextos de domínio para garantir baixa manutenção:
 
-| Tipo de Teste | O que protegemos? | Qtd |
-| :--- | :--- | :---: |
-| **Unitários** | Regras de Horário, Antecedência e Conflitos | 15 |
-| **Integração** | Endpoints da API e Persistência de Dados | 4 |
+* `domain`: Contém as **Entities**, **Repositories**, **DTOs** e **Validadores** (ex: `agendamento`, `funcionario`, `cliente`).
+* `controller`: Camada REST para exposição dos endpoints.
+* `infra`: Configurações globais, como segurança JWT e tratamento de exceções customizadas.
 
 ---
 
-### 📏 Regras de Negócio (Hardcoded)
-Para garantir o funcionamento perfeito, o sistema valida automaticamente:
+### 📏 Regras de Negócio & Validações
+O sistema utiliza o padrão **Strategy** para aplicar regras automáticas:
+* **Horário de Funcionamento:** Segunda a Sábado, das 07h às 19h.
+* **Antecedência:** Mínimo de 30 min para agendar e 2h para cancelar.
+* **Prevenção de Conflitos:** Validação de duplicidade de horário para barbeiro e cliente.
+* **Gestão de Qualidade:** Alertas para colaboradores com média de avaliação inferior a 4.0.
 
-* **Relógio Clínico:** Agendamentos apenas de Seg a Sáb (07h - 19h).
-* **Reserva:** Mínimo de 30 minutos de antecedência para marcar.
-* **Rescisão:** Mínimo de 2 horas de antecedência para cancelar.
-* **Fidelidade:** Verificação de duplicidade para Funcionário e Cliente.
+---
+
+### 📊 Principais Endpoints
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| **GET** | `/dashboard` | Retorna faturamento do dia, ranking de funcionários e alertas. |
+| **POST** | `/agendamentos` | Cria agendamento validando todas as regras de negócio. |
+| **PUT** | `/agendamentos/finalizar` | Conclui o serviço e registra a nota (atualiza faturamento). |
+| **GET** | `/relatorio/estatisticas` | Mostra quais especialidades são as mais rentáveis. |
 
 ---
 
 ### ✍️ Como rodar o projeto
-* **Pré-requisitos**
-    
-* Ter o Java JDK 17+ instalado.
-
-* Ter o MySQL rodando.
-
-* **Configuração do Banco de Dados**
-* Clone o repositório.
-
-* Crie o banco chamado stefer no seu MySQL.
-
-* Altere as credenciais (seu usuário e senha do MySQL) em:
-api -> src -> main -> resources -> application.properties
-
-spring.datasource.url=jdbc:mysql://localhost:3306/stefer?useSSL=false&serverTimezone=America/Sao_Paulo
-
-spring.datasource.username=seu_usuario
-
-spring.datasource.password=sua_senha
-
-* **Rodando o Back-end (Spring Boot)**
-    Abra a pasta api no IntelliJ ou VS Code.
-
-    Execute o comando: ./mvnw spring-boot:run (ou dê Play na classe SteferApplication.java).
-
-    O servidor subirá em http://localhost:8080.
+1. **Banco de Dados:** Crie um banco MySQL chamado `stefer`.
+2. **Configuração:** Ajuste as credenciais em `src/main/resources/application.properties`.
+3. **Execução:** ```bash
+   ./mvnw spring-boot:run

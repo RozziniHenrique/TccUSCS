@@ -2,12 +2,14 @@ package uscs.STEFER.model.Agendamento.validacao.agendamento;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import uscs.STEFER.infra.ValidacaoException;
-import uscs.STEFER.model.Agendamento.DadosAgendamento;
+import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import uscs.STEFER.domain.agendamento.validacoes.ValidadorAntecedenciaMinima;
+import uscs.STEFER.infra.exception.ValidacaoException;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ValidadorAntecedenciaMinimaTest {
 
@@ -17,7 +19,7 @@ class ValidadorAntecedenciaMinimaTest {
     @DisplayName("Cenário 1: Agendamento com menos de 30 minutos de antecedência -> Erro")
     void validar_cenario01() {
         var agoraMais20Minutos = LocalDateTime.now().plusMinutes(20);
-        var dados = new DadosAgendamento(1L, 1L, 1L, agoraMais20Minutos);
+        var dados = new dtoAgendamentoCadastrar(1L, 1L, 1L, agoraMais20Minutos);
 
         assertThrows(ValidacaoException.class, () -> validador.validar(dados));
     }
@@ -26,7 +28,7 @@ class ValidadorAntecedenciaMinimaTest {
     @DisplayName("Cenário 2: Agendamento com antecedência correta -> Sucesso")
     void validar_cenario02() {
         var agoraMais40Minutos = LocalDateTime.now().plusMinutes(40);
-        var dados = new DadosAgendamento(1L, 1L, 1L, agoraMais40Minutos);
+        var dados = new dtoAgendamentoCadastrar(1L, 1L, 1L, agoraMais40Minutos);
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }

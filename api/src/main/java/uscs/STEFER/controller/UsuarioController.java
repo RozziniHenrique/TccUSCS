@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uscs.STEFER.model.Agendamento.AgendamentoRepository;
-import uscs.STEFER.model.Usuario.UsuarioRepository;
+import uscs.STEFER.domain.agendamento.AgendamentoRepository;
+import uscs.STEFER.domain.usuario.UsuarioRepository;
 
 import java.util.Map;
 import java.util.stream.Collectors;

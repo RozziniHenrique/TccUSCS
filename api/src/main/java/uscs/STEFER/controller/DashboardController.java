@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uscs.STEFER.model.Agendamento.AgendamentoRepository;
-import uscs.STEFER.model.Dashboard.DadosDashboard;
+import uscs.STEFER.domain.agendamento.AgendamentoRepository;
+import uscs.STEFER.domain.dashboard.dto.dtoDashboard;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class DashboardController {
 
         var faturamentoFinal = (faturamentoBruto != null) ? faturamentoBruto : BigDecimal.ZERO;
 
-        var dados = new DadosDashboard(
+        var dados = new dtoDashboard(
                 faturamentoFinal,
                 agendamentoRepository.findRankingFuncionarios(),
                 agendamentoRepository.findPioresAvaliados(),

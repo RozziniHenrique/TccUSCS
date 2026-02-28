@@ -7,14 +7,18 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
-import uscs.STEFER.model.Agendamento.Agendamento;
-import uscs.STEFER.model.Cliente.Cliente;
-import uscs.STEFER.model.Cliente.ClienteCadastro;
-import uscs.STEFER.model.Endereco.dadoEndereco;
-import uscs.STEFER.model.Especialidade.Especialidade;
-import uscs.STEFER.model.Especialidade.EspecialidadeCadastro;
-import uscs.STEFER.model.Usuario.UsuarioRole;
+import uscs.STEFER.domain.agendamento.Agendamento;
+import uscs.STEFER.domain.cliente.Cliente;
+import uscs.STEFER.domain.cliente.dto.dtoClienteCadastrar;
+import uscs.STEFER.domain.endereco.dtoEndereco;
+import uscs.STEFER.domain.especialidade.Especialidade;
+import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeCadastrar;
+import uscs.STEFER.domain.funcionario.Funcionario;
+import uscs.STEFER.domain.funcionario.FuncionarioRepository;
+import uscs.STEFER.domain.funcionario.dto.dtoFuncionarioCadastrar;
+import uscs.STEFER.domain.usuario.UsuarioRole;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
@@ -101,7 +105,7 @@ class FuncionarioRepositoryTest {
     }
 
     private Especialidade cadastrarEspecialidade(String nome, String descricao) {
-        var dados = new EspecialidadeCadastro(nome, descricao);
+        var dados = new dtoEspecialidadeCadastrar("Corte", new BigDecimal("35.00"), "Corte degradê");
         var especialidade = new Especialidade(dados);
         em.persist(especialidade);
         return especialidade;
@@ -110,7 +114,7 @@ class FuncionarioRepositoryTest {
     private Cliente cadastrarCliente(String nome, String email, String senha, String telefone, String cpf) {
         var endereco = dadosEndereco();
 
-        var dadosCliente = new ClienteCadastro(
+        var dadosCliente = new dtoClienteCadastrar(
                 nome,
                 email,
                 senha,
@@ -126,7 +130,7 @@ class FuncionarioRepositoryTest {
     }
 
     private Funcionario cadastrarFuncionario(String nome, String email, String cpf, Especialidade especialidade) {
-        var dados = new FuncionarioCadastro(
+        var dados = new dtoFuncionarioCadastrar(
                 nome,
                 email,
                 "11999999999",
@@ -141,8 +145,8 @@ class FuncionarioRepositoryTest {
         return funcionario;
     }
 
-    private dadoEndereco dadosEndereco() {
-        return new dadoEndereco(
+    private dtoEndereco dadosEndereco() {
+        return new dtoEndereco(
                 "Rua Teste",
                 "Bairro",
                 "00000000",

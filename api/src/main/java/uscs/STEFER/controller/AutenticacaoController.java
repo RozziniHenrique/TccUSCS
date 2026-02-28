@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uscs.STEFER.infra.Security.DadosTokenJWT;
-import uscs.STEFER.infra.Security.TokenService;
-import uscs.STEFER.model.Usuario.DadosAutenticacao;
-import uscs.STEFER.model.Usuario.Usuario;
+import uscs.STEFER.domain.usuario.DadosAutenticacao;
+import uscs.STEFER.domain.usuario.Usuario;
+import uscs.STEFER.infra.security.TokenService;
+import uscs.STEFER.infra.security.dtoTokenJWT;
 
 @RestController
 @RequestMapping("/login")
@@ -30,6 +30,6 @@ public class AutenticacaoController {
         var authentication = manager.authenticate(authenticationToken);
 
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        return ResponseEntity.ok(new dtoTokenJWT(tokenJWT));
     }
 }

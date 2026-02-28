@@ -15,9 +15,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import uscs.STEFER.model.Agendamento.AgendamentoService;
-import uscs.STEFER.model.Agendamento.DadosAgendamento;
-import uscs.STEFER.model.Agendamento.DadosCancelamentoAgendamento;
+import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCancelar;
+import uscs.STEFER.service.AgendamentoService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -45,7 +45,7 @@ class AgendamentoControllerTest {
     ObjectMapper objectMapper;
 
     @MockitoBean
-    private JacksonTester<DadosAgendamento> dadosAgendamentoJson;
+    private JacksonTester<dtoAgendamentoCadastrar> dadosAgendamentoJson;
 
     @Test
     @DisplayName("Cenário 1: Informações inválidas -> Deve retornar http 400")
@@ -68,7 +68,7 @@ class AgendamentoControllerTest {
         var proximaSegunda10am = LocalDateTime.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(10).withMinute(0).withSecond(0).withNano(0);
-        var dadosAgendamento = new DadosAgendamento(3L, 3L, 3L, proximaSegunda10am);
+        var dadosAgendamento = new dtoAgendamentoCadastrar(3L, 3L, 3L, proximaSegunda10am);
         String json = objectMapper.writeValueAsString(dadosAgendamento);
         var response = mvc.perform(
                         post("/agendamentos")
@@ -83,7 +83,7 @@ class AgendamentoControllerTest {
     @DisplayName("Cenário 3: Cancelar agendamento com informações válidas -> Deve retornar http 204")
     @WithMockUser
     void cancelar_cenario01() throws Exception {
-        var dadosCancelamento = new DadosCancelamentoAgendamento(1L, "O cliente desistiu");
+        var dadosCancelamento = new dtoAgendamentoCancelar(1L, "O cliente desistiu");
         String json = objectMapper.writeValueAsString(dadosCancelamento);
         var response = mvc.perform(
                         delete("/agendamentos")

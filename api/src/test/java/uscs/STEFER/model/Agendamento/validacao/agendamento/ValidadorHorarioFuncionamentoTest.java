@@ -2,15 +2,17 @@ package uscs.STEFER.model.Agendamento.validacao.agendamento;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import uscs.STEFER.infra.ValidacaoException;
-import uscs.STEFER.model.Agendamento.DadosAgendamento;
+import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import uscs.STEFER.domain.agendamento.validacoes.ValidadorHorarioFuncionamento;
+import uscs.STEFER.infra.exception.ValidacaoException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ValidadorHorarioFuncionamentoTest {
 
@@ -23,7 +25,7 @@ class ValidadorHorarioFuncionamentoTest {
                 .with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
                 .withHour(10).withMinute(0);
 
-        var dados = new DadosAgendamento(1l, 1l, 1l, domingo);
+        var dados = new dtoAgendamentoCadastrar(1l, 1l, 1l, domingo);
 
         var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
         assertThat(exception.getMessage().contains("Fora do horário de funcionamento"));
@@ -36,7 +38,7 @@ class ValidadorHorarioFuncionamentoTest {
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(6).withMinute(0);
 
-        var dados = new DadosAgendamento(1L, 1L, 1L, segundaMuitoCedo);
+        var dados = new dtoAgendamentoCadastrar(1L, 1L, 1L, segundaMuitoCedo);
 
         var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
         assertThat(exception.getMessage()).contains("Fora do horário de funcionamento");
@@ -49,7 +51,7 @@ class ValidadorHorarioFuncionamentoTest {
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(10).withMinute(0);
 
-        var dados = new DadosAgendamento(1L, 1L, 1L, segundaHorarioComercial);
+        var dados = new dtoAgendamentoCadastrar(1L, 1L, 1L, segundaHorarioComercial);
         assertDoesNotThrow(() -> validador.validar(dados));
     }
 }

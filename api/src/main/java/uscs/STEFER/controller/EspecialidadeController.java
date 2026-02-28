@@ -9,7 +9,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import uscs.STEFER.model.Especialidade.*;
+import uscs.STEFER.domain.especialidade.Especialidade;
+import uscs.STEFER.domain.especialidade.EspecialidadeRepository;
+import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeAtualizar;
+import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeCadastrar;
+import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeDetalhar;
+import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeListar;
 
 @RestController
 @RequestMapping("especialidades")
@@ -21,25 +26,25 @@ public class EspecialidadeController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastro(@RequestBody @Valid EspecialidadeCadastro dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastro(@RequestBody @Valid dtoEspecialidadeCadastrar dados, UriComponentsBuilder uriBuilder) {
         var especialidade = new Especialidade(dados);
         repository.save(especialidade);
         var uri = uriBuilder.path("/especialidade/{id}").buildAndExpand(especialidade.getId()).toUri();
-        return ResponseEntity.created(uri).body(new EspecialidadeDetalhamento(especialidade));
+        return ResponseEntity.created(uri).body(new dtoEspecialidadeDetalhar(especialidade));
     }
 
     @GetMapping
-    public ResponseEntity<Page<EspecialidadeLista>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        var page = repository.findAllByAtivoTrue(paginacao).map(EspecialidadeLista::new);
+    public ResponseEntity<Page<dtoEspecialidadeListar>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+        var page = repository.findAllByAtivoTrue(paginacao).map(dtoEspecialidadeListar::new);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid EspecialidadeAtualizacao dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid dtoEspecialidadeAtualizar dados) {
         var especialidade = repository.getReferenceById(dados.id());
         especialidade.atualizar(dados);
-        return ResponseEntity.ok(new EspecialidadeDetalhamento(especialidade));
+        return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +68,7 @@ public class EspecialidadeController {
     @GetMapping("/{id}")
     public ResponseEntity EspecialidadeDetalhamento(@PathVariable Long id) {
         var especialidade = repository.getReferenceById(id);
-        return ResponseEntity.ok(new EspecialidadeDetalhamento(especialidade));
+        return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
     }
 }
 

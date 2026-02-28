@@ -8,7 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uscs.STEFER.model.Cliente.*;
+import uscs.STEFER.domain.cliente.ClienteRepository;
+import uscs.STEFER.domain.cliente.dto.dtoClienteAtualizar;
+import uscs.STEFER.domain.cliente.dto.dtoClienteCadastrar;
+import uscs.STEFER.domain.cliente.dto.dtoClienteDetalhar;
+import uscs.STEFER.domain.cliente.dto.dtoClienteListar;
+import uscs.STEFER.service.ClienteService;
 
 @RestController
 @RequestMapping("clientes")
@@ -23,21 +28,21 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid ClienteCadastro dados) {
+    public ResponseEntity cadastrar(@RequestBody @Valid dtoClienteCadastrar dados) {
         var cliente = service.cadastrar(dados);
-        return ResponseEntity.ok(new ClienteDetalhamento(cliente));
+        return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizarCliente(@RequestBody @Valid ClienteAtualizacao dados) {
+    public ResponseEntity atualizarCliente(@RequestBody @Valid dtoClienteAtualizar dados) {
         var cliente = service.atualizar(dados);
-        return ResponseEntity.ok(new ClienteDetalhamento(cliente));
+        return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ClienteLista>> listarCliente(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        var page = repository.findAllByAtivoTrue(paginacao).map(ClienteLista::new);
+    public ResponseEntity<Page<dtoClienteListar>> listarCliente(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+        var page = repository.findAllByAtivoTrue(paginacao).map(dtoClienteListar::new);
         return ResponseEntity.ok(page);
     }
 
@@ -62,7 +67,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity ClienteDetalhamento(@PathVariable Long id) {
         var cliente = repository.getReferenceById(id);
-        return ResponseEntity.ok(new ClienteDetalhamento(cliente));
+        return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
     }
 }
 

@@ -1,7 +1,7 @@
 package uscs.STEFER.infra;
 
 import org.springframework.stereotype.Service;
-import uscs.STEFER.model.Agendamento.Agendamento;
+import uscs.STEFER.domain.agendamento.Agendamento;
 
 @Service
 public class EmailService {

@@ -10,8 +10,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uscs.STEFER.model.Especialidade.EspecialidadeRepository;
-import uscs.STEFER.model.Funcionario.*;
+import uscs.STEFER.domain.especialidade.EspecialidadeRepository;
+import uscs.STEFER.domain.funcionario.Funcionario;
+import uscs.STEFER.domain.funcionario.FuncionarioRepository;
+import uscs.STEFER.domain.funcionario.dto.dtoFuncionarioAtualizar;
+import uscs.STEFER.domain.funcionario.dto.dtoFuncionarioCadastrar;
+import uscs.STEFER.domain.funcionario.dto.dtoFuncionarioDetalhar;
+import uscs.STEFER.domain.funcionario.dto.dtoFuncionarioListar;
+import uscs.STEFER.service.FuncionarioService;
 
 @RestController
 @RequestMapping("funcionarios")
@@ -30,20 +36,20 @@ public class FuncionarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid FuncionarioCadastro dados) {
+    public ResponseEntity cadastrar(@RequestBody @Valid dtoFuncionarioCadastrar dados) {
         var funcionario = service.cadastrar(dados);
-        return ResponseEntity.ok(new FuncionarioDetalhamento(funcionario));
+        return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizarFuncionario(@RequestBody @Valid FuncionarioAtualizacao dados) {
+    public ResponseEntity atualizarFuncionario(@RequestBody @Valid dtoFuncionarioAtualizar dados) {
         var funcionario = service.atualizar(dados);
-        return ResponseEntity.ok(new FuncionarioDetalhamento(funcionario));
+        return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
     }
 
     @GetMapping
-    public ResponseEntity<Page<FuncionarioLista>> listarFuncionario(
+    public ResponseEntity<Page<dtoFuncionarioListar>> listarFuncionario(
             @RequestParam(required = false) Long idEspecialidade,
             @PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
 
@@ -55,7 +61,7 @@ public class FuncionarioController {
             page = repository.findAllByAtivoTrue(paginacao);
         }
 
-        return ResponseEntity.ok(page.map(FuncionarioLista::new));
+        return ResponseEntity.ok(page.map(dtoFuncionarioListar::new));
     }
 
     @DeleteMapping("/{id}")
@@ -79,7 +85,7 @@ public class FuncionarioController {
     @GetMapping("/{id}")
     public ResponseEntity FuncionarioDetalhamento(@PathVariable Long id) {
         var funcionario = repository.getReferenceById(id);
-        return ResponseEntity.ok(new FuncionarioDetalhamento(funcionario));
+        return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
     }
 
     @DeleteMapping("/{idFuncionario}/{idEspecialidade}")
