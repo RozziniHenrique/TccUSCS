@@ -1,45 +1,47 @@
 import React, { useState } from "react";
 import api from "../services/api";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Cadastro() {
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
 
-  async function handleLogin(e) {
+  async function handleRegister(e) {
     e.preventDefault();
     try {
-      const response = await api.post("/login", { login: email, senha: senha });
-      localStorage.setItem("user", JSON.stringify(response.data));
-      navigate("/dashboard");
+      await api.post("/usuarios", { nome, email, senha, perfil: "CLIENTE" });
+      alert("Cadastro realizado! Agora faça login.");
+      navigate("/");
     } catch (err) {
-      alert("Acesso negado. Verifique suas credenciais.");
+      alert("Erro ao cadastrar. Tente outro e-mail.");
     }
   }
 
   return (
     <div style={styles.container}>
-      <form onSubmit={handleLogin} style={styles.card}>
-        <h1 style={styles.logo}>STEFER 💈</h1>
+      <form onSubmit={handleRegister} style={styles.card}>
+        <h1 style={styles.logo}>CRIAR CONTA</h1>
         <input
-          type="email"
+          placeholder="Nome Completo"
+          onChange={(e) => setNome(e.target.value)}
+          style={styles.input}
+        />
+        <input
           placeholder="E-mail"
           onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
         />
         <input
           type="password"
-          placeholder="Senha"
+          placeholder="Sua Senha"
           onChange={(e) => setSenha(e.target.value)}
           style={styles.input}
         />
         <button type="submit" style={styles.button}>
-          ENTRAR
+          CADASTRAR
         </button>
-        <Link to="/cadastro" style={styles.link}>
-          Ainda não tem conta? Cadastre-se
-        </Link>
       </form>
     </div>
   );
