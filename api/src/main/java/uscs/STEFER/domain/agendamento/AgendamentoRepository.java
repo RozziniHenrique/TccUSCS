@@ -24,16 +24,21 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     Optional<Agendamento> findByIdAndMotivoCancelamentoIsNull(Long id);
 
     @Query("""
-            SELECT a FROM Agendamento a
-            WHERE (:data IS NULL OR CAST(a.data AS date) = :data)
-            AND (:idFunc IS NULL OR a.funcionario.id = :idFunc)
-            AND (:idCli IS NULL OR a.cliente.id = :idCli)
-            AND (:idEspec IS NULL OR a.especialidade.id = :idEspec)
-            AND a.motivoCancelamento IS NULL
-            """)
-    Page<Agendamento> findAllComFiltros(@Param("data") LocalDate data, @Param("idFunc") Long idFunc, @Param("idCli") Long idCli, @Param("idEspec") Long idEspec, Pageable paginacao);
-
-    @Query("""
+        SELECT a FROM Agendamento a
+        WHERE (:data IS NULL OR DATE(a.data) = :data)
+        AND (:idFunc IS NULL OR a.funcionario.id = :idFunc)
+        AND (:idCli IS NULL OR a.cliente.id = :idCli)
+        AND (:idEspec IS NULL OR a.especialidade.id = :idEspec)
+        """)
+Page<Agendamento> findAllComFiltros(
+    @Param("data") LocalDate data, 
+    @Param("idFunc") Long idFunc, 
+    @Param("idCli") Long idCli, 
+    @Param("idEspec") Long idEspec, 
+    Pageable paginacao
+);
+   
+@Query("""
                 SELECT new uscs.STEFER.domain.agendamento.dto.dtoAgendamentoRelatorioEspecialidade(e.nome, COUNT(a))
                 FROM Agendamento a
                 JOIN a.especialidade e

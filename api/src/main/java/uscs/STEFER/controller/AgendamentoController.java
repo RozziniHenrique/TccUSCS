@@ -85,22 +85,22 @@ public class AgendamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<dtoAgendamentoDetalhar>> listar(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
-            @RequestParam(required = false) Long idFuncionario,
-            @RequestParam(required = false) Long idCliente,
-            @RequestParam(required = false) Long idEspecialidade,
-            @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao,
-            @AuthenticationPrincipal Usuario logado) {
+public ResponseEntity<Page<dtoAgendamentoListar>> listar(
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
+        @RequestParam(required = false) Long idFuncionario,
+        @RequestParam(required = false) Long idCliente,
+        @RequestParam(required = false) Long idEspecialidade,
+        @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao,
+        @AuthenticationPrincipal Usuario logado) {
 
-        if (logado.getRole() == UsuarioRole.GESTOR) {
-            var page = repository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
-                    .map(dtoAgendamentoDetalhar::new);
-            return ResponseEntity.ok(page);
-        }
+    if (logado.getRole() == UsuarioRole.GESTOR) {
+        var page = repository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
+                .map(dtoAgendamentoListar::new);
+        return ResponseEntity.ok(page);
+    }
         
         var pagePersonalizada = repository.buscaPersonalizada(logado.getId(), paginacao)
-                .map(dtoAgendamentoDetalhar::new);
+                .map(dtoAgendamentoListar::new);
 
         return ResponseEntity.ok(pagePersonalizada);
     }
