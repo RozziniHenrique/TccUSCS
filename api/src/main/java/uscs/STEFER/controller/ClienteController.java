@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uscs.STEFER.domain.cliente.ClienteRepository;
 import uscs.STEFER.domain.cliente.dto.dtoClienteAtualizar;
@@ -17,6 +18,7 @@ import uscs.STEFER.service.ClienteService;
 
 @RestController
 @RequestMapping("clientes")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
 
 public class ClienteController {
 
@@ -28,6 +30,7 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
+    @PreAuthorize("permitAll()")
     public ResponseEntity cadastrar(@RequestBody @Valid dtoClienteCadastrar dados) {
         var cliente = service.cadastrar(dados);
         return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
@@ -35,6 +38,7 @@ public class ClienteController {
 
     @PutMapping
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'CLIENTE')")
     public ResponseEntity atualizarCliente(@RequestBody @Valid dtoClienteAtualizar dados) {
         var cliente = service.atualizar(dados);
         return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
@@ -68,10 +72,9 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'CLIENTE')")
     public ResponseEntity ClienteDetalhamento(@PathVariable Long id) {
         var cliente = repository.getReferenceById(id);
         return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
     }
 }
-
-

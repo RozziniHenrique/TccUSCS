@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import uscs.STEFER.domain.especialidade.Especialidade;
@@ -18,6 +19,7 @@ import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeListar;
 
 @RestController
 @RequestMapping("especialidades")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
 
 public class EspecialidadeController {
 
@@ -34,6 +36,7 @@ public class EspecialidadeController {
     }
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Page<dtoEspecialidadeListar>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(dtoEspecialidadeListar::new);
         return ResponseEntity.ok(page);
@@ -66,10 +69,9 @@ public class EspecialidadeController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public ResponseEntity EspecialidadeDetalhamento(@PathVariable Long id) {
         var especialidade = repository.getReferenceById(id);
         return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
     }
 }
-
-

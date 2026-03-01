@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import uscs.STEFER.domain.agendamento.AgendamentoRepository;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO', 'CLIENTE')")
 
 public class AgendamentoController {
 
@@ -46,6 +48,7 @@ public class AgendamentoController {
 
 
     @GetMapping("/relatorio/estatisticas")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
     public ResponseEntity<List<dtoAgendamentoRelatorioEspecialidade>> relatorioEspecialidades() {
         var dados = repository.contagemPorEspecialidade();
         return ResponseEntity.ok(dados);
@@ -53,6 +56,7 @@ public class AgendamentoController {
 
     @PostMapping("/{id}/avaliar")
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENTE')")
     public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid dtoAvaliacaoCadastrar dados) {
 
         var agendamento = repository.getReferenceById(id);
@@ -69,6 +73,7 @@ public class AgendamentoController {
 
     @PutMapping("/finalizar")
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO')")
     public ResponseEntity finalizar(@RequestBody @Valid dtoAgendamentoFinalizar dados) {
         var agendamento = repository.getReferenceById(dados.id());
         agendamento.finalizar(dados.nota());

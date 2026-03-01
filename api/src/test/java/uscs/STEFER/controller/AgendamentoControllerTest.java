@@ -36,14 +36,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class AgendamentoControllerTest {
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
     AgendamentoService agendamentoService;
-
     @Autowired
     ObjectMapper objectMapper;
-
+    @Autowired
+    private MockMvc mvc;
     @MockitoBean
     private JacksonTester<dtoAgendamentoCadastrar> dadosAgendamentoJson;
 
@@ -81,7 +78,7 @@ class AgendamentoControllerTest {
 
     @Test
     @DisplayName("Cenário 3: Cancelar agendamento com informações válidas -> Deve retornar http 204")
-    @WithMockUser
+    @WithMockUser(authorities = "ADMIN")
     void cancelar_cenario01() throws Exception {
         var dadosCancelamento = new dtoAgendamentoCancelar(1L, "O cliente desistiu");
         String json = objectMapper.writeValueAsString(dadosCancelamento);

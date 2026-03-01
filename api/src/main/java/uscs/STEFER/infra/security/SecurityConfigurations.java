@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfigurations {
 
     @Autowired
@@ -34,25 +36,9 @@ public class SecurityConfigurations {
                 }))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    // 1. PÚBLICO
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-
-                    // 2. EXCLUSIVO ADMIN
-                    req.requestMatchers("/admin/**").hasAuthority("ADMIN");
-
-                    // 3. ADMIN E GESTOR
-                    req.requestMatchers("/relatorios/**", "/usuarios/**").hasAnyAuthority("ADMIN", "GESTOR");
-                    req.requestMatchers(HttpMethod.POST, "/funcionarios/**").hasAnyAuthority("ADMIN", "GESTOR");
-
-                    // 4. OPERACIONAL
-                    req.requestMatchers("/agendamentos/geral").hasAnyAuthority("ADMIN", "GESTOR", "FUNCIONARIO");
-                    req.requestMatchers(HttpMethod.POST, "/servicos/finalizar").hasAnyAuthority("ADMIN", "GESTOR", "FUNCIONARIO");
-
-                    // 5. CLIENTE
-                    req.requestMatchers(HttpMethod.GET, "/servicos").authenticated();
-                    req.requestMatchers("/meus-agendamentos/**").hasAuthority("CLIENTE");
-
-                    // 6. PADRÃO
+                    req.requestMatchers("/css/**", "/js/**", "/assets/**", "/index.html").permitAll();
+                    
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

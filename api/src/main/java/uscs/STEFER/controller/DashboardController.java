@@ -2,6 +2,7 @@ package uscs.STEFER.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/dashboard")
 @CrossOrigin(origins = "*")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
 public class DashboardController {
 
     @Autowired

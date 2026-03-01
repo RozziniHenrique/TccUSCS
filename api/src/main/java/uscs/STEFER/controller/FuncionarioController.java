@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uscs.STEFER.domain.especialidade.EspecialidadeRepository;
 import uscs.STEFER.domain.funcionario.Funcionario;
@@ -20,6 +21,7 @@ import uscs.STEFER.service.FuncionarioService;
 
 @RestController
 @RequestMapping("funcionarios")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
 
 public class FuncionarioController {
 
@@ -41,12 +43,14 @@ public class FuncionarioController {
 
     @PutMapping
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO')")
     public ResponseEntity atualizarFuncionario(@RequestBody @Valid dtoFuncionarioAtualizar dados) {
         var funcionario = service.atualizar(dados);
         return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
     }
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Page<dtoFuncionarioListar>> listarFuncionario(
             @RequestParam(required = false) Long idEspecialidade,
             @PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
@@ -84,6 +88,7 @@ public class FuncionarioController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public ResponseEntity FuncionarioDetalhamento(@PathVariable Long id) {
         var funcionario = repository.getReferenceById(id);
         return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
