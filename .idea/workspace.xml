@@ -5,18 +5,56 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="677fa170-772f-4485-a25f-057920107b4a" name="Changes" comment="refactor: reorganização para padrão DDD e implementação de Dashboard&#10;- Refatorada estrutura de pacotes de model para domain&#10;- Atualizado AgendamentoRepository com faturamento e ranking&#10;- Corrigidos testes e data.sql (campo preco)">
-      <change afterPath="$PROJECT_DIR$/api/src/main/resources/db/migration/V10__alter-table-usuario-add-column-ativo.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/components/ListaAgendamentos.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/src/pages/Agendamentos.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/src/pages/Login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/src/services/api.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/pages/Login.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/services/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/ClienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/ClienteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/FuncionarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/FuncionarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoDetalhar.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/dto/dtoAgendamentoDetalhar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/usuario/UsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/DatabaseSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/DatabaseSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/AutenticacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/infra/security/AutenticacaoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/ClienteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/FuncionarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/service/FuncionarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/AgendamentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/controller/AgendamentoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/AgendamentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/uscs/STEFER/domain/agendamento/AgendamentoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/(tabs)/_layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/(tabs)/explore.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/(tabs)/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/_layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/detalhes/[id].tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/android-icon-background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/android-icon-foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/android-icon-monochrome.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/partial-react-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/react-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/react-logo@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/react-logo@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/assets/images/splash-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/external-link.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/haptic-tab.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/hello-wave.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/parallax-scroll-view.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/themed-text.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/themed-view.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/ui/collapsible.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/ui/icon-symbol.ios.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/components/ui/icon-symbol.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/constants/theme.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/eslint.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/hooks/use-color-scheme.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/hooks/use-color-scheme.web.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/hooks/use-theme-color.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/scripts/reset-project.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/services/api.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/services/funcionarioService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/components/ListaAgendamentos.jsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +78,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;RozziniHenrique&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/RozziniHenrique/TccUSCS&quot;,
+    &quot;accountId&quot;: &quot;75f97f05-d08d-49b0-bc98-29506a22cf7a&quot;
+  }
+}</component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -124,7 +174,7 @@
       <recent name="uscs.STEFER.model.Funcionario" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.java in api (1)">
+  <component name="RunManager" selected="Application.SteferApplication">
     <configuration name="SteferApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="uscs.STEFER.SteferApplication" />
       <module name="api" />
@@ -196,8 +246,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.java in api (1)" />
         <item itemvalue="Application.SteferApplication" />
+        <item itemvalue="JUnit.java in api (1)" />
         <item itemvalue="JUnit.STEFER in api" />
         <item itemvalue="JUnit.AgendamentoControllerTest.agendar_cenario01" />
         <item itemvalue="JUnit.AgendamentoControllerTest" />

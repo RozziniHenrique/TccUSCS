@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import uscs.STEFER.domain.agendamento.AgendamentoRepository;
@@ -17,6 +18,8 @@ import uscs.STEFER.domain.avaliacao.Avaliacao;
 import uscs.STEFER.domain.avaliacao.AvaliacaoRepository;
 import uscs.STEFER.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
 import uscs.STEFER.domain.avaliacao.dto.dtoAvaliacaoDetalhar;
+import uscs.STEFER.domain.usuario.Usuario;
+import uscs.STEFER.domain.usuario.UsuarioRole;
 import uscs.STEFER.infra.exception.ValidacaoException;
 import uscs.STEFER.service.AgendamentoService;
 
@@ -87,12 +90,19 @@ public class AgendamentoController {
             @RequestParam(required = false) Long idFuncionario,
             @RequestParam(required = false) Long idCliente,
             @RequestParam(required = false) Long idEspecialidade,
-            @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao) {
+            @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao,
+            @AuthenticationPrincipal Usuario logado) {
 
-        var page = repository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
+        if (logado.getRole() == UsuarioRole.GESTOR) {
+            var page = repository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
+                    .map(dtoAgendamentoDetalhar::new);
+            return ResponseEntity.ok(page);
+        }
+        
+        var pagePersonalizada = repository.buscaPersonalizada(logado.getId(), paginacao)
                 .map(dtoAgendamentoDetalhar::new);
 
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(pagePersonalizada);
     }
 
     @GetMapping("/{id}")

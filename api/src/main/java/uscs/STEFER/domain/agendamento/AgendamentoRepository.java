@@ -73,4 +73,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
                 ORDER BY AVG(a.nota) ASC
             """)
     List<AlertaQualidade> findPioresAvaliados();
+
+    @Query("SELECT a FROM Agendamento a WHERE a.funcionario.id = :id OR a.cliente.id = :id")
+    Page<Agendamento> buscaPersonalizada(Long id, Pageable paginacao);
 }
