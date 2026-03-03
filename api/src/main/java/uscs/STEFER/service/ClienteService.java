@@ -2,18 +2,20 @@ package uscs.STEFER.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uscs.STEFER.domain.cliente.Cliente;
 import uscs.STEFER.domain.cliente.ClienteRepository;
-import uscs.STEFER.domain.cliente.dto.dtoClienteAtualizar;
-import uscs.STEFER.domain.cliente.dto.dtoClienteCadastrar;
+import uscs.STEFER.domain.cliente.dto.*;
 import uscs.STEFER.domain.usuario.Usuario;
 import uscs.STEFER.domain.usuario.UsuarioRepository;
 import uscs.STEFER.domain.usuario.UsuarioRole;
 
 @Service
 public class ClienteService {
+
     @Autowired
     private ClienteRepository clienteRepository;
 
@@ -25,14 +27,12 @@ public class ClienteService {
 
     @Transactional
     public Cliente cadastrar(dtoClienteCadastrar dados) {
-
         var senhaSegura = passwordEncoder.encode(dados.senha());
         var usuario = new Usuario(null, dados.email(), senhaSegura, true, UsuarioRole.CLIENTE);
         usuarioRepository.save(usuario);
 
         var cliente = new Cliente(dados);
         cliente.setUsuario(usuario);
-
         return clienteRepository.save(cliente);
     }
 
@@ -41,5 +41,33 @@ public class ClienteService {
         var cliente = clienteRepository.getReferenceById(dados.id());
         cliente.atualizarCliente(dados);
         return cliente;
+    }
+
+    public Page<dtoClienteListar> listar(Pageable paginacao) {
+        return clienteRepository.findAllByAtivoTrue(paginacao).map(dtoClienteListar::new);
+    }
+
+    public Cliente detalhar(Long id) {
+        return clienteRepository.getReferenceById(id);
+    }
+
+    @Transactional
+    public void excluir(Long id) {
+        var cliente = clienteRepository.getReferenceById(id);
+        cliente.excluirCliente();
+
+        if (cliente.getUsuario() != null) {
+            cliente.getUsuario().setAtivo(false);
+        }
+    }
+
+    @Transactional
+    public void reativar(Long id) {
+        var cliente = clienteRepository.getReferenceById(id);
+        cliente.reativarCliente();
+
+        if (cliente.getUsuario() != null) {
+            cliente.getUsuario().setAtivo(true);
+        }
     }
 }

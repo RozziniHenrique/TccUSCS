@@ -3,21 +3,28 @@ package uscs.STEFER.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uscs.STEFER.domain.agendamento.Agendamento;
 import uscs.STEFER.domain.agendamento.AgendamentoRepository;
-import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCadastrar;
-import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoCancelar;
-import uscs.STEFER.domain.agendamento.dto.dtoAgendamentoDetalhar;
+import uscs.STEFER.domain.agendamento.dto.*;
 import uscs.STEFER.domain.agendamento.validacoes.ValidadorAgendamento;
 import uscs.STEFER.domain.agendamento.validacoes.ValidadorCancelamentoAgendamento;
+import uscs.STEFER.domain.avaliacao.Avaliacao;
+import uscs.STEFER.domain.avaliacao.AvaliacaoRepository;
+import uscs.STEFER.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
+import uscs.STEFER.domain.avaliacao.dto.dtoAvaliacaoDetalhar;
 import uscs.STEFER.domain.cliente.ClienteRepository;
 import uscs.STEFER.domain.especialidade.EspecialidadeRepository;
 import uscs.STEFER.domain.funcionario.Funcionario;
 import uscs.STEFER.domain.funcionario.FuncionarioRepository;
+import uscs.STEFER.domain.usuario.Usuario;
+import uscs.STEFER.domain.usuario.UsuarioRole;
 import uscs.STEFER.infra.EmailService;
 import uscs.STEFER.infra.exception.ValidacaoException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,6 +39,8 @@ public class AgendamentoService {
     @Autowired
     private EspecialidadeRepository especialidadeRepository;
     @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
+    @Autowired
     private List<ValidadorAgendamento> validadoresAgendamento;
     @Autowired
     private List<ValidadorCancelamentoAgendamento> validadoresCancelamento;
@@ -43,7 +52,6 @@ public class AgendamentoService {
         if (!clienteRepository.existsById(dados.idCliente())) {
             throw new EntityNotFoundException("Id do cliente informado não existe!");
         }
-
         if (dados.idFuncionario() != null && !funcionarioRepository.existsById(dados.idFuncionario())) {
             throw new EntityNotFoundException("Id do funcionário informado não existe!");
         }
@@ -56,10 +64,41 @@ public class AgendamentoService {
 
         var agendamento = new Agendamento(funcionario, cliente, especialidade, dados.data());
         agendamentoRepository.save(agendamento);
-
         emailService.enviarConfirmacao(agendamento);
 
         return new dtoAgendamentoDetalhar(agendamento);
+    }
+
+    public Page<dtoAgendamentoListar> listar(LocalDate data, Long idFuncionario, Long idCliente, Long idEspecialidade, Pageable paginacao, Usuario logado) {
+        if (logado.getRole() == UsuarioRole.GESTOR || logado.getRole() == UsuarioRole.ADMIN) {
+            return agendamentoRepository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
+                    .map(dtoAgendamentoListar::new);
+        }
+        return agendamentoRepository.buscaPersonalizada(logado.getId(), paginacao)
+                .map(dtoAgendamentoListar::new);
+    }
+
+    public dtoAgendamentoDetalhar detalhar(Long id) {
+        var agendamento = agendamentoRepository.findByIdAndMotivoCancelamentoIsNull(id)
+                .orElseThrow(() -> new ValidacaoException("Agendamento não encontrado ou já cancelado!"));
+        return new dtoAgendamentoDetalhar(agendamento);
+    }
+
+    @Transactional
+    public void finalizar(dtoAgendamentoFinalizar dados) {
+        var agendamento = agendamentoRepository.getReferenceById(dados.id());
+        agendamento.finalizar(dados.nota());
+    }
+
+    @Transactional
+    public dtoAvaliacaoDetalhar avaliar(Long id, dtoAvaliacaoCadastrar dados) {
+        var agendamento = agendamentoRepository.getReferenceById(id);
+        if (avaliacaoRepository.existsByAgendamentoId(id)) {
+            throw new ValidacaoException("Este agendamento já foi avaliado!");
+        }
+        var avaliacao = new Avaliacao(dados, agendamento);
+        avaliacaoRepository.save(avaliacao);
+        return new dtoAvaliacaoDetalhar(avaliacao);
     }
 
     @Transactional
@@ -67,9 +106,7 @@ public class AgendamentoService {
         if (!agendamentoRepository.existsById(dados.idAgendamento())) {
             throw new EntityNotFoundException("Id do agendamento informado não existe!");
         }
-
         validadoresCancelamento.forEach(v -> v.validar(dados));
-
         var agendamento = agendamentoRepository.getReferenceById(dados.idAgendamento());
         agendamento.setMotivoCancelamento(dados.motivo());
     }
@@ -78,11 +115,9 @@ public class AgendamentoService {
         if (dados.idFuncionario() != null) {
             return funcionarioRepository.getReferenceById(dados.idFuncionario());
         }
-
         if (dados.idEspecialidade() == null) {
             throw new ValidacaoException("Especialidade é obrigatória quando funcionário não for escolhido!");
         }
-
         return funcionarioRepository.escolherFuncionarioAleatorioLivreNaData(dados.idEspecialidade(), dados.data());
     }
 }
