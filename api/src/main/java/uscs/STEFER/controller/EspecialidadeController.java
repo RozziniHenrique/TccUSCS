@@ -1,6 +1,5 @@
 package uscs.STEFER.controller;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,68 +9,53 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import uscs.STEFER.domain.especialidade.Especialidade;
-import uscs.STEFER.domain.especialidade.EspecialidadeRepository;
-import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeAtualizar;
-import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeCadastrar;
-import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeDetalhar;
-import uscs.STEFER.domain.especialidade.dto.dtoEspecialidadeListar;
+import uscs.STEFER.domain.especialidade.dto.*;
+import uscs.STEFER.service.EspecialidadeService;
 
 @RestController
 @RequestMapping("especialidades")
 @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
-
 public class EspecialidadeController {
 
     @Autowired
-    private EspecialidadeRepository repository;
+    private EspecialidadeService service;
 
     @PostMapping
-    @Transactional
-    public ResponseEntity cadastro(@RequestBody @Valid dtoEspecialidadeCadastrar dados, UriComponentsBuilder uriBuilder) {
-        var especialidade = new Especialidade(dados);
-        repository.save(especialidade);
-        var uri = uriBuilder.path("/especialidade/{id}").buildAndExpand(especialidade.getId()).toUri();
+    public ResponseEntity cadastrar(@RequestBody @Valid dtoEspecialidadeCadastrar dados, UriComponentsBuilder uriBuilder) {
+        var especialidade = service.cadastrar(dados);
+        var uri = uriBuilder.path("/especialidades/{id}").buildAndExpand(especialidade.getId()).toUri();
         return ResponseEntity.created(uri).body(new dtoEspecialidadeDetalhar(especialidade));
     }
 
     @GetMapping
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll()") // Qualquer um pode ver as especialidades oferecidas
     public ResponseEntity<Page<dtoEspecialidadeListar>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        var page = repository.findAllByAtivoTrue(paginacao).map(dtoEspecialidadeListar::new);
+        var page = service.listar(paginacao);
         return ResponseEntity.ok(page);
-    }
-
-    @PutMapping
-    @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid dtoEspecialidadeAtualizar dados) {
-        var especialidade = repository.getReferenceById(dados.id());
-        especialidade.atualizar(dados);
-        return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
-    }
-
-    @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity excluir(@PathVariable Long id) {
-        var especialidade = repository.getReferenceById(id);
-        especialidade.excluir();
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{id}/reativar")
-    @Transactional
-    public ResponseEntity reativar(@PathVariable Long id) {
-        var especialidade = repository.getReferenceById(id);
-        especialidade.reativar();
-
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("permitAll()")
-    public ResponseEntity EspecialidadeDetalhamento(@PathVariable Long id) {
-        var especialidade = repository.getReferenceById(id);
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        var especialidade = service.detalhar(id);
         return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
+    }
+
+    @PutMapping
+    public ResponseEntity atualizar(@RequestBody @Valid dtoEspecialidadeAtualizar dados) {
+        var especialidade = service.atualizar(dados);
+        return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable Long id) {
+        service.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/reativar")
+    public ResponseEntity reativar(@PathVariable Long id) {
+        service.reativar(id);
+        return ResponseEntity.ok().build();
     }
 }
