@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uscs.STEFER.domain.agendamento.AgendamentoRepository;
 import uscs.STEFER.domain.dashboard.dto.dtoDashboard;
@@ -23,7 +24,11 @@ public class DashboardController {
     private DashboardService service;
 
     @GetMapping
-    public ResponseEntity obterDadosDashboard() {
-        return ResponseEntity.ok(service.obterDadosDashboard());
+    public ResponseEntity obterDadosDashboard(
+            @RequestParam(required = false) LocalDate inicio,
+            @RequestParam(required = false) LocalDate fim) {
+        
+        var dados = service.obterDadosDashboard(inicio, fim);
+        return ResponseEntity.ok(dados);
     }
 }

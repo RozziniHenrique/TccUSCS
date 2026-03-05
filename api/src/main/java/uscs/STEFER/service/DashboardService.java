@@ -14,11 +14,11 @@ public class DashboardService {
     @Autowired
     private AgendamentoRepository agendamentoRepository;
 
-    public dtoDashboard obterDadosDashboard() {
-        var hojeInicio = LocalDate.now().atStartOfDay();
-        var hojeFim = LocalDate.now().atTime(23, 59, 59);
+    public dtoDashboard obterDadosDashboard(LocalDate inicio, LocalDate fim) {
+        var dataInicio = (inicio != null) ? inicio.atStartOfDay() : LocalDate.now().atStartOfDay();
+        var dataFim = (fim != null) ? fim.atTime(23, 59, 59) : LocalDate.now().atTime(23, 59, 59);
 
-        var faturamentoBruto = agendamentoRepository.calcularFaturamentoTotal(hojeInicio, hojeFim);
+        var faturamentoBruto = agendamentoRepository.calcularFaturamentoTotal(dataInicio, dataFim);
         var faturamentoFinal = (faturamentoBruto != null) ? faturamentoBruto : BigDecimal.ZERO;
 
         return new dtoDashboard(

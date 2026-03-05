@@ -5,12 +5,17 @@ import { useNavigate, Link } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const response = await api.post("/login", { login: email, senha: senha });
+      const response = await api.post("/login", {
+        login: email,
+        senha: senha,
+      });
+
       localStorage.setItem("user", JSON.stringify(response.data));
       navigate("/dashboard");
     } catch (err) {
@@ -22,21 +27,33 @@ export default function Login() {
     <div style={styles.container}>
       <form onSubmit={handleLogin} style={styles.card}>
         <h1 style={styles.logo}>STEFER 💈</h1>
+
         <input
           type="email"
           placeholder="E-mail"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
           style={styles.input}
         />
+
         <input
           type="password"
           placeholder="Senha"
+          value={senha}
           onChange={(e) => setSenha(e.target.value)}
+          required
           style={styles.input}
         />
-        <button type="submit" style={styles.button}>
-          ENTRAR
+
+        <button
+          type="submit"
+          style={loading ? { ...styles.button, opacity: 0.7 } : styles.button}
+          disabled={loading}
+        >
+          {loading ? "CARREGANDO..." : "ENTRAR"}
         </button>
+
         <Link to="/cadastro" style={styles.link}>
           Ainda não tem conta? Cadastre-se
         </Link>
