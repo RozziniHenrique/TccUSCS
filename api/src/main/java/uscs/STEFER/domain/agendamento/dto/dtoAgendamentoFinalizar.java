@@ -6,6 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record dtoAgendamentoFinalizar(
         @NotNull Long id,
-        @NotNull @Min(1) @Max(5) Integer nota
+        @Min(1) @Max(5) Integer nota
 ) {
 }

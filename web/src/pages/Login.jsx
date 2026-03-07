@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import api from "../services/api";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const response = await api.post("/login", {
-        login: email,
-        senha: senha,
-      });
-
+      const response = await api.post("/login", { login: email, senha: senha });
       localStorage.setItem("user", JSON.stringify(response.data));
       navigate("/dashboard");
     } catch (err) {
@@ -24,84 +19,83 @@ export default function Login() {
   }
 
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleLogin} style={styles.card}>
-        <h1 style={styles.logo}>STEFER 💈</h1>
+    <div style={loginStyles.container}>
+      <form onSubmit={handleLogin} style={loginStyles.card}>
+        <div style={loginStyles.logoArea}>
+          <h1 style={loginStyles.logoText}>STEFER 💜</h1>
+          <p style={loginStyles.subtitle}>Acesse a gestão Embelleze</p>
+        </div>
 
-        <input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
-
-        <input
-          type="password"
-          placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          required
-          style={styles.input}
-        />
-
-        <button
-          type="submit"
-          style={loading ? { ...styles.button, opacity: 0.7 } : styles.button}
-          disabled={loading}
-        >
-          {loading ? "CARREGANDO..." : "ENTRAR"}
-        </button>
-
-        <Link to="/cadastro" style={styles.link}>
-          Ainda não tem conta? Cadastre-se
-        </Link>
+        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <input
+            type="email"
+            placeholder="E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={loginStyles.input}
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required
+            style={loginStyles.input}
+          />
+          <button type="submit" style={loginStyles.button}>
+            ENTRAR NO SISTEMA
+          </button>
+        </div>
       </form>
     </div>
   );
 }
 
-const styles = {
+const loginStyles = {
   container: {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#F4F7FE",
   },
   card: {
-    backgroundColor: "#1e1e1e",
-    padding: "40px",
-    borderRadius: "12px",
+    backgroundColor: "#FFF",
+    padding: "50px",
+    borderRadius: "20px",
     width: "100%",
     maxWidth: "400px",
+    boxShadow: "0 20px 40px rgba(74, 20, 140, 0.1)",
     textAlign: "center",
   },
-  logo: { color: "#d4af37", marginBottom: "30px", fontSize: "2.5rem" },
+  logoArea: { marginBottom: "35px" },
+  logoText: {
+    color: "#4A148C",
+    fontSize: "2.2rem",
+    fontWeight: "900",
+    letterSpacing: "2px",
+  },
+  subtitle: { color: "#707EAE", fontSize: "0.9rem", marginTop: "5px" },
   input: {
     width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
-    borderRadius: "6px",
-    border: "1px solid #333",
-    backgroundColor: "#121212",
-    color: "#fff",
+    padding: "15px",
+    borderRadius: "12px",
+    border: "1px solid #E0E5F2",
+    outline: "none",
     boxSizing: "border-box",
+    backgroundColor: "#F4F7FE",
   },
   button: {
     width: "100%",
-    padding: "12px",
-    backgroundColor: "#d4af37",
+    padding: "15px",
+    backgroundColor: "#4A148C",
+    color: "#FFF",
     border: "none",
-    borderRadius: "6px",
-    fontWeight: "bold",
+    borderRadius: "12px",
     cursor: "pointer",
-  },
-  link: {
-    color: "#888",
-    display: "block",
-    marginTop: "15px",
-    textDecoration: "none",
-    fontSize: "0.9rem",
+    fontWeight: "bold",
+    fontSize: "1rem",
+    transition: "0.3s",
   },
 };

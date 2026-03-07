@@ -17,7 +17,7 @@ public record dtoAgendamentoCadastrar(
 
         @NotNull
         @Future
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime data
 ) {
 }
