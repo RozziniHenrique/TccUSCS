@@ -3,8 +3,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Servicos from "./pages/Servicos/Servicos";
 import Funcionarios from "./pages/Funcionarios/Funcionarios";
-import Agendamentos from "./pages/Agendamento";
-import Clientes from "./pages/Clientes";
+import Agendamentos from "./pages/Agendamento/Agendamento";
+import Clientes from "./pages/Cliente/Cliente";
 
 export default function App() {
   return (

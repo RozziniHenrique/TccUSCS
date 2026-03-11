@@ -19,9 +19,9 @@ api.interceptors.response.use(
       error.response &&
       (error.response.status === 403 || error.response.status === 401)
     ) {
-      //console.warn("Sessão expirada. Limpando token...");
-      //localStorage.removeItem("user");
-      //window.location.href = "/login";
+      console.warn("Sessão expirada. Limpando token...");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
       console.error(
         "Erro de permissão ou sessão, mas mantendo usuário logado para debug.",
       );

@@ -1,0 +1,42 @@
+export const styles = {
+  card: {
+    backgroundColor: "#FFF",
+    padding: "30px",
+    borderRadius: "20px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+    maxWidth: "800px",
+    margin: "0 auto",
+  },
+  cardTitle: {
+    color: "#4A148C",
+    marginBottom: "25px",
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  formAgendamento: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "20px",
+  },
+  inputGroup: { display: "flex", flexDirection: "column", gap: "8px" },
+  label: { fontSize: "0.85rem", color: "#A3AED0", fontWeight: "bold" },
+  input: {
+    padding: "12px",
+    borderRadius: "10px",
+    border: "1px solid #E0E5F2",
+    backgroundColor: "#F4F7FE",
+    color: "#2B3674",
+  },
+  btnAgendar: {
+    gridColumn: "1 / -1",
+    backgroundColor: "#4A148C",
+    color: "#FFF",
+    border: "none",
+    padding: "15px",
+    borderRadius: "12px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginTop: "10px",
+    transition: "0.3s",
+  },
+};
