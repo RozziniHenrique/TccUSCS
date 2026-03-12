@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import uscs.STEFER.domain.cliente.Cliente;
+import uscs.STEFER.domain.cliente.ClienteRepository;
 import uscs.STEFER.domain.funcionario.Funcionario;
 import uscs.STEFER.domain.funcionario.FuncionarioRepository;
 import uscs.STEFER.domain.usuario.Usuario;
@@ -19,6 +22,9 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -55,6 +61,23 @@ public class DatabaseSeeder implements CommandLineRunner {
             System.out.println(">>> Seed: Admin criado com sucesso! Login: " + emailAdmin + " | Senha: admin123");
         } else {
             System.out.println(">>> Seed: Admin já existe no banco. Pulando etapa.");
+
+            
+        }
+        String nomeBalcao = "CLIENTE BALCÃO";
+        
+        if (clienteRepository.findByNome(nomeBalcao).isEmpty()) { 
+            System.out.println(">>> Seed: Criando Cliente Balcão padrão...");
+
+            var clienteBalcao = new Cliente();
+            clienteBalcao.setNome(nomeBalcao);
+            clienteBalcao.setEmail("balcao@sistema.com");
+            clienteBalcao.setCpf("00000000000");
+            clienteBalcao.setTelefone("00000000000");
+            clienteBalcao.setAtivo(true);
+
+            clienteRepository.save(clienteBalcao);
+            System.out.println(">>> Seed: Cliente Balcão criado com sucesso!");
         }
     }
 }

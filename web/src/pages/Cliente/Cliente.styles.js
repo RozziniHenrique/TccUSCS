@@ -6,6 +6,27 @@ export const styles = {
     boxShadow: "0 10px 20px rgba(0,0,0,0.05)",
     border: "1px solid #E0E5F2",
   },
+  // --- Novos estilos para os cards de indicadores no topo ---
+  cardInformativo: {
+    backgroundColor: "#fff",
+    padding: "20px",
+    borderRadius: "20px",
+    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+    border: "1px solid #F4F7FE",
+  },
+  label: {
+    color: "#A3AED0",
+    fontSize: "0.85rem",
+    fontWeight: "500",
+    margin: 0,
+  },
+  valor: {
+    color: "#2B3674",
+    fontSize: "1.5rem",
+    fontWeight: "700",
+    margin: "5px 0 0 0",
+  },
+  // ---------------------------------------------------------
   table: { width: "100%", borderCollapse: "collapse" },
   th: {
     textAlign: "left",
@@ -30,4 +51,34 @@ export const styles = {
     backgroundColor: ativo ? "#E8F5E9" : "#FFEBEE",
     color: ativo ? "#2E7D32" : "#D32F2F",
   }),
+
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modal: {
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "20px",
+    width: "400px",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+  },
+  inputModal: {
+    width: "100%",
+    padding: "12px",
+    borderRadius: "10px",
+    border: "1px solid #E0E5F2",
+    marginBottom: "15px",
+    fontSize: "1rem",
+    backgroundColor: "#F4F7FE",
+    color: "#2B3674",
+  },
 };

@@ -4,6 +4,7 @@ public enum UsuarioRole {
     ADMIN("admin"),
     GESTOR("gestor"),
     FUNCIONARIO("funcionario"),
+    RECEPCAO("recepcao"),
     CLIENTE("cliente");
 
     private String role;

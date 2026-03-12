@@ -4,8 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     Page<Funcionario> findAllByAtivoTrue(Pageable paginacao);
@@ -16,6 +18,21 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 
     Page<Funcionario> findAllByAtivoFalseAndEspecialidadesId(Long especialidadeId, Pageable paginacao);
 
+    @Query("""
+            SELECT f FROM funcionarios f 
+            JOIN Usuario u ON u.login = f.email
+            WHERE f.ativo = :ativos
+            AND u.role NOT IN ('ADMIN', 'RECEPCAO')
+            AND (:idEspecialidade IS NULL OR EXISTS (
+                SELECT e FROM f.especialidades e WHERE e.id = :idEspecialidade
+            ))
+            """)
+    Page<Funcionario> buscarProfissionaisComFiltros(
+        @Param("idEspecialidade") Long idEspecialidade, 
+        @Param("ativos") boolean ativos, 
+        Pageable paginacao
+);
+    
     @Query(value = """
                 SELECT f.* FROM funcionarios f
                 INNER JOIN funcionario_especialidade fe ON fe.funcionario_id = f.id

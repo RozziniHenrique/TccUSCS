@@ -13,8 +13,10 @@ public class ValidadorAntecedenciaMinima implements ValidadorAgendamento {
         var agora = LocalDateTime.now();
         var diferencaEmMinutos = Duration.between(agora, dados.data()).toMinutes();
 
-        if (diferencaEmMinutos < 30) {
-            throw new ValidacaoException("O agendamento deve ser feito com no mínimo 30 minutos de antecedência!");
+        if(dados.idCliente() != 1){
+            if (diferencaEmMinutos < 30) {
+                throw new ValidacaoException("O agendamento deve ser feito com no mínimo 30 minutos de antecedência!");
+            } 
         }
     }
 }

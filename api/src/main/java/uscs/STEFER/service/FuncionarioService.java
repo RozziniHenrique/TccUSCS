@@ -74,22 +74,9 @@ public class FuncionarioService {
     public Page<dtoFuncionarioListar> listar(Long idEspecialidade, Boolean ativos, Pageable paginacao) {
     boolean buscarAtivos = (ativos == null) ? true : ativos;
 
-    if (idEspecialidade != null) {
-        if (buscarAtivos) {
-            return repository.findAllByAtivoTrueAndEspecialidadesId(idEspecialidade, paginacao)
-                             .map(dtoFuncionarioListar::new);
-        } else {
-            return repository.findAllByAtivoFalseAndEspecialidadesId(idEspecialidade, paginacao)
-                             .map(dtoFuncionarioListar::new);
-        }
-    }
-
-    if (buscarAtivos) {
-        return repository.findAllByAtivoTrue(paginacao).map(dtoFuncionarioListar::new);
-    } else {
-        return repository.findAllByAtivoFalse(paginacao).map(dtoFuncionarioListar::new);
-    }
-    }
+    return repository.buscarProfissionaisComFiltros(idEspecialidade, buscarAtivos, paginacao)
+                     .map(dtoFuncionarioListar::new);
+}
 
     public Funcionario detalhar(Long id) {
         return repository.getReferenceById(id);

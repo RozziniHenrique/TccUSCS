@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/agendamentos")
 @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO', 'CLIENTE')")
+@CrossOrigin("*")
 public class AgendamentoController {
 
     @Autowired

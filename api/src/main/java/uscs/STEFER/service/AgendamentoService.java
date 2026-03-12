@@ -60,8 +60,11 @@ public class AgendamentoService {
         var funcionario = escolherFuncionario(dados);
 
         var agendamento = new Agendamento(funcionario, cliente, especialidade, dados.data());
-        agendamentoRepository.save(agendamento);
 
+        if(dados.idCliente() == 1){
+            agendamento.setConcluido(true);
+        }
+            agendamentoRepository.save(agendamento);
         return new dtoAgendamentoDetalhar(agendamento);
     }
 
