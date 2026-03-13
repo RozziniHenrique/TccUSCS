@@ -3,6 +3,7 @@ import api from "@/services/api";
 import Layout from "@/components/layout";
 import ClienteTable from "./components/ClienteTable";
 import { styles } from "./Cliente.styles";
+import { filtrarFuncionariosPorServico } from "@/utils/filtros";
 
 export default function Clientes() {
   const [clientes, setClientes] = useState([]);
@@ -74,11 +75,6 @@ export default function Clientes() {
       c.nome.toUpperCase().includes("BALCÃO"),
     );
 
-    if (!clienteBalcao) {
-      alert("Cliente Balcão não encontrado!");
-      return;
-    }
-
     const payload = {
       idFuncionario: Number(funcionarioId),
       idCliente: Number(clienteBalcao.id),
@@ -102,6 +98,11 @@ export default function Clientes() {
     (c) =>
       c.nome.toLowerCase().includes(busca.toLowerCase()) ||
       (c.cpf && c.cpf.includes(busca)),
+  );
+
+  const funcionariosFiltradosBalcao = filtrarFuncionariosPorServico(
+    funcionarios,
+    novoAtendimento.servicoId,
   );
 
   return (
@@ -191,6 +192,25 @@ export default function Clientes() {
               Registre o serviço feito agora.
             </p>
 
+            <label style={styles.label}>Serviço (Especialidade)</label>
+            <select
+              style={styles.inputModal}
+              value={novoAtendimento.servicoId}
+              onChange={(e) =>
+                setNovoAtendimento({
+                  ...novoAtendimento,
+                  servicoId: e.target.value,
+                  funcionarioId: "",
+                })
+              }
+            >
+              <option value="">Selecione o serviço...</option>
+              {servicos.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.nome}
+                </option>
+              ))}
+            </select>
             <label style={styles.label}>Profissional</label>
             <select
               style={styles.inputModal}
@@ -203,28 +223,9 @@ export default function Clientes() {
               }
             >
               <option value="">Selecione o barbeiro...</option>
-              {funcionarios.map((f) => (
+              {funcionariosFiltradosBalcao.map((f) => (
                 <option key={f.id} value={f.id}>
                   {f.nome}
-                </option>
-              ))}
-            </select>
-
-            <label style={styles.label}>Serviço (Especialidade)</label>
-            <select
-              style={styles.inputModal}
-              value={novoAtendimento.servicoId}
-              onChange={(e) =>
-                setNovoAtendimento({
-                  ...novoAtendimento,
-                  servicoId: e.target.value,
-                })
-              }
-            >
-              <option value="">Selecione o serviço...</option>
-              {servicos.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.nome}
                 </option>
               ))}
             </select>

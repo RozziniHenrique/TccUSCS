@@ -14,7 +14,7 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(response.data));
       navigate("/dashboard");
     } catch (err) {
-      alert("Acesso negado. Verifique suas credenciais.");
+      //alert("Acesso negado. Verifique suas credenciais.");
     }
   }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { styles } from "../Agendamento.styles";
+import { filtrarFuncionariosPorServico } from "@/utils/filtros";
 
 export default function AgendamentoForm({
   novoAgendamento,
@@ -9,12 +10,10 @@ export default function AgendamentoForm({
   funcionarios,
   especialidades,
 }) {
-  const funcionariosFiltrados = funcionarios.filter((f) => {
-    if (!novoAgendamento.idEspecialidade) return true;
-    return f.especialidades?.some(
-      (esp) => String(esp.id) === String(novoAgendamento.idEspecialidade),
-    );
-  });
+  const funcionariosFiltrados = filtrarFuncionariosPorServico(
+    funcionarios,
+    novoAgendamento.idEspecialidade,
+  );
 
   return (
     <div style={styles.card}>
