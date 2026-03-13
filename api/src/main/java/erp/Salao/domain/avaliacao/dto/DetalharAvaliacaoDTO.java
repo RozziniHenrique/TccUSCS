@@ -2,14 +2,14 @@ package erp.Salao.domain.avaliacao.dto;
 
 import erp.Salao.domain.avaliacao.Avaliacao;
 
-public record dtoAvaliacaoDetalhar(
+public record DetalharAvaliacaoDTO(
         Long id,
         Integer nota,
         String comentario,
         Long idAgendamento,
         String nomeFuncionario
 ) {
-    public dtoAvaliacaoDetalhar(Avaliacao avaliacao) {
+    public DetalharAvaliacaoDTO(Avaliacao avaliacao) {
         this(
                 avaliacao.getId(),
                 avaliacao.getNota(),

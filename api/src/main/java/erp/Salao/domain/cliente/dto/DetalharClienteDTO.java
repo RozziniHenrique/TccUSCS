@@ -3,7 +3,7 @@ package erp.Salao.domain.cliente.dto;
 import erp.Salao.domain.cliente.Cliente;
 import erp.Salao.domain.endereco.Endereco;
 
-public record dtoClienteDetalhar(
+public record DetalharClienteDTO(
         Long id,
         String nome,
         String email,
@@ -11,7 +11,7 @@ public record dtoClienteDetalhar(
         String cpf,
         Endereco endereco) {
 
-    public dtoClienteDetalhar(Cliente cliente) {
+    public DetalharClienteDTO(Cliente cliente) {
         this(
                 cliente.getId(),
                 cliente.getNome(),

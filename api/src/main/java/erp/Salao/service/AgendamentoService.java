@@ -14,8 +14,8 @@ import erp.Salao.domain.agendamento.validacoes.ValidadorAgendamento;
 import erp.Salao.domain.agendamento.validacoes.ValidadorCancelamentoAgendamento;
 import erp.Salao.domain.avaliacao.Avaliacao;
 import erp.Salao.domain.avaliacao.AvaliacaoRepository;
-import erp.Salao.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
-import erp.Salao.domain.avaliacao.dto.dtoAvaliacaoDetalhar;
+import erp.Salao.domain.avaliacao.dto.CadastrarAvaliacaoDTO;
+import erp.Salao.domain.avaliacao.dto.DetalharAvaliacaoDTO;
 import erp.Salao.domain.cliente.ClienteRepository;
 import erp.Salao.domain.especialidade.EspecialidadeRepository;
 import erp.Salao.domain.funcionario.Funcionario;
@@ -46,7 +46,7 @@ public class AgendamentoService {
     private List<ValidadorCancelamentoAgendamento> validadoresCancelamento;
 
     @Transactional
-    public dtoAgendamentoDetalhar agendar(dtoAgendamentoCadastrar dados) {
+    public DetalharAgendamentoDTO agendar(CadastrarAgendamentoDTO dados) {
         if (!clienteRepository.existsById(dados.idCliente())) {
             throw new EntityNotFoundException("Id do cliente informado não existe!");
         }
@@ -66,43 +66,43 @@ public class AgendamentoService {
             agendamento.setConcluido(true);
         }
             agendamentoRepository.save(agendamento);
-        return new dtoAgendamentoDetalhar(agendamento);
+        return new DetalharAgendamentoDTO(agendamento);
     }
 
-    public Page<dtoAgendamentoListar> listar(LocalDate data, Long idFuncionario, Long idCliente, Long idEspecialidade, Pageable paginacao, Usuario logado) {
+    public Page<ListarDetalhamentoDTO> listar(LocalDate data, Long idFuncionario, Long idCliente, Long idEspecialidade, Pageable paginacao, Usuario logado) {
         if (logado.getRole() == UsuarioRole.GESTOR || logado.getRole() == UsuarioRole.ADMIN) {
             return agendamentoRepository.findAllComFiltros(data, idFuncionario, idCliente, idEspecialidade, paginacao)
-                    .map(dtoAgendamentoListar::new);
+                    .map(ListarDetalhamentoDTO::new);
         }
         return agendamentoRepository.buscaPersonalizada(logado.getId(), paginacao)
-                .map(dtoAgendamentoListar::new);
+                .map(ListarDetalhamentoDTO::new);
     }
 
-    public dtoAgendamentoDetalhar detalhar(Long id) {
+    public DetalharAgendamentoDTO detalhar(Long id) {
         var agendamento = agendamentoRepository.findByIdAndMotivoCancelamentoIsNull(id)
                 .orElseThrow(() -> new ValidacaoException("Agendamento não encontrado ou já cancelado!"));
-        return new dtoAgendamentoDetalhar(agendamento);
+        return new DetalharAgendamentoDTO(agendamento);
     }
 
     @Transactional
-    public void finalizar(dtoAgendamentoFinalizar dados) {
+    public void finalizar(FinalizarAgendamentoDTO dados) {
         var agendamento = agendamentoRepository.getReferenceById(dados.id());
         agendamento.finalizar(dados.nota());
     }
 
     @Transactional
-    public dtoAvaliacaoDetalhar avaliar(Long id, dtoAvaliacaoCadastrar dados) {
+    public DetalharAvaliacaoDTO avaliar(Long id, CadastrarAvaliacaoDTO dados) {
         var agendamento = agendamentoRepository.getReferenceById(id);
         if (avaliacaoRepository.existsByAgendamentoId(id)) {
             throw new ValidacaoException("Este agendamento já foi avaliado!");
         }
         var avaliacao = new Avaliacao(dados, agendamento);
         avaliacaoRepository.save(avaliacao);
-        return new dtoAvaliacaoDetalhar(avaliacao);
+        return new DetalharAvaliacaoDTO(avaliacao);
     }
 
     @Transactional
-    public void cancelar(dtoAgendamentoCancelar dados) {
+    public void cancelar(CancelarAgendamentoDTO dados) {
         if (!agendamentoRepository.existsById(dados.idAgendamento())) {
             throw new EntityNotFoundException("Id do agendamento informado não existe!");
         }
@@ -111,7 +111,7 @@ public class AgendamentoService {
         agendamento.setMotivoCancelamento(dados.motivo());
     }
 
-    private Funcionario escolherFuncionario(dtoAgendamentoCadastrar dados) {
+    private Funcionario escolherFuncionario(CadastrarAgendamentoDTO dados) {
         if (dados.idFuncionario() != null) {
             return funcionarioRepository.getReferenceById(dados.idFuncionario());
         }

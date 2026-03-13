@@ -31,7 +31,7 @@ public class ClienteService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Cliente cadastrar(dtoClienteCadastrar dados) {
+    public Cliente cadastrar(CadastrarClienteDTO dados) {
         if (usuarioRepository.existsByLogin(dados.email())){
             throw new ValidacaoException("Email já cadastrado em outra conta");
         }
@@ -45,14 +45,14 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente atualizar(dtoClienteAtualizar dados) {
+    public Cliente atualizar(AtualizarClienteDTO dados) {
         var cliente = clienteRepository.getReferenceById(dados.id());
         cliente.atualizarCliente(dados);
         return cliente;
     }
 
-    public Page<dtoClienteListar> listar(Pageable paginacao) {
-        return clienteRepository.findAllByAtivoTrue(paginacao).map(dtoClienteListar::new);
+    public Page<ListarClienteDTO> listar(Pageable paginacao) {
+        return clienteRepository.findAllByAtivoTrue(paginacao).map(ListarClienteDTO::new);
     }
 
     public Cliente detalhar(Long id) {

@@ -4,20 +4,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import erp.Salao.domain.endereco.Endereco;
-import erp.Salao.domain.especialidade.dto.dtoEspecialidadeDetalhar;
+import erp.Salao.domain.especialidade.dto.DetalharEspecialidadeDTO;
 import erp.Salao.domain.funcionario.Funcionario;
 
-public record dtoFuncionarioDetalhar(
+public record DetalharFuncionarioDTO(
         Long id,
         String nome,
         String email,
         String telefone,
         String cpf,
         Endereco endereco,
-        Set<dtoEspecialidadeDetalhar> especialidades
+        Set<DetalharEspecialidadeDTO> especialidades
 ) {
 
-    public dtoFuncionarioDetalhar(Funcionario funcionario) {
+    public DetalharFuncionarioDTO(Funcionario funcionario) {
         this(
                 funcionario.getId(),
                 funcionario.getNome(),
@@ -26,7 +26,7 @@ public record dtoFuncionarioDetalhar(
                 funcionario.getCpf(),
                 funcionario.getEndereco(),
                 funcionario.getEspecialidades().stream()
-                        .map(e -> new dtoEspecialidadeDetalhar(e))
+                        .map(e -> new DetalharEspecialidadeDTO(e))
                         .collect(Collectors.toSet())
         );
     }

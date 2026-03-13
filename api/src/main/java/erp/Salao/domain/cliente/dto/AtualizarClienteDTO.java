@@ -1,13 +1,13 @@
 package erp.Salao.domain.cliente.dto;
 
-import erp.Salao.domain.endereco.dtoEndereco;
+import erp.Salao.domain.endereco.CadastrarEnderecoDTO;
 import jakarta.validation.constraints.NotNull;
 
-public record dtoClienteAtualizar(
+public record AtualizarClienteDTO(
 
         @NotNull
         Long id,
         String nome,
         String telefone,
-        dtoEndereco endereco) {
+        CadastrarEnderecoDTO endereco) {
 }

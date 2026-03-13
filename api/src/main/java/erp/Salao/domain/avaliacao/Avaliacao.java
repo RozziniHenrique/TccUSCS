@@ -1,7 +1,7 @@
 package erp.Salao.domain.avaliacao;
 
 import erp.Salao.domain.agendamento.Agendamento;
-import erp.Salao.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
+import erp.Salao.domain.avaliacao.dto.CadastrarAvaliacaoDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class Avaliacao {
     @JoinColumn(name = "agendamento_id")
     private Agendamento agendamento;
 
-    public Avaliacao(dtoAvaliacaoCadastrar dados, Agendamento agendamento) {
+    public Avaliacao(CadastrarAvaliacaoDTO dados, Agendamento agendamento) {
         this.nota = dados.nota();
         this.comentario = dados.comentario();
         this.agendamento = agendamento;

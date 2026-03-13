@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import erp.Salao.domain.agendamento.dto.CadastrarAgendamentoDTO;
 import erp.Salao.domain.agendamento.validacoes.ValidadorDuplicidadeAgendamentoCliente;
 import erp.Salao.infra.exception.ValidacaoException;
 
@@ -35,7 +35,7 @@ class ValidadorDuplicidadeAgendamentoClienteTest {
     void validar_cenario01() {
         var idCliente = 1L;
         var data = LocalDateTime.now().plusDays(1);
-        var dados = new dtoAgendamentoCadastrar(1L, idCliente, 1L, data);
+        var dados = new CadastrarAgendamentoDTO(1L, idCliente, 1L, data);
 
         when(agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(idCliente, data))
                 .thenReturn(true);
@@ -49,7 +49,7 @@ class ValidadorDuplicidadeAgendamentoClienteTest {
     void validar_cenario02() {
         var idCliente = 1L;
         var data = LocalDateTime.now().plusDays(1);
-        var dados = new dtoAgendamentoCadastrar(1L, idCliente, 1L, data);
+        var dados = new CadastrarAgendamentoDTO(1L, idCliente, 1L, data);
         when(agendamentoRepository.existsByClienteIdAndDataAndMotivoCancelamentoIsNull(idCliente, data))
                 .thenReturn(false);
 

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoRelatorioEspecialidade;
+import erp.Salao.domain.agendamento.dto.GerarRelatorioAgendamentoDTO;
 import erp.Salao.domain.dashboard.dto.AlertaQualidade;
 import erp.Salao.domain.dashboard.dto.RankingFuncionario;
 
@@ -48,7 +48,7 @@ Page<Agendamento> findAllComFiltros(
                 GROUP BY e.nome
                 ORDER BY COUNT(a) DESC
             """)
-    List<dtoAgendamentoRelatorioEspecialidade> contagemPorEspecialidade();
+    List<GerarRelatorioAgendamentoDTO> contagemPorEspecialidade();
 
 
     @Query("""

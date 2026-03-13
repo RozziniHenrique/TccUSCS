@@ -2,7 +2,7 @@ package erp.Salao.domain.agendamento.validacoes;
 
 import org.springframework.stereotype.Component;
 
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import erp.Salao.domain.agendamento.dto.CadastrarAgendamentoDTO;
 import erp.Salao.infra.exception.ValidacaoException;
 
 import java.time.Duration;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Component
 public class ValidadorAntecedenciaMinima implements ValidadorAgendamento {
-    public void validar(dtoAgendamentoCadastrar dados) {
+    public void validar(CadastrarAgendamentoDTO dados) {
         var agora = LocalDateTime.now();
         var diferencaEmMinutos = Duration.between(agora, dados.data()).toMinutes();
 

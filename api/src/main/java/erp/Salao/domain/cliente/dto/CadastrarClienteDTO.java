@@ -1,6 +1,6 @@
 package erp.Salao.domain.cliente.dto;
 
-import erp.Salao.domain.endereco.dtoEndereco;
+import erp.Salao.domain.endereco.CadastrarEnderecoDTO;
 import erp.Salao.domain.usuario.UsuarioRole;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record dtoClienteCadastrar(
+public record CadastrarClienteDTO(
         @NotBlank(message = "O nome é obrigatório")
         String nome,
 
@@ -30,7 +30,7 @@ public record dtoClienteCadastrar(
 
         @NotNull(message = "Os dados de endereço são obrigatórios")
         @Valid
-        dtoEndereco endereco,
+        CadastrarEnderecoDTO endereco,
 
         @NotNull(message = "A role do usuário é obrigatória")
         UsuarioRole role

@@ -1,6 +1,6 @@
 package erp.Salao.domain.agendamento.dto;
 
-public record dtoAgendamentoRelatorioEspecialidade(
+public record GerarRelatorioAgendamentoDTO(
         String nomeEspecialidade,
         Long quantidade
 ) {

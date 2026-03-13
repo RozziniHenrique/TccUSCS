@@ -22,15 +22,15 @@ public class EspecialidadeController {
     private EspecialidadeService service;
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid dtoEspecialidadeCadastrar dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid CadastrarEspecialidadeDTO dados, UriComponentsBuilder uriBuilder) {
         var especialidade = service.cadastrar(dados);
         var uri = uriBuilder.path("/especialidades/{id}").buildAndExpand(especialidade.getId()).toUri();
-        return ResponseEntity.created(uri).body(new dtoEspecialidadeDetalhar(especialidade));
+        return ResponseEntity.created(uri).body(new DetalharEspecialidadeDTO(especialidade));
     }
 
     @GetMapping
     @PreAuthorize("permitAll()") // Qualquer um pode ver as especialidades oferecidas
-    public ResponseEntity<Page<dtoEspecialidadeListar>> listar(
+    public ResponseEntity<Page<ListarEspecialidadeDTO>> listar(
         @RequestParam(required = false, defaultValue = "true") Boolean ativos,
         @PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         var page = service.listar(ativos, paginacao);
@@ -41,13 +41,13 @@ public class EspecialidadeController {
     @PreAuthorize("permitAll()")
     public ResponseEntity detalhar(@PathVariable Long id) {
         var especialidade = service.detalhar(id);
-        return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
+        return ResponseEntity.ok(new DetalharEspecialidadeDTO(especialidade));
     }
 
     @PutMapping
-    public ResponseEntity atualizar(@RequestBody @Valid dtoEspecialidadeAtualizar dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid AtualizarEspecialidadeDTO dados) {
         var especialidade = service.atualizar(dados);
-        return ResponseEntity.ok(new dtoEspecialidadeDetalhar(especialidade));
+        return ResponseEntity.ok(new DetalharEspecialidadeDTO(especialidade));
     }
 
     @DeleteMapping("/{id}")

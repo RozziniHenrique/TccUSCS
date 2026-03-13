@@ -16,8 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCadastrar;
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCancelar;
+import erp.Salao.domain.agendamento.dto.CadastrarAgendamentoDTO;
+import erp.Salao.domain.agendamento.dto.CancelarAgendamentoDTO;
 import erp.Salao.service.AgendamentoService;
 
 import java.time.DayOfWeek;
@@ -44,7 +44,7 @@ class AgendamentoControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockitoBean
-    private JacksonTester<dtoAgendamentoCadastrar> dadosAgendamentoJson;
+    private JacksonTester<CadastrarAgendamentoDTO> dadosAgendamentoJson;
 
     @Test
     @DisplayName("Cenário 1: Informações inválidas -> Deve retornar http 400")
@@ -67,7 +67,7 @@ class AgendamentoControllerTest {
         var proximaSegunda10am = LocalDateTime.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(10).withMinute(0).withSecond(0).withNano(0);
-        var dadosAgendamento = new dtoAgendamentoCadastrar(3L, 3L, 3L, proximaSegunda10am);
+        var dadosAgendamento = new CadastrarAgendamentoDTO(3L, 3L, 3L, proximaSegunda10am);
         String json = objectMapper.writeValueAsString(dadosAgendamento);
         var response = mvc.perform(
                         post("/agendamentos")
@@ -82,7 +82,7 @@ class AgendamentoControllerTest {
     @DisplayName("Cenário 3: Cancelar agendamento com informações válidas -> Deve retornar http 204")
     @WithMockUser(authorities = "ADMIN")
     void cancelar_cenario01() throws Exception {
-        var dadosCancelamento = new dtoAgendamentoCancelar(1L, "O cliente desistiu");
+        var dadosCancelamento = new CancelarAgendamentoDTO(1L, "O cliente desistiu");
         String json = objectMapper.writeValueAsString(dadosCancelamento);
         var response = mvc.perform(
                         delete("/agendamentos")

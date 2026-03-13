@@ -4,14 +4,14 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-import erp.Salao.domain.endereco.dtoEndereco;
+import erp.Salao.domain.endereco.CadastrarEnderecoDTO;
 
-public record dtoFuncionarioAtualizar(
+public record AtualizarFuncionarioDTO(
         @NotNull
         Long id,
         String nome,
         String telefone,
-        dtoEndereco endereco,
+        CadastrarEnderecoDTO endereco,
         List<Long> especialidadesIds
 ) {
 }

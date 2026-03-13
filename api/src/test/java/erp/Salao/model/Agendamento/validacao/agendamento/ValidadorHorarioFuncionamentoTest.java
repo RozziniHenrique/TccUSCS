@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import erp.Salao.domain.agendamento.dto.CadastrarAgendamentoDTO;
 import erp.Salao.domain.agendamento.validacoes.ValidadorHorarioFuncionamento;
 import erp.Salao.infra.exception.ValidacaoException;
 
@@ -28,7 +28,7 @@ class ValidadorHorarioFuncionamentoTest {
                 .with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
                 .withHour(10).withMinute(0);
 
-        var dados = new dtoAgendamentoCadastrar(1l, 1l, 1l, domingo);
+        var dados = new CadastrarAgendamentoDTO(1l, 1l, 1l, domingo);
 
         var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
         assertThat(exception.getMessage().contains("Fora do horário de funcionamento"));
@@ -41,7 +41,7 @@ class ValidadorHorarioFuncionamentoTest {
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(6).withMinute(0);
 
-        var dados = new dtoAgendamentoCadastrar(1L, 1L, 1L, segundaMuitoCedo);
+        var dados = new CadastrarAgendamentoDTO(1L, 1L, 1L, segundaMuitoCedo);
 
         var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
         assertThat(exception.getMessage()).contains("Fora do horário de funcionamento");
@@ -54,7 +54,7 @@ class ValidadorHorarioFuncionamentoTest {
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .withHour(10).withMinute(0);
 
-        var dados = new dtoAgendamentoCadastrar(1L, 1L, 1L, segundaHorarioComercial);
+        var dados = new CadastrarAgendamentoDTO(1L, 1L, 1L, segundaHorarioComercial);
         assertDoesNotThrow(() -> validador.validar(dados));
     }
 }

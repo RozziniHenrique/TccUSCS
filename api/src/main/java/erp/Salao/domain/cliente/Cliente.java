@@ -1,7 +1,7 @@
 package erp.Salao.domain.cliente;
 
-import erp.Salao.domain.cliente.dto.dtoClienteAtualizar;
-import erp.Salao.domain.cliente.dto.dtoClienteCadastrar;
+import erp.Salao.domain.cliente.dto.AtualizarClienteDTO;
+import erp.Salao.domain.cliente.dto.CadastrarClienteDTO;
 import erp.Salao.domain.endereco.Endereco;
 import erp.Salao.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -34,7 +34,7 @@ public class Cliente {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Cliente(dtoClienteCadastrar dados) {
+    public Cliente(CadastrarClienteDTO dados) {
         this.ativo = true;
         this.nome = dados.nome();
         this.email = dados.email();
@@ -43,7 +43,7 @@ public class Cliente {
         this.endereco = new Endereco(dados.endereco());
     }
 
-    public void atualizarCliente(@Valid dtoClienteAtualizar dados) {
+    public void atualizarCliente(@Valid AtualizarClienteDTO dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }

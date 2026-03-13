@@ -1,21 +1,19 @@
 package erp.Salao.domain.especialidade.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public record dtoEspecialidadeAtualizar(
+public record CadastrarEspecialidadeDTO(
 
-        @NotNull
-        Long id,
-
+        @NotBlank
         String nome,
 
+        @NotNull
         @Positive
         BigDecimal preco,
 
-        String descricao
-
-) {
+        String descricao) {
 }

@@ -3,7 +3,7 @@ package erp.Salao.domain.endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record dtoEndereco(
+public record CadastrarEnderecoDTO(
         @NotBlank(message = "Logradouro é obrigatório")
         String logradouro,
         

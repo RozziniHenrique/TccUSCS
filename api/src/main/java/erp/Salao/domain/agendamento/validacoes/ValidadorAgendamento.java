@@ -1,7 +1,7 @@
 package erp.Salao.domain.agendamento.validacoes;
 
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import erp.Salao.domain.agendamento.dto.CadastrarAgendamentoDTO;
 
 public interface ValidadorAgendamento {
-    void validar(dtoAgendamentoCadastrar dados);
+    void validar(CadastrarAgendamentoDTO dados);
 }

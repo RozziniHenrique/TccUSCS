@@ -2,8 +2,8 @@ package erp.Salao.domain.especialidade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import erp.Salao.domain.especialidade.dto.dtoEspecialidadeAtualizar;
-import erp.Salao.domain.especialidade.dto.dtoEspecialidadeCadastrar;
+import erp.Salao.domain.especialidade.dto.AtualizarEspecialidadeDTO;
+import erp.Salao.domain.especialidade.dto.CadastrarEspecialidadeDTO;
 import erp.Salao.domain.funcionario.Funcionario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -46,14 +46,14 @@ public class Especialidade {
     @JsonIgnore
     private Set<Funcionario> funcionarios = new HashSet<>();
 
-    public Especialidade(dtoEspecialidadeCadastrar dados) {
+    public Especialidade(CadastrarEspecialidadeDTO dados) {
         this.nome = dados.nome();
         this.preco = dados.preco();
         this.descricao = dados.descricao();
         this.ativo = true;
     }
 
-    public void atualizar(@Valid dtoEspecialidadeAtualizar dados) {
+    public void atualizar(@Valid AtualizarEspecialidadeDTO dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }

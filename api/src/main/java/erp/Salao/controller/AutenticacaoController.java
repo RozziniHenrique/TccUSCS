@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import erp.Salao.domain.usuario.DadosAutenticacao;
 import erp.Salao.domain.usuario.Usuario;
 import erp.Salao.infra.security.TokenService;
-import erp.Salao.infra.security.dtoTokenJWT;
+import erp.Salao.infra.security.TokenJWTDTO;
 
 @RestController
 @RequestMapping("/login")
@@ -31,6 +31,6 @@ public class AutenticacaoController {
         var authentication = manager.authenticate(authenticationToken);
 
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
-        return ResponseEntity.ok(new dtoTokenJWT(tokenJWT));
+        return ResponseEntity.ok(new TokenJWTDTO(tokenJWT));
     }
 }

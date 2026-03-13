@@ -10,8 +10,8 @@ import java.util.Set;
 
 import erp.Salao.domain.endereco.Endereco;
 import erp.Salao.domain.especialidade.Especialidade;
-import erp.Salao.domain.funcionario.dto.dtoFuncionarioAtualizar;
-import erp.Salao.domain.funcionario.dto.dtoFuncionarioCadastrar;
+import erp.Salao.domain.funcionario.dto.AtualizarFuncionarioDTO;
+import erp.Salao.domain.funcionario.dto.CadastrarFuncionarioDTO;
 import erp.Salao.domain.usuario.Usuario;
 
 @Table(name = "funcionarios")
@@ -48,7 +48,7 @@ public class Funcionario {
 
     private Boolean ativo;
 
-    public Funcionario(dtoFuncionarioCadastrar dados) {
+    public Funcionario(CadastrarFuncionarioDTO dados) {
         this.ativo = true;
         this.nome = dados.nome();
         this.email = dados.email();
@@ -76,7 +76,7 @@ public class Funcionario {
         }
     }
 
-    public void atualizarFuncionario(@Valid dtoFuncionarioAtualizar dados) {
+    public void atualizarFuncionario(@Valid AtualizarFuncionarioDTO dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }

@@ -9,10 +9,10 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-import erp.Salao.domain.endereco.dtoEndereco;
+import erp.Salao.domain.endereco.CadastrarEnderecoDTO;
 import erp.Salao.domain.usuario.UsuarioRole;
 
-public record dtoFuncionarioCadastrar(
+public record CadastrarFuncionarioDTO(
         @NotBlank(message = "Nome é obrigatório")
         String nome,
 
@@ -28,7 +28,7 @@ public record dtoFuncionarioCadastrar(
         String cpf,
 
         @NotNull @Valid
-        dtoEndereco endereco,
+        CadastrarEnderecoDTO endereco,
 
         @NotEmpty(message = "O funcionário deve ter pelo menos uma especialidade")
         List<Long> especialidadesIds,

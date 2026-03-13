@@ -21,21 +21,21 @@ public class FuncionarioController {
     private FuncionarioService service;
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid dtoFuncionarioCadastrar dados) {
+    public ResponseEntity cadastrar(@RequestBody @Valid CadastrarFuncionarioDTO dados) {
         var funcionario = service.cadastrar(dados);
-        return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
+        return ResponseEntity.ok(new DetalharFuncionarioDTO(funcionario));
     }
 
     @PutMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO')")
-    public ResponseEntity atualizar(@RequestBody @Valid dtoFuncionarioAtualizar dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid AtualizarFuncionarioDTO dados) {
         var funcionario = service.atualizar(dados);
-        return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
+        return ResponseEntity.ok(new DetalharFuncionarioDTO(funcionario));
     }
 
     @GetMapping
     @PreAuthorize("permitAll()")
-    public ResponseEntity<Page<dtoFuncionarioListar>> listar(
+    public ResponseEntity<Page<ListarFuncionarioDTO>> listar(
             @RequestParam(required = false) Long idEspecialidade,
             @RequestParam(required = false, defaultValue = "true") Boolean ativos,
             @PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
@@ -47,7 +47,7 @@ public class FuncionarioController {
     @PreAuthorize("permitAll()")
     public ResponseEntity detalhar(@PathVariable Long id) {
         var funcionario = service.detalhar(id);
-        return ResponseEntity.ok(new dtoFuncionarioDetalhar(funcionario));
+        return ResponseEntity.ok(new DetalharFuncionarioDTO(funcionario));
     }
 
     @DeleteMapping("/{id}")

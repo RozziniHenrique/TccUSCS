@@ -1,7 +1,7 @@
 package erp.Salao.domain.agendamento.validacoes;
 
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCancelar;
+import erp.Salao.domain.agendamento.dto.CancelarAgendamentoDTO;
 
 public interface ValidadorCancelamentoAgendamento {
-    void validar(dtoAgendamentoCancelar dados);
+    void validar(CancelarAgendamentoDTO dados);
 }

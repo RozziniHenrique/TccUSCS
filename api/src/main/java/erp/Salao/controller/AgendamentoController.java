@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import erp.Salao.domain.agendamento.AgendamentoRepository;
 import erp.Salao.domain.agendamento.dto.*;
-import erp.Salao.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
+import erp.Salao.domain.avaliacao.dto.CadastrarAvaliacaoDTO;
 import erp.Salao.domain.usuario.Usuario;
 import erp.Salao.service.AgendamentoService;
 
@@ -34,14 +34,14 @@ public class AgendamentoController {
     private AgendamentoRepository repository;
 
     @PostMapping
-    public ResponseEntity agendar(@RequestBody @Valid dtoAgendamentoCadastrar dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity agendar(@RequestBody @Valid CadastrarAgendamentoDTO dados, UriComponentsBuilder uriBuilder) {
         var dto = service.agendar(dados);
         var uri = uriBuilder.path("/agendamentos/{id}").buildAndExpand(dto.id()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping
-    public ResponseEntity<Page<dtoAgendamentoListar>> listar(
+    public ResponseEntity<Page<ListarDetalhamentoDTO>> listar(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
             @RequestParam(required = false) Long idFuncionario,
             @RequestParam(required = false) Long idCliente,
@@ -61,27 +61,27 @@ public class AgendamentoController {
 
     @PutMapping("/finalizar")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO')")
-    public ResponseEntity finalizar(@RequestBody @Valid dtoAgendamentoFinalizar dados) {
+    public ResponseEntity finalizar(@RequestBody @Valid FinalizarAgendamentoDTO dados) {
         service.finalizar(dados);
         return ResponseEntity.ok("Atendimento finalizado com sucesso!");
     }
 
     @PostMapping("/{id}/avaliar")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENTE')")
-    public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid dtoAvaliacaoCadastrar dados) {
+    public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid CadastrarAvaliacaoDTO dados) {
         var dto = service.avaliar(id, dados);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping
-    public ResponseEntity cancelar(@RequestBody @Valid dtoAgendamentoCancelar dados) {
+    public ResponseEntity cancelar(@RequestBody @Valid CancelarAgendamentoDTO dados) {
         service.cancelar(dados);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/relatorio/estatisticas")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
-    public ResponseEntity<List<dtoAgendamentoRelatorioEspecialidade>> relatorioEspecialidades() {
+    public ResponseEntity<List<GerarRelatorioAgendamentoDTO>> relatorioEspecialidades() {
         return ResponseEntity.ok(repository.contagemPorEspecialidade());
     }
 }

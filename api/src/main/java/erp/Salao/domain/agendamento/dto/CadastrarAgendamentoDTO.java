@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record dtoAgendamentoCadastrar(
+public record CadastrarAgendamentoDTO(
         Long idFuncionario,
 
         @NotNull

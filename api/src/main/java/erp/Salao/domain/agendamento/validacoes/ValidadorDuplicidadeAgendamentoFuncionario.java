@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCadastrar;
+import erp.Salao.domain.agendamento.dto.CadastrarAgendamentoDTO;
 import erp.Salao.infra.exception.ValidacaoException;
 
 @Component
@@ -12,7 +12,7 @@ public class ValidadorDuplicidadeAgendamentoFuncionario implements ValidadorAgen
     @Autowired
     private AgendamentoRepository repository;
 
-    public void validar(dtoAgendamentoCadastrar dados) {
+    public void validar(CadastrarAgendamentoDTO dados) {
         if (dados.idFuncionario() == null) return;
         var possuiAgendamento = repository.existsByFuncionarioIdAndDataAndMotivoCancelamentoIsNull(dados.idFuncionario(), dados.data());
         if (possuiAgendamento) {

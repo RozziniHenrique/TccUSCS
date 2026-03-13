@@ -5,9 +5,9 @@ import java.util.Set;
 import erp.Salao.domain.especialidade.Especialidade;
 import erp.Salao.domain.funcionario.Funcionario;
 
-public record dtoFuncionarioListar(Long id, String nome, String email, Boolean ativo, Set<Especialidade> especialidades) {
+public record ListarFuncionarioDTO(Long id, String nome, String email, Boolean ativo, Set<Especialidade> especialidades) {
 
-    public dtoFuncionarioListar(Funcionario funcionario) {
+    public ListarFuncionarioDTO(Funcionario funcionario) {
         this(
                 funcionario.getId(),
                 funcionario.getNome(),

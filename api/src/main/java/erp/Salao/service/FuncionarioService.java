@@ -31,7 +31,7 @@ public class FuncionarioService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Funcionario cadastrar(dtoFuncionarioCadastrar dados) {
+    public Funcionario cadastrar(CadastrarFuncionarioDTO dados) {
         if (usuarioRepository.existsByLogin(dados.email())){
             throw new ValidacaoException("Email já cadastrado em outra conta");
         }
@@ -61,7 +61,7 @@ public class FuncionarioService {
 }
 
     @Transactional
-    public Funcionario atualizar(dtoFuncionarioAtualizar dados) {
+    public Funcionario atualizar(AtualizarFuncionarioDTO dados) {
         var funcionario = repository.getReferenceById(dados.id());
         funcionario.atualizarFuncionario(dados);
 
@@ -72,11 +72,11 @@ public class FuncionarioService {
         return funcionario;
     }
 
-    public Page<dtoFuncionarioListar> listar(Long idEspecialidade, Boolean ativos, Pageable paginacao) {
+    public Page<ListarFuncionarioDTO> listar(Long idEspecialidade, Boolean ativos, Pageable paginacao) {
     boolean buscarAtivos = (ativos == null) ? true : ativos;
 
     return repository.buscarProfissionaisComFiltros(idEspecialidade, buscarAtivos, paginacao)
-                     .map(dtoFuncionarioListar::new);
+                     .map(ListarFuncionarioDTO::new);
 }
 
     public Funcionario detalhar(Long id) {

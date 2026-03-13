@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCancelar;
+import erp.Salao.domain.agendamento.dto.CancelarAgendamentoDTO;
 import erp.Salao.infra.exception.ValidacaoException;
 
 import java.time.Duration;
@@ -17,7 +17,7 @@ public class ValidadorHorarioAntecedenciaCancelamento implements ValidadorCancel
     private AgendamentoRepository repository;
 
     @Override
-    public void validar(dtoAgendamentoCancelar dados) {
+    public void validar(CancelarAgendamentoDTO dados) {
         var agendamento = repository.findById(dados.idAgendamento())
                 .orElseThrow(() -> new ValidacaoException("Id do agendamento informado não existe!"));
 

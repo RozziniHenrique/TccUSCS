@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.dashboard.dto.dtoDashboard;
+import erp.Salao.domain.dashboard.dto.DashboardDTO;
 import erp.Salao.service.DashboardService;
 
 import java.math.BigDecimal;

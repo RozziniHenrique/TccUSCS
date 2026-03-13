@@ -22,20 +22,20 @@ public class ClienteController {
 
     @PostMapping
     @PreAuthorize("permitAll()")
-    public ResponseEntity cadastrar(@RequestBody @Valid dtoClienteCadastrar dados) {
+    public ResponseEntity cadastrar(@RequestBody @Valid CadastrarClienteDTO dados) {
         var cliente = service.cadastrar(dados);
-        return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
+        return ResponseEntity.ok(new DetalharClienteDTO(cliente));
     }
 
     @PutMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'CLIENTE')")
-    public ResponseEntity atualizar(@RequestBody @Valid dtoClienteAtualizar dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid AtualizarClienteDTO dados) {
         var cliente = service.atualizar(dados);
-        return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
+        return ResponseEntity.ok(new DetalharClienteDTO(cliente));
     }
 
     @GetMapping
-    public ResponseEntity<Page<dtoClienteListar>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+    public ResponseEntity<Page<ListarClienteDTO>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         var page = service.listar(paginacao);
         return ResponseEntity.ok(page);
     }
@@ -44,7 +44,7 @@ public class ClienteController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'CLIENTE')")
     public ResponseEntity detalhar(@PathVariable Long id) {
         var cliente = service.detalhar(id);
-        return ResponseEntity.ok(new dtoClienteDetalhar(cliente));
+        return ResponseEntity.ok(new DetalharClienteDTO(cliente));
     }
 
     @DeleteMapping("/{id}")

@@ -17,23 +17,23 @@ public class EspecialidadeService {
     private EspecialidadeRepository repository;
 
     @Transactional
-    public Especialidade cadastrar(dtoEspecialidadeCadastrar dados) {
+    public Especialidade cadastrar(CadastrarEspecialidadeDTO dados) {
         var especialidade = new Especialidade(dados);
         return repository.save(especialidade);
     }
 
     @Transactional
-    public Especialidade atualizar(dtoEspecialidadeAtualizar dados) {
+    public Especialidade atualizar(AtualizarEspecialidadeDTO dados) {
         var especialidade = repository.getReferenceById(dados.id());
         especialidade.atualizar(dados);
         return especialidade;
     }
 
-    public Page<dtoEspecialidadeListar> listar(Boolean ativos, Pageable paginacao) {
+    public Page<ListarEspecialidadeDTO> listar(Boolean ativos, Pageable paginacao) {
     if (ativos != null && !ativos) {
-        return repository.findAllByAtivoFalse(paginacao).map(dtoEspecialidadeListar::new);
+        return repository.findAllByAtivoFalse(paginacao).map(ListarEspecialidadeDTO::new);
     }
-    return repository.findAllByAtivoTrue(paginacao).map(dtoEspecialidadeListar::new);
+    return repository.findAllByAtivoTrue(paginacao).map(ListarEspecialidadeDTO::new);
 }
 
     public Especialidade detalhar(Long id) {

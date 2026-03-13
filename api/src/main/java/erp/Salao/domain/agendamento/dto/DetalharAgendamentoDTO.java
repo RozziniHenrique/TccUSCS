@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import erp.Salao.domain.agendamento.Agendamento;
 
-public record dtoAgendamentoDetalhar(
+public record DetalharAgendamentoDTO(
         Long id,
         Long idFuncionario,
         String nomeFuncionario,
@@ -13,7 +13,7 @@ public record dtoAgendamentoDetalhar(
         Long idEspecialidade,
         String nomeEspecialista,
         LocalDateTime data) {
-    public dtoAgendamentoDetalhar(Agendamento agendamento) {
+    public DetalharAgendamentoDTO(Agendamento agendamento) {
         this(
                 agendamento.getId(),
                 agendamento.getFuncionario().getId(),

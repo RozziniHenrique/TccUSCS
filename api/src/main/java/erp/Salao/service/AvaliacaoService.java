@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import erp.Salao.domain.agendamento.AgendamentoRepository;
 import erp.Salao.domain.avaliacao.Avaliacao;
 import erp.Salao.domain.avaliacao.AvaliacaoRepository;
-import erp.Salao.domain.avaliacao.dto.dtoAvaliacaoCadastrar;
+import erp.Salao.domain.avaliacao.dto.CadastrarAvaliacaoDTO;
 import erp.Salao.infra.exception.ValidacaoException;
 
 @Service
@@ -20,7 +20,7 @@ public class AvaliacaoService {
     private AvaliacaoRepository avaliacaoRepository;
 
     @Transactional
-    public void registrarAvaliacao(Long id, dtoAvaliacaoCadastrar dados) {
+    public void registrarAvaliacao(Long id, CadastrarAvaliacaoDTO dados) {
 
         var agendamento = agendamentoRepository.getReferenceById(id);
 

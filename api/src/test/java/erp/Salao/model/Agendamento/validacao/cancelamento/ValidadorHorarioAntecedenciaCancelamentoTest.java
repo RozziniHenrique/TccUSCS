@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import erp.Salao.domain.agendamento.Agendamento;
 import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.agendamento.dto.dtoAgendamentoCancelar;
+import erp.Salao.domain.agendamento.dto.CancelarAgendamentoDTO;
 import erp.Salao.domain.agendamento.validacoes.ValidadorHorarioAntecedenciaCancelamento;
 import erp.Salao.infra.exception.ValidacaoException;
 
@@ -42,7 +42,7 @@ class ValidadorHorarioAntecedenciaCancelamentoTest {
 
         when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
 
-        var dados = new dtoAgendamentoCancelar(idAgendamento, "Desistência");
+        var dados = new CancelarAgendamentoDTO(idAgendamento, "Desistência");
 
         var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
 
@@ -60,7 +60,7 @@ class ValidadorHorarioAntecedenciaCancelamentoTest {
 
         when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
 
-        var dados = new dtoAgendamentoCancelar(idAgendamento, "Mudança de planos");
+        var dados = new CancelarAgendamentoDTO(idAgendamento, "Mudança de planos");
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }
@@ -75,7 +75,7 @@ class ValidadorHorarioAntecedenciaCancelamentoTest {
 
         when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
 
-        var dados = new dtoAgendamentoCancelar(idAgendamento, "O cliente desistiu");
+        var dados = new CancelarAgendamentoDTO(idAgendamento, "O cliente desistiu");
 
         assertDoesNotThrow(() -> validador.validar(dados));
     }
