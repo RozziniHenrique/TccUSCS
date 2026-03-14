@@ -10,30 +10,28 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record CadastrarClienteDTO(
-        @NotBlank(message = "O nome é obrigatório")
-        String nome,
+  @NotBlank(message = "O nome é obrigatório") String nome,
 
-        @NotBlank(message = "O e-mail é obrigatório")
-        @Email(message = "Formato de e-mail inválido")
-        String email,
+  @NotBlank(message = "O e-mail é obrigatório")
+  @Email(message = "Formato de e-mail inválido")
+  String email,
 
-        @NotBlank(message = "A senha é obrigatória")
-        @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
-        String senha,
+  @NotBlank(message = "A senha é obrigatória")
+  @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
+  String senha,
 
-        @NotBlank(message = "O telefone é obrigatório")
-        String telefone,
+  @NotBlank(message = "O telefone é obrigatório") String telefone,
 
-        @NotBlank(message = "O CPF é obrigatório")
-        @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos")
-        String cpf,
+  @NotBlank(message = "O CPF é obrigatório")
+  @Pattern(
+    regexp = "\\d{11}",
+    message = "O CPF deve conter exatamente 11 dígitos numéricos"
+  )
+  String cpf,
 
-        @NotNull(message = "Os dados de endereço são obrigatórios")
-        @Valid
-        CadastrarEnderecoDTO endereco,
+  @NotNull(message = "Os dados de endereço são obrigatórios")
+  @Valid
+  CadastrarEnderecoDTO endereco,
 
-        @NotNull(message = "A role do usuário é obrigatória")
-        UsuarioRole role
-) {
-}
-
+  @NotNull(message = "A role do usuário é obrigatória") UsuarioRole role
+) {}

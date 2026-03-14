@@ -4,10 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CancelarAgendamentoDTO(
-        @NotNull
-        Long idAgendamento,
+  @NotNull Long idAgendamento,
 
-        @NotBlank
-        String motivo
-) {
-}
+  @NotBlank String motivo
+) {}

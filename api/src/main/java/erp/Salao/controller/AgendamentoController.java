@@ -1,6 +1,13 @@
 package erp.Salao.controller;
 
+import erp.Salao.domain.agendamento.AgendamentoRepository;
+import erp.Salao.domain.agendamento.dto.*;
+import erp.Salao.domain.avaliacao.dto.CadastrarAvaliacaoDTO;
+import erp.Salao.domain.usuario.Usuario;
+import erp.Salao.service.AgendamentoService;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,76 +19,91 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.agendamento.dto.*;
-import erp.Salao.domain.avaliacao.dto.CadastrarAvaliacaoDTO;
-import erp.Salao.domain.usuario.Usuario;
-import erp.Salao.service.AgendamentoService;
-
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
 @RequestMapping("/agendamentos")
 @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO', 'CLIENTE')")
 @CrossOrigin("*")
 public class AgendamentoController {
 
-    @Autowired
-    private AgendamentoService service;
+  @Autowired
+  private AgendamentoService service;
 
-    @Autowired
-    private AgendamentoRepository repository;
+  @Autowired
+  private AgendamentoRepository repository;
 
-    @PostMapping
-    public ResponseEntity agendar(@RequestBody @Valid CadastrarAgendamentoDTO dados, UriComponentsBuilder uriBuilder) {
-        var dto = service.agendar(dados);
-        var uri = uriBuilder.path("/agendamentos/{id}").buildAndExpand(dto.id()).toUri();
-        return ResponseEntity.created(uri).body(dto);
-    }
+  @PostMapping
+  public ResponseEntity agendar(
+    @RequestBody @Valid CadastrarAgendamentoDTO dados,
+    UriComponentsBuilder uriBuilder
+  ) {
+    var dto = service.agendar(dados);
+    var uri = uriBuilder
+      .path("/agendamentos/{id}")
+      .buildAndExpand(dto.id())
+      .toUri();
+    return ResponseEntity.created(uri).body(dto);
+  }
 
-    @GetMapping
-    public ResponseEntity<Page<ListarDetalhamentoDTO>> listar(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
-            @RequestParam(required = false) Long idFuncionario,
-            @RequestParam(required = false) Long idCliente,
-            @RequestParam(required = false) Long idEspecialidade,
-            @PageableDefault(size = 10, sort = {"data"}) Pageable paginacao,
-            @AuthenticationPrincipal Usuario logado) {
-        
-        var page = service.listar(data, idFuncionario, idCliente, idEspecialidade, paginacao, logado);
-        return ResponseEntity.ok(page);
-    }
+  @GetMapping
+  public ResponseEntity<Page<ListarDetalhamentoDTO>> listar(
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE
+    ) LocalDate data,
+    @RequestParam(required = false) Long idFuncionario,
+    @RequestParam(required = false) Long idCliente,
+    @RequestParam(required = false) Long idEspecialidade,
+    @PageableDefault(size = 10, sort = { "data" }) Pageable paginacao,
+    @AuthenticationPrincipal Usuario logado
+  ) {
+    var page = service.listar(
+      data,
+      idFuncionario,
+      idCliente,
+      idEspecialidade,
+      paginacao,
+      logado
+    );
+    return ResponseEntity.ok(page);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity detalhar(@PathVariable Long id) {
-        var dto = service.detalhar(id);
-        return ResponseEntity.ok(dto);
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity detalhar(@PathVariable Long id) {
+    var dto = service.detalhar(id);
+    return ResponseEntity.ok(dto);
+  }
 
-    @PutMapping("/finalizar")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO')")
-    public ResponseEntity finalizar(@RequestBody @Valid FinalizarAgendamentoDTO dados) {
-        service.finalizar(dados);
-        return ResponseEntity.ok("Atendimento finalizado com sucesso!");
-    }
+  @PutMapping("/finalizar")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR', 'FUNCIONARIO')")
+  public ResponseEntity finalizar(
+    @RequestBody @Valid FinalizarAgendamentoDTO dados
+  ) {
+    service.finalizar(dados);
+    return ResponseEntity.ok("Atendimento finalizado com sucesso!");
+  }
 
-    @PostMapping("/{id}/avaliar")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENTE')")
-    public ResponseEntity avaliar(@PathVariable Long id, @RequestBody @Valid CadastrarAvaliacaoDTO dados) {
-        var dto = service.avaliar(id, dados);
-        return ResponseEntity.ok(dto);
-    }
+  @PostMapping("/{id}/avaliar")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENTE')")
+  public ResponseEntity avaliar(
+    @PathVariable Long id,
+    @RequestBody @Valid CadastrarAvaliacaoDTO dados
+  ) {
+    var dto = service.avaliar(id, dados);
+    return ResponseEntity.ok(dto);
+  }
 
-    @DeleteMapping
-    public ResponseEntity cancelar(@RequestBody @Valid CancelarAgendamentoDTO dados) {
-        service.cancelar(dados);
-        return ResponseEntity.noContent().build();
-    }
+  @DeleteMapping
+  public ResponseEntity cancelar(
+    @RequestBody @Valid CancelarAgendamentoDTO dados
+  ) {
+    service.cancelar(dados);
+    return ResponseEntity.noContent().build();
+  }
 
-    @GetMapping("/relatorio/estatisticas")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
-    public ResponseEntity<List<GerarRelatorioAgendamentoDTO>> relatorioEspecialidades() {
-        return ResponseEntity.ok(repository.contagemPorEspecialidade());
-    }
+  @GetMapping("/relatorio/estatisticas")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'GESTOR')")
+  public ResponseEntity<
+    List<GerarRelatorioAgendamentoDTO>
+  > relatorioEspecialidades() {
+    return ResponseEntity.ok(repository.contagemPorEspecialidade());
+  }
 }

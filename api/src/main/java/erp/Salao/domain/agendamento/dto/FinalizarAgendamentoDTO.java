@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record FinalizarAgendamentoDTO(
-        @NotNull Long id,
-        @Min(1) @Max(5) Integer nota
-) {
-}
+  @NotNull Long id,
+  @Min(1) @Max(5) Integer nota
+) {}

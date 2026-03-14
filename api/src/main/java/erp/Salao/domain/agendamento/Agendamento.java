@@ -1,13 +1,11 @@
 package erp.Salao.domain.agendamento;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
-
 import erp.Salao.domain.cliente.Cliente;
 import erp.Salao.domain.especialidade.Especialidade;
 import erp.Salao.domain.funcionario.Funcionario;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import lombok.*;
 
 @Table(name = "agendamentos")
 @Entity(name = "Agendamento")
@@ -16,43 +14,48 @@ import erp.Salao.domain.funcionario.Funcionario;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-
 public class Agendamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "funcionario_id")
-    private Funcionario funcionario;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "funcionario_id")
+  private Funcionario funcionario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "especialidade_id")
-    private Especialidade especialidade;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "cliente_id")
+  private Cliente cliente;
 
-    private LocalDateTime data;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "especialidade_id")
+  private Especialidade especialidade;
 
-    private String motivoCancelamento;
+  private LocalDateTime data;
 
-    private Integer nota;
+  private String motivoCancelamento;
 
-    private Boolean concluido = false;
+  private Integer nota;
 
-    public Agendamento(Funcionario funcionario, Cliente cliente, Especialidade especialidade, LocalDateTime data) {
-        this.funcionario = funcionario;
-        this.cliente = cliente;
-        this.especialidade = especialidade;
-        this.data = data;
-        this.concluido = false;
-        this.motivoCancelamento = null;
-    }
+  private Boolean concluido = false;
 
-    public void finalizar(Integer nota) {
-        this.concluido = true;
-        this.nota = nota;
-    }
+  public Agendamento(
+    Funcionario funcionario,
+    Cliente cliente,
+    Especialidade especialidade,
+    LocalDateTime data
+  ) {
+    this.funcionario = funcionario;
+    this.cliente = cliente;
+    this.especialidade = especialidade;
+    this.data = data;
+    this.concluido = false;
+    this.motivoCancelamento = null;
+  }
+
+  public void finalizar(Integer nota) {
+    this.concluido = true;
+    this.nota = nota;
+  }
 }

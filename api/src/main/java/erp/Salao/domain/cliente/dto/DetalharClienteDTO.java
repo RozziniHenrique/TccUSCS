@@ -4,20 +4,21 @@ import erp.Salao.domain.cliente.Cliente;
 import erp.Salao.domain.endereco.Endereco;
 
 public record DetalharClienteDTO(
-        Long id,
-        String nome,
-        String email,
-        String telefone,
-        String cpf,
-        Endereco endereco) {
-
-    public DetalharClienteDTO(Cliente cliente) {
-        this(
-                cliente.getId(),
-                cliente.getNome(),
-                cliente.getEmail(),
-                cliente.getTelefone(),
-                cliente.getCpf(),
-                cliente.getEndereco());
-    }
+  Long id,
+  String nome,
+  String email,
+  String telefone,
+  String cpf,
+  Endereco endereco
+) {
+  public DetalharClienteDTO(Cliente cliente) {
+    this(
+      cliente.getId(),
+      cliente.getNome(),
+      cliente.getEmail(),
+      cliente.getTelefone(),
+      cliente.getCpf(),
+      cliente.getEndereco()
+    );
+  }
 }

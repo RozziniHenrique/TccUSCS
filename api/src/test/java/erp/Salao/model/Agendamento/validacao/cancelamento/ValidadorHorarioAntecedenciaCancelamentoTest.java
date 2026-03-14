@@ -1,5 +1,17 @@
 package erp.Salao.model.Agendamento.validacao.cancelamento;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
+import erp.Salao.domain.agendamento.Agendamento;
+import erp.Salao.domain.agendamento.AgendamentoRepository;
+import erp.Salao.domain.agendamento.dto.CancelarAgendamentoDTO;
+import erp.Salao.domain.agendamento.validacoes.ValidadorHorarioAntecedenciaCancelamento;
+import erp.Salao.infra.exception.ValidacaoException;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,75 +20,77 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import erp.Salao.domain.agendamento.Agendamento;
-import erp.Salao.domain.agendamento.AgendamentoRepository;
-import erp.Salao.domain.agendamento.dto.CancelarAgendamentoDTO;
-import erp.Salao.domain.agendamento.validacoes.ValidadorHorarioAntecedenciaCancelamento;
-import erp.Salao.infra.exception.ValidacaoException;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class ValidadorHorarioAntecedenciaCancelamentoTest {
-    @Mock
-    private AgendamentoRepository agendamentoRepository;
-    @InjectMocks
-    private ValidadorHorarioAntecedenciaCancelamento validador;
 
-    @Test
-    @DisplayName("Cenário 1: Cancelamento com menos de 2 horas de antecedência -> Erro")
-    void validar_cenario01() {
-        var agora = LocalDateTime.now();
-        var dataAgendamento = agora.plusHours(1);
-        var idAgendamento = 1L;
+  @Mock
+  private AgendamentoRepository agendamentoRepository;
 
-        var agendamento = new Agendamento();
-        agendamento.setData(dataAgendamento);
+  @InjectMocks
+  private ValidadorHorarioAntecedenciaCancelamento validador;
 
-        when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
+  @Test
+  @DisplayName(
+    "Cenário 1: Cancelamento com menos de 2 horas de antecedência -> Erro"
+  )
+  void validar_cenario01() {
+    var agora = LocalDateTime.now();
+    var dataAgendamento = agora.plusHours(1);
+    var idAgendamento = 1L;
 
-        var dados = new CancelarAgendamentoDTO(idAgendamento, "Desistência");
+    var agendamento = new Agendamento();
+    agendamento.setData(dataAgendamento);
 
-        var exception = assertThrows(ValidacaoException.class, () -> validador.validar(dados));
+    when(agendamentoRepository.findById(idAgendamento)).thenReturn(
+      Optional.of(agendamento)
+    );
 
-        assertThat(exception.getMessage()).contains("antecedência mínima de 2h");
-    }
+    var dados = new CancelarAgendamentoDTO(idAgendamento, "Desistência");
 
-    @Test
-    @DisplayName("Cenário 2: Cancelamento com mais de 2 horas de antecedência -> Sucesso")
-    void validar_cenario02() {
-        var dataAgendamento = LocalDateTime.now().plusHours(3);
-        var idAgendamento = 1L;
+    var exception = assertThrows(ValidacaoException.class, () ->
+      validador.validar(dados)
+    );
 
-        var agendamento = new Agendamento();
-        agendamento.setData(dataAgendamento);
+    assertThat(exception.getMessage()).contains("antecedência mínima de 2h");
+  }
 
-        when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
+  @Test
+  @DisplayName(
+    "Cenário 2: Cancelamento com mais de 2 horas de antecedência -> Sucesso"
+  )
+  void validar_cenario02() {
+    var dataAgendamento = LocalDateTime.now().plusHours(3);
+    var idAgendamento = 1L;
 
-        var dados = new CancelarAgendamentoDTO(idAgendamento, "Mudança de planos");
+    var agendamento = new Agendamento();
+    agendamento.setData(dataAgendamento);
 
-        assertDoesNotThrow(() -> validador.validar(dados));
-    }
+    when(agendamentoRepository.findById(idAgendamento)).thenReturn(
+      Optional.of(agendamento)
+    );
 
-    @Test
-    @DisplayName("Cenário 3: Cancelamento com mais de 24h de antecedência -> Sucesso")
-    void validar_cenario03() {
-        var dataAgendamento = LocalDateTime.now().plusDays(2);
-        var idAgendamento = 1L;
-        var agendamento = new Agendamento();
-        agendamento.setData(dataAgendamento);
+    var dados = new CancelarAgendamentoDTO(idAgendamento, "Mudança de planos");
 
-        when(agendamentoRepository.findById(idAgendamento)).thenReturn(Optional.of(agendamento));
+    assertDoesNotThrow(() -> validador.validar(dados));
+  }
 
-        var dados = new CancelarAgendamentoDTO(idAgendamento, "O cliente desistiu");
+  @Test
+  @DisplayName(
+    "Cenário 3: Cancelamento com mais de 24h de antecedência -> Sucesso"
+  )
+  void validar_cenario03() {
+    var dataAgendamento = LocalDateTime.now().plusDays(2);
+    var idAgendamento = 1L;
+    var agendamento = new Agendamento();
+    agendamento.setData(dataAgendamento);
 
-        assertDoesNotThrow(() -> validador.validar(dados));
-    }
+    when(agendamentoRepository.findById(idAgendamento)).thenReturn(
+      Optional.of(agendamento)
+    );
+
+    var dados = new CancelarAgendamentoDTO(idAgendamento, "O cliente desistiu");
+
+    assertDoesNotThrow(() -> validador.validar(dados));
+  }
 }

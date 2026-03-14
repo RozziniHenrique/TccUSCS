@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public interface SomarGastoClienteDTO {
-    String getNome();
-    BigDecimal getTotalGasto();
-    LocalDateTime getUltimaVisita();
+  String getNome();
+  BigDecimal getTotalGasto();
+  LocalDateTime getUltimaVisita();
 }

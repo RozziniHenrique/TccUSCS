@@ -1,7 +1,6 @@
 package erp.Salao.domain.especialidade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import erp.Salao.domain.especialidade.dto.AtualizarEspecialidadeDTO;
 import erp.Salao.domain.especialidade.dto.CadastrarEspecialidadeDTO;
 import erp.Salao.domain.funcionario.Funcionario;
@@ -10,14 +9,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 @Table(name = "especialidades")
 @Entity(name = "Especialidade")
@@ -27,50 +25,49 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 public class Especialidade {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotBlank
-    private String nome;
+  @NotBlank
+  private String nome;
 
-    private String descricao;
+  private String descricao;
 
-    @NotNull
-    @Positive
-    private BigDecimal preco;
+  @NotNull
+  @Positive
+  private BigDecimal preco;
 
-    private Boolean ativo;
+  private Boolean ativo;
 
-    @ManyToMany(mappedBy = "especialidades")
-    @JsonIgnore
-    private Set<Funcionario> funcionarios = new HashSet<>();
+  @ManyToMany(mappedBy = "especialidades")
+  @JsonIgnore
+  private Set<Funcionario> funcionarios = new HashSet<>();
 
-    public Especialidade(CadastrarEspecialidadeDTO dados) {
-        this.nome = dados.nome();
-        this.preco = dados.preco();
-        this.descricao = dados.descricao();
-        this.ativo = true;
+  public Especialidade(CadastrarEspecialidadeDTO dados) {
+    this.nome = dados.nome();
+    this.preco = dados.preco();
+    this.descricao = dados.descricao();
+    this.ativo = true;
+  }
+
+  public void atualizar(@Valid AtualizarEspecialidadeDTO dados) {
+    if (dados.nome() != null) {
+      this.nome = dados.nome();
     }
-
-    public void atualizar(@Valid AtualizarEspecialidadeDTO dados) {
-        if (dados.nome() != null) {
-            this.nome = dados.nome();
-        }
-        if (dados.preco() != null) {
-            this.preco = dados.preco();
-        }
-        if (dados.descricao() != null) {
-            this.descricao = dados.descricao();
-        }
-
+    if (dados.preco() != null) {
+      this.preco = dados.preco();
     }
-
-    public void excluir() {
-        this.ativo = false;
+    if (dados.descricao() != null) {
+      this.descricao = dados.descricao();
     }
+  }
 
-    public void reativar() {
-        this.ativo = true;
-    }
+  public void excluir() {
+    this.ativo = false;
+  }
+
+  public void reativar() {
+    this.ativo = true;
+  }
 }

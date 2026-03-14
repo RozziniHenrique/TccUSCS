@@ -15,20 +15,21 @@ import lombok.Setter;
 @Entity(name = "Avaliacao")
 @Table(name = "avaliacoes")
 public class Avaliacao {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private Integer nota;
-    private String comentario;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "agendamento_id")
-    private Agendamento agendamento;
+  private Integer nota;
+  private String comentario;
 
-    public Avaliacao(CadastrarAvaliacaoDTO dados, Agendamento agendamento) {
-        this.nota = dados.nota();
-        this.comentario = dados.comentario();
-        this.agendamento = agendamento;
-    }
+  @OneToOne
+  @JoinColumn(name = "agendamento_id")
+  private Agendamento agendamento;
+
+  public Avaliacao(CadastrarAvaliacaoDTO dados, Agendamento agendamento) {
+    this.nota = dados.nota();
+    this.comentario = dados.comentario();
+    this.agendamento = agendamento;
+  }
 }

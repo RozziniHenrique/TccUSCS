@@ -4,10 +4,8 @@ import erp.Salao.domain.endereco.CadastrarEnderecoDTO;
 import jakarta.validation.constraints.NotNull;
 
 public record AtualizarClienteDTO(
-
-        @NotNull
-        Long id,
-        String nome,
-        String telefone,
-        CadastrarEnderecoDTO endereco) {
-}
+  @NotNull Long id,
+  String nome,
+  String telefone,
+  CadastrarEnderecoDTO endereco
+) {}
