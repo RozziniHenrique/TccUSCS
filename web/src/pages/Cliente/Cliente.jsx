@@ -18,49 +18,59 @@ export default function Clientes() {
     servicoId: "",
   });
 
-  useEffect(() => {
-    async function carregarDados() {
-      try {
-        setLoading(true);
-        const [resClientes, resAgendamentos, resFunc, resServ] =
-          await Promise.all([
-            api.get("/clientes"),
-            api.get("/agendamentos?size=1000"),
-            api.get("/funcionarios"),
-            api.get("/especialidades"),
-          ]);
+  async function carregarDados() {
+    try {
+      setLoading(true);
+      const [resClientes, resAgendamentos, resFunc, resServ, resRelatorio] =
+        await Promise.all([
+          api.get("/clientes"),
+          api.get("/agendamentos?size=1000"),
+          api.get("/funcionarios"),
+          api.get("/especialidades"),
+          api.get("/dashboard/relatorio-gastos"),
+        ]);
 
-        const listaClientes =
-          resClientes.data.content || resClientes.data || [];
-        const listaAgendamentos =
-          resAgendamentos.data.content || resAgendamentos.data || [];
+      const listaClientes = resClientes.data.content || resClientes.data || [];
+      const listaAgendamentos =
+        resAgendamentos.data.content || resAgendamentos.data || [];
+      const listaGastos = resRelatorio.data || [];
 
-        setFuncionarios(resFunc.data.content || resFunc.data || []);
-        setServicos(resServ.data.content || resServ.data || []);
+      setFuncionarios(resFunc.data.content || resFunc.data || []);
+      setServicos(resServ.data.content || resServ.data || []);
 
-        const clientesComContagem = listaClientes.map((cliente) => {
-          const total = listaAgendamentos.filter(
-            (ag) =>
-              ag.cliente === cliente.nome || ag.nomeCliente === cliente.nome,
-          ).length;
-          return { ...cliente, totalAgendamentos: total };
-        });
+      const clientesComDadosExtras = listaClientes.map((cliente) => {
+        const totalAg = listaAgendamentos.filter(
+          (ag) =>
+            ag.cliente === cliente.nome || ag.nomeCliente === cliente.nome,
+        ).length;
 
-        const listaOrdenada = clientesComContagem.sort((a, b) => {
-          const nomeA = a.nome.toUpperCase();
-          const nomeB = b.nome.toUpperCase();
-          if (nomeA.includes("BALCÃO")) return -1;
-          if (nomeB.includes("BALCÃO")) return 1;
-          return nomeA.localeCompare(nomeB);
-        });
+        const gastoInfo = listaGastos.find((g) => g.nome === cliente.nome);
 
-        setClientes(listaOrdenada);
-      } catch (err) {
-        console.error("Erro ao carregar dados:", err);
-      } finally {
-        setLoading(false);
-      }
+        return {
+          ...cliente,
+          totalAgendamentos: totalAg,
+          totalGasto: gastoInfo ? gastoInfo.totalGasto : 0,
+          ultimaVisita: gastoInfo ? gastoInfo.ultimaVisita : null,
+        };
+      });
+
+      const listaOrdenada = clientesComDadosExtras.sort((a, b) => {
+        const nomeA = a.nome.toUpperCase();
+        const nomeB = b.nome.toUpperCase();
+        if (nomeA.includes("BALCÃO")) return -1;
+        if (nomeB.includes("BALCÃO")) return 1;
+        return nomeA.localeCompare(nomeB);
+      });
+
+      setClientes(listaOrdenada);
+    } catch (err) {
+      console.error("Erro ao carregar dados:", err);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     carregarDados();
   }, []);
 
@@ -71,9 +81,15 @@ export default function Clientes() {
       alert("Selecione o profissional e o serviço!");
       return;
     }
+
     const clienteBalcao = clientes.find((c) =>
       c.nome.toUpperCase().includes("BALCÃO"),
     );
+
+    if (!clienteBalcao) {
+      alert("Cliente Balcão não encontrado no sistema!");
+      return;
+    }
 
     const payload = {
       idFuncionario: Number(funcionarioId),
@@ -86,7 +102,8 @@ export default function Clientes() {
       await api.post("/agendamentos", payload);
       alert("Atendimento registrado com sucesso! ⚡");
       setIsModalOpen(false);
-      window.location.reload();
+      setNovoAtendimento({ funcionarioId: "", servicoId: "" });
+      carregarDados();
     } catch (err) {
       const msgErro =
         err.response?.data?.mensagem || "Erro ao registrar venda.";
@@ -107,6 +124,7 @@ export default function Clientes() {
 
   return (
     <Layout titulo="👥 Gestão de Clientes">
+      {/* Cards de Resumo */}
       <div
         style={{
           display: "grid",
@@ -127,6 +145,7 @@ export default function Clientes() {
         </div>
       </div>
 
+      {/* Barra de Busca e Botão Balcão */}
       <div
         style={{
           display: "flex",
@@ -152,7 +171,6 @@ export default function Clientes() {
             fontSize: "0.9rem",
           }}
         />
-
         <button
           onClick={() => setIsModalOpen(true)}
           style={{
@@ -182,6 +200,7 @@ export default function Clientes() {
         )}
       </div>
 
+      {/* Modal de Atendimento Rápido */}
       {isModalOpen && (
         <div style={styles.overlay}>
           <div style={styles.modal}>
@@ -211,6 +230,7 @@ export default function Clientes() {
                 </option>
               ))}
             </select>
+
             <label style={styles.label}>Profissional</label>
             <select
               style={styles.inputModal}

@@ -9,6 +9,22 @@ export default function ClienteTable({ clientes }) {
     }).format(valor || 0);
   };
 
+  const getEstiloVisita = (dataISO) => {
+    if (!dataISO) return { texto: "Nunca", cor: "#A3AED0", alert: false };
+
+    const dataVisita = new Date(dataISO);
+    const hoje = new Date();
+    const diffTime = Math.abs(hoje - dataVisita);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 30) {
+      return { texto: `${diffDays} dias atrás`, cor: "#FF5B5B", alert: true };
+    } else if (diffDays > 15) {
+      return { texto: `${diffDays} dias atrás`, cor: "#FFBB33", alert: false };
+    }
+    return { texto: "Em dia", cor: "#05CD99", alert: false };
+  };
+
   return (
     <table style={styles.table}>
       <thead>
@@ -33,9 +49,8 @@ export default function ClienteTable({ clientes }) {
           </tr>
         ) : (
           clientes.map((c) => {
-            const isBalcao =
-              c.nome?.toUpperCase().includes("BALCÃO") ||
-              c.nome?.toUpperCase().includes("AVULSO");
+            const isBalcao = c.nome?.toUpperCase().includes("BALCÃO");
+            const infoVisita = getEstiloVisita(c.ultimaVisita);
 
             return (
               <tr
@@ -63,7 +78,7 @@ export default function ClienteTable({ clientes }) {
                   <div style={{ fontSize: "0.85rem", color: "#2B3674" }}>
                     {c.email}
                   </div>
-                  {c.telefone ? (
+                  {c.telefone && (
                     <a
                       href={`https://wa.me/55${c.telefone.replace(/\D/g, "")}`}
                       target="_blank"
@@ -73,25 +88,28 @@ export default function ClienteTable({ clientes }) {
                         color: "#05CD99",
                         textDecoration: "none",
                         fontWeight: "bold",
-                        display: "block",
-                        marginTop: "2px",
                       }}
                     >
                       {c.telefone} 🟢
                     </a>
-                  ) : (
-                    <span style={{ fontSize: "0.7rem", color: "#A3AED0" }}>
-                      Sem telefone
-                    </span>
                   )}
                 </td>
 
                 <td style={styles.td}>
-                  <span style={{ fontSize: "0.9rem", color: "#2B3674" }}>
-                    {c.ultimaVisita
-                      ? new Date(c.ultimaVisita).toLocaleDateString()
-                      : "---"}
-                  </span>
+                  <div
+                    style={{
+                      fontSize: "0.85rem",
+                      color: infoVisita.cor,
+                      fontWeight: infoVisita.alert ? "800" : "600",
+                    }}
+                  >
+                    {infoVisita.texto}
+                  </div>
+                  {c.ultimaVisita && (
+                    <div style={{ fontSize: "0.7rem", color: "#A3AED0" }}>
+                      {new Date(c.ultimaVisita).toLocaleDateString()}
+                    </div>
+                  )}
                 </td>
 
                 <td style={{ ...styles.td, textAlign: "center" }}>

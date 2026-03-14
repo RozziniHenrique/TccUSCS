@@ -23,7 +23,7 @@ class ValidadorAntecedenciaMinimaTest {
     @DisplayName("Cenário 1: Agendamento com menos de 30 minutos de antecedência -> Erro")
     void validar_cenario01() {
         var agoraMais20Minutos = LocalDateTime.now().plusMinutes(20);
-        var dados = new CadastrarAgendamentoDTO(1L, 1L, 1L, agoraMais20Minutos);
+        var dados = new CadastrarAgendamentoDTO(1L, 2L, 1L, agoraMais20Minutos);
 
         assertThrows(ValidacaoException.class, () -> validador.validar(dados));
     }

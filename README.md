@@ -1,21 +1,22 @@
 # 💈 Projeto de Estudo - Gestão de Franquias de Beleza
 
-API de alto desempenho para **Gestão de Franquias** e centros de estética, focada em inteligência de negócios, segurança de dados e automação de regras de agendamento.
+API de alto desempenho para **Gestão de Franquias** e centros de estética, focada em inteligência de negócios (BI), CRM de retenção e automação de agendamentos.
 
 ---
 
-### 🚀 Novidades da Versão 2.0
+### 🚀 Novidades da Versão 2.0 (Atualizado)
 
-- **Business Intelligence:** Dashboard integrado com faturamento em tempo real, ranking de performance e alertas de qualidade (notas < 4.0).
-- **Arquitetura Clean (DDD):** Refatoração completa para o padrão de domínios, isolando regras de negócio de infraestrutura para maior escalabilidade.
-- **Refatoração Frontend:** Modularização de componentes e implementação de _Path Aliases_ (`@/`) para código limpo.
+- **CRM & Retenção de Clientes:** Algoritmo que monitora a última visita e sinaliza clientes em risco (inativos há +15 ou +30 dias) com alertas visuais.
+- **Módulo PDV (Atendimento Balcão):** Fluxo simplificado para registro de vendas rápidas sem necessidade de agendamento prévio.
+- **Business Intelligence:** Dashboard avançado com faturamento diário, Ticket Médio por cliente e ranking de demanda por serviço.
+- **Arquitetura Clean (DDD):** Refatoração completa para o padrão de domínios, isolando regras de negócio de infraestrutura.
 
 ---
 
 ### 🛠️ Stack Tecnológica
 
 - **Backend:** Java 21 + Spring Boot 3 (Spring Security + JWT)
-- **Frontend Web:** React + Vite + Tailwind CSS (Gestão Administrativa)
+- **Frontend Web:** React + Vite + Tailwind CSS / Styled Components
 - **Mobile:** React Native (App Cliente - _Em espera_)
 - **Persistência:** MySQL + Flyway
 - **Qualidade:** JUnit 5 + Mockito
@@ -24,33 +25,29 @@ API de alto desempenho para **Gestão de Franquias** e centros de estética, foc
 
 ### 📂 Estrutura do Ecossistema
 
-O projeto está dividido em frentes específicas para atender diferentes perfis de usuário:
-
 - **`/api`**: Core do sistema, regras de negócio e inteligência de dados.
-- **`/web`**: Painel administrativo para gestão de franqueados e profissionais (Faturamento, Relatórios).
-- **`/mobile`**: Interface do cliente para agendamentos e acompanhamento de serviços. -> _Desenvolvimento em espera_
+- **`/web`**: Painel administrativo para gestão de franqueados, profissionais e controle de retenção de clientes.
+- **`/mobile`**: Interface do cliente para agendamentos e acompanhamento. -> _Desenvolvimento em espera_
 
 ---
 
-### 📏 Regras de Negócio & Validações
+### 📏 Regras de Negócio & Inteligência
 
-O sistema utiliza o padrão **Strategy** para aplicar regras automáticas:
-
-- **Horário de Funcionamento:** Segunda a Sábado, das 07h às 19h.
-- **Antecedência:** Mínimo de 30 min para agendar e 2h para cancelar.
+- **Gestão de Retenção:** Classificação visual automática (Verde: Em dia | Amarelo: 15 dias ausente | Vermelho: +30 dias ausente).
+- **LTV (Lifetime Value):** Rastreamento de gasto acumulado por cliente para identificação de perfis VIP.
 - **Prevenção de Conflitos:** Validação de duplicidade de horário para profissional e cliente.
-- **Gestão de Qualidade:** Alertas para colaboradores com média de avaliação inferior a 4.0.
+- **Antecedência:** Mínimo de 30 min para agendar e 2h para cancelar.
 
 ---
 
 ### 📊 Principais Endpoints
 
-| Método   | Endpoint                  | Descrição                                                      |
-| :------- | :------------------------ | :------------------------------------------------------------- |
-| **GET**  | `/dashboard`              | Retorna faturamento do dia, ranking de funcionários e alertas. |
-| **POST** | `/agendamentos`           | Cria agendamento validando todas as regras de negócio.         |
-| **PUT**  | `/agendamentos/finalizar` | Conclui o serviço e registra a nota (atualiza faturamento).    |
-| **GET**  | `/relatorio/estatisticas` | Mostra quais especialidades são as mais rentáveis.             |
+| Método   | Endpoint                      | Descrição                                                       |
+| :------- | :---------------------------- | :-------------------------------------------------------------- |
+| **GET**  | `/dashboard`                  | Resumo de faturamento, ticket médio e pendências do dia.        |
+| **GET**  | `/dashboard/relatorio-gastos` | Dados de LTV e histórico de última visita de todos os clientes. |
+| **POST** | `/agendamentos`               | Registro de agendamento ou atendimento rápido (Balcão).         |
+| **PUT**  | `/agendamentos/finalizar`     | Conclui serviço, registra nota e atualiza saúde financeira.     |
 
 ---
 
@@ -58,22 +55,16 @@ O sistema utiliza o padrão **Strategy** para aplicar regras automáticas:
 
 **Backend (API):**
 
-1. **Banco de Dados:** Crie um banco MySQL chamado `stefer`.
-2. **Configuração:** Ajuste as credenciais em `api/src/main/resources/application.properties`.
-3. **Execução:**
+1. Crie um banco MySQL chamado `erp_salao`.
+2. Configure as credenciais em `api/src/main/resources/application.properties`.
 
 ```bash
 cd api
 ./mvnw spring-boot:run
-```
+Frontend (Web):
 
-**Frontend (Web):**
-
-1. **Instalação:** ```bash
-2. **cd web**
-3. **npm install**
-4. **Execução:**
-
-```bash
+Bash
+cd web
+npm install
 npm run dev
 ```

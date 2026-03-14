@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import erp.Salao.domain.agendamento.dto.GerarRelatorioAgendamentoDTO;
 import erp.Salao.domain.dashboard.dto.AlertaQualidade;
 import erp.Salao.domain.dashboard.dto.RankingFuncionario;
+import erp.Salao.domain.dashboard.dto.SomarGastoClienteDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -40,7 +41,7 @@ Page<Agendamento> findAllComFiltros(
 );
    
 @Query("""
-                SELECT new erp.Salao.domain.agendamento.dto.dtoAgendamentoRelatorioEspecialidade(e.nome, COUNT(a))
+                SELECT new erp.Salao.domain.agendamento.dto.GerarRelatorioAgendamentoDTO(e.nome, COUNT(a))
                 FROM Agendamento a
                 JOIN a.especialidade e
                 WHERE a.motivoCancelamento IS NULL
@@ -82,4 +83,11 @@ Page<Agendamento> findAllComFiltros(
 
     @Query("SELECT a FROM Agendamento a WHERE a.funcionario.id = :id OR a.cliente.id = :id")
     Page<Agendamento> buscaPersonalizada(Long id, Pageable paginacao);
+
+    @Query(value = "SELECT c.nome as nome, SUM(e.preco) as totalGasto, MAX(a.data) as ultimaVisita " +
+               "FROM clientes c " +
+               "JOIN agendamentos a ON c.id = a.cliente_id " +
+               "JOIN especialidades e ON a.especialidade_id = e.id " +
+               "GROUP BY c.id, c.nome", nativeQuery = true)
+    List<SomarGastoClienteDTO> listarClientesComGastos();
 }
